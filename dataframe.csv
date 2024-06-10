@@ -1,0 +1,355 @@
+amount,closedate,createdate,dealname,dealstage,hs_lastmodifieddate,hs_object_id,pipeline
+,2023-08-25,2023-07-25,Boston Beer,qualifiedtobuy,2024-01-29,14316276246,default
+,2023-08-25,2023-07-26,Tomorrow Farms,qualifiedtobuy,2024-03-18,14319737382,default
+,2023-08-25,2023-07-26,Tropicana Brands,qualifiedtobuy,2024-05-17,14321178553,default
+,2023-08-25,2023-07-26,Frito Lay,qualifiedtobuy,2024-01-27,14321178807,default
+,2023-08-25,2023-07-26,Hu,qualifiedtobuy,2024-05-18,14321179481,default
+,2023-08-25,2023-07-26,Coke Relationship,qualifiedtobuy,2024-01-25,14327237042,default
+,2023-08-25,2023-07-26,Sazerack Relationship,qualifiedtobuy,2024-01-26,14327237125,default
+,2023-08-25,2023-07-26,JBSS,qualifiedtobuy,2024-01-26,14327237157,default
+,2023-08-25,2023-07-26,Pabst,qualifiedtobuy,2024-01-27,14327237457,default
+,2023-08-25,2023-07-26,O'Neill Wines,qualifiedtobuy,2024-05-18,14327237480,default
+,2023-08-25,2023-07-26,Nestle - Ventures (Doug Monk),qualifiedtobuy,2024-01-29,14327237517,default
+,2023-08-25,2023-07-26,Glyder,qualifiedtobuy,2024-05-18,14327237645,default
+,2023-08-25,2023-07-26,Last Gameboard,qualifiedtobuy,2024-01-30,14327237669,default
+,2023-08-25,2023-07-26,Biolyte,qualifiedtobuy,2024-01-28,14327237705,default
+,2023-08-25,2023-07-26,Rose Buddha,qualifiedtobuy,2024-01-27,14327237814,default
+,2023-08-25,2023-07-26,Nova Naturals,qualifiedtobuy,2024-01-29,14327239300,default
+,2023-08-25,2023-07-26,Lucy,qualifiedtobuy,2024-01-29,14327239325,default
+,2023-08-25,2023-07-26,Kadenwood / Purity Pro,qualifiedtobuy,2024-01-26,14327239501,default
+,2023-08-25,2023-07-26,GummiShot,qualifiedtobuy,2024-01-27,14327239525,default
+,2023-08-25,2023-07-26,Quinn Snacks,qualifiedtobuy,2024-03-20,14327239555,default
+,2024-01-10,2023-07-26,Litehouse,closedlost,2024-01-10,14327239572,default
+,2023-08-25,2023-07-26,InGarden,qualifiedtobuy,2024-01-27,14327239710,default
+,2023-08-25,2023-07-26,Branded,qualifiedtobuy,2024-01-30,14327239737,default
+,2023-08-25,2023-07-26,Gorgie,qualifiedtobuy,2024-01-30,14327239751,default
+,2023-08-25,2023-07-26,Dreampops,qualifiedtobuy,2024-05-17,14327239972,default
+,2023-08-25,2023-07-26,FreshJax,qualifiedtobuy,2024-05-17,14327240009,default
+,2023-08-25,2023-07-26,VC Firm - Diabetic Brand,qualifiedtobuy,2024-01-29,14327240027,default
+,2023-08-25,2023-07-26,Casa Branca,qualifiedtobuy,2024-01-29,14327240091,default
+,2023-08-25,2023-07-26,Voyage Foods,qualifiedtobuy,2024-01-30,14328399983,default
+,2023-08-25,2023-07-26,General Mills,qualifiedtobuy,2024-01-29,14328400271,default
+,2023-08-25,2023-07-26,Clorox,qualifiedtobuy,2024-05-19,14328400437,default
+,2023-08-25,2023-07-26,Ginger People,qualifiedtobuy,2024-05-19,14328400542,default
+,2023-08-25,2023-07-26,Tim Coyle,qualifiedtobuy,2024-01-27,14328400704,default
+,2023-08-25,2023-07-26,Seal The Seasons,qualifiedtobuy,2024-01-28,14328400727,default
+,2023-08-25,2023-07-26,Zero Egg,qualifiedtobuy,2024-05-16,14328400756,default
+,2023-08-25,2023-07-26,Lisa,qualifiedtobuy,2024-01-25,14328400786,default
+,2023-08-25,2023-07-26,Hapbee,qualifiedtobuy,2024-01-27,14328400818,default
+,2023-08-25,2023-07-26,Open Farm,qualifiedtobuy,2024-05-16,14328402308,default
+,2023-08-25,2023-07-26,Innoviam,qualifiedtobuy,2024-05-16,14328402332,default
+,2023-08-25,2023-07-26,Guidecraft,qualifiedtobuy,2024-01-29,14328402541,default
+,2023-08-25,2023-07-26,Rivalz Snacks,qualifiedtobuy,2024-05-16,14328402983,default
+,2023-08-25,2023-07-27,Skinny Pancake,qualifiedtobuy,2024-01-27,14351461216,default
+,2023-08-25,2023-07-27,Campbells,qualifiedtobuy,2024-05-28,14351461735,default
+,2023-08-25,2023-07-27,Bardstown Bourbon,qualifiedtobuy,2024-01-27,14351483154,default
+,2023-08-25,2023-07-27,Powerplates,qualifiedtobuy,2024-05-17,14351483298,default
+,2023-08-25,2023-07-27,LovePop,qualifiedtobuy,2024-05-19,14351483407,default
+,2023-08-25,2023-07-27,Essential Candy,qualifiedtobuy,2024-01-30,14351483501,default
+,2023-08-25,2023-07-27,Do Anything Foods,qualifiedtobuy,2024-01-29,14351483720,default
+,2023-08-25,2023-07-27,Filipino Restaurant,qualifiedtobuy,2024-01-25,14351483797,default
+,2023-08-25,2023-07-27,Colgate RFP,95180904,2024-01-25,14351484049,default
+,2023-08-25,2023-07-27,District Doughtnuts,qualifiedtobuy,2024-05-18,14351612304,default
+,2023-08-25,2023-07-27,Matchaful,qualifiedtobuy,2024-01-27,14351612423,default
+,2023-08-25,2023-07-27,Yo Zooma,qualifiedtobuy,2024-01-30,14351612519,default
+65000,2023-08-25,2023-07-27,Luna Bay Booch,qualifiedtobuy,2024-01-29,14351612572,default
+,2023-08-25,2023-07-27,Jot,qualifiedtobuy,2024-01-29,14351612986,default
+75000,None,2023-07-27,Made Good,closedwon,2023-07-27,14351716417,default
+,2023-08-25,2023-07-27,Cayman Jack,95180904,2024-01-25,14351717186,default
+,2023-08-25,2023-07-27,Metis Strategy,qualifiedtobuy,2024-01-25,14351717224,default
+,2024-02-20,2023-07-27,Nestle Retainer,closedlost,2024-05-04,14351717269,default
+,2024-02-20,2023-07-27,No Cow - Custumer Journey,closedlost,2024-05-02,14351717519,default
+,2023-08-25,2023-07-27,Del Monte,qualifiedtobuy,2024-01-29,14351924884,default
+125000,2023-07-25,2023-07-27,Chifles Chips,closedwon,2023-10-20,14351925016,default
+,2023-08-25,2023-07-27,Red Bud - Salty Snacks Creation,qualifiedtobuy,2024-01-24,14351925280,default
+40000,None,2023-07-27,Fitvine,closedwon,2023-10-21,14351926171,default
+,2023-08-25,2023-07-27,Matador,decisionmakerboughtin,2024-04-17,14351977143,default
+,None,2023-07-27,Potato Brand Creation,closedlost,2023-07-27,14351977262,default
+,None,2023-07-27,Lisa - Sun Butter,closedlost,2023-10-21,14352515714,default
+,2023-08-25,2023-07-27,Rolli Shades,decisionmakerboughtin,2024-04-12,14352516142,default
+205000,2024-01-25,2023-07-27,Wedderspoon,closedlost,2024-05-03,14352614483,default
+87000,,2023-07-27,Ramen Brand Creation,closedlost,2023-07-27,14352614533,default
+,None,2023-07-27,Planta,closedlost,2023-07-27,14354138984,default
+,None,2023-07-27,Reem Cosmetics,closedlost,2023-07-27,14354139137,default
+,None,2023-07-27,Innovasian Brand World RFP,closedlost,2023-07-27,14354139155,default
+17500,2023-07-27,2023-07-27,Dose,closedwon,2023-07-27,14362848082,default
+,2023-08-25,2023-07-28,Hello Products,qualifiedtobuy,2024-01-27,14365088377,default
+,None,2023-07-28,Country Archer - Mini Sticks,closedwon,2023-10-21,14368626095,default
+,2024-02-20,2023-07-28,Country Archer - Foot Long,closedlost,2024-05-02,14368637558,default
+,None,2023-07-28,Nestle - Tombstone,95211147,2023-07-28,14368637770,default
+190000,None,2023-07-28,First Day,closedlost,2023-07-28,14370224037,default
+,None,2023-07-28,Nestle Hot Pocket BCS,closedwon,2023-07-28,14370224518,default
+75000,None,2023-07-28,New Brew,closedwon,2023-10-20,14370224777,default
+25000,None,2023-07-28,Deep Indian Kitchen,closedwon,2023-12-19,14370225206,default
+166000,None,2023-07-28,Healthy Cell,closedwon,2024-03-27,14370225514,default
+65000,None,2023-07-28,Project Nom Nom,closedwon,2023-07-28,14370225746,default
+55000,None,2023-07-28,TopFox,closedwon,2023-07-28,14370226022,default
+35000,None,2023-07-28,Grateful Market,closedwon,2023-07-28,14370226208,default
+235000,,2023-07-28,Feastables,closedwon,2023-07-28,14370226255,default
+,2023-08-25,2023-07-28,Summ Foods,decisionmakerboughtin,2024-04-16,14370325933,default
+,None,2023-07-28,Kitsch,closedlost,2023-10-21,14370326440,default
+85000,None,2023-07-28,InMoment,closedwon,2023-07-28,14370326613,default
+196000,None,2023-07-28,Smarty Pants,closedwon,2023-07-28,14370326707,default
+106000,None,2023-07-28,Feel Good Foods,closedwon,2023-07-28,14370327086,default
+,None,2023-07-28,Califia Creamers,closedwon,2024-01-08,14370328341,default
+,None,2023-07-28,Califia - Complete,closedwon,2024-01-08,14370328375,default
+,None,2023-07-28,CanDo Positioning,closedwon,2023-10-21,14370328460,default
+58000,None,2023-07-30,HARDER - Mark Anthony Group,closedwon,2023-10-20,14396154214,default
+,None,2023-07-30,Tender Foods,closedlost,2023-07-30,14396154274,default
+,None,2023-07-30,Sleep Product - CPAP,closedlost,2023-07-30,14396181040,default
+,None,2023-07-30,Project Umami,closedlost,2023-10-21,14396181109,default
+,None,2023-07-30,OluKai,closedlost,2023-10-20,14396366695,default
+,None,2023-07-30,Small Batch Granola,closedlost,2023-10-20,14396687621,default
+75000,None,2023-07-30,OverEasy,closedlost,2023-07-30,14396687722,default
+97500,None,2023-07-30,Mosh,closedlost,2023-07-30,14396687747,default
+,None,2023-07-30,Quimbee,closedlost,2023-07-30,14396687877,default
+85500,None,2023-07-30,Mars Wrigley - Functional Gum,closedlost,2023-07-30,14396687911,default
+174500,None,2023-07-30,Primally Pure,closedlost,2023-07-30,14396688027,default
+55000,None,2023-07-30,Ohm Store,closedlost,2023-10-21,14396833110,default
+92000,,2023-07-30,Pineapple Co,closedlost,2023-07-30,14396833565,default
+175000,None,2023-07-30,Therabody,closedlost,2023-07-30,14396979871,default
+107500,None,2023-07-30,UCAN,closedlost,2023-07-30,14396980101,default
+,None,2023-07-30,Sailor Jerrys,closedlost,2023-07-30,14397631527,default
+15000,None,2023-07-30,Breef - Product Naming,closedlost,2023-07-30,14397631802,default
+65000,None,2023-07-30,Milk Specialities,closedlost,2023-07-30,14397641556,default
+,None,2023-07-30,UTZ,closedlost,2023-10-21,14397691476,default
+,2023-08-25,2023-07-31,Allergena,95180904,2024-01-28,14397691963,default
+101000,2023-08-25,2023-07-31,O'Neill - Brandy Brand Creation,95180904,2024-01-29,14397692066,default
+155000,2023-08-24,2023-07-30,Stem RTD,95180904,2024-01-30,14397696602,default
+,2023-08-25,2023-07-31,Chirp (Beverage Creation),95180904,2024-01-29,14397696887,default
+,2023-08-25,2023-07-31,SHITI Coolers,95180904,2024-01-26,14397765796,default
+55000,,2023-07-31,Actual Veggies,closedlost,2023-10-21,14397766065,default
+40000,2023-08-25,2023-07-31,Wild Fork Foods,95180904,2024-01-27,14397774851,default
+,2023-08-25,2023-07-31,Oxygen Brand Creation,95180904,2024-01-30,14397774916,default
+,None,2023-07-31,NapJitsu (Dojo Labs),closedlost,2023-07-31,14397775222,default
+,None,2023-07-31,Josh/Chi - Chocolate Brand,closedlost,2023-07-31,14397775497,default
+,None,2023-07-31,Leilo,closedlost,2023-10-21,14397892103,default
+68000,None,2023-07-31,Legendary Snacks,closedlost,2023-10-21,14397892237,default
+,None,2023-07-31,7Days,closedlost,2023-07-31,14397972553,default
+,None,2023-07-31,Spiceology,closedlost,2023-07-31,14398037165,default
+,None,2023-07-31,Sunco & Frenchie,closedlost,2023-07-31,14398099558,default
+,None,2023-07-31,Vilore,closedlost,2024-03-20,14398100083,default
+,,2023-07-31,Neau Water,closedlost,2023-07-31,14398171803,default
+,None,2023-07-31,Anna Sheffield,closedlost,2023-07-31,14398172000,default
+,None,2023-07-31,Non Alc Beer Creation,closedlost,2023-07-31,14398216337,default
+,None,2023-07-31,Nash & Michael - Energy Drink,closedlost,2023-07-31,14398216543,default
+,,2023-07-31,Adi - Naming / Ful Project,closedlost,2023-07-31,14398216579,default
+65000,None,2023-07-31,Bomani,closedlost,2023-10-21,14398216617,default
+,None,2023-07-31,Eight Beer,closedlost,2023-10-21,14398246763,default
+82000,None,2023-07-31,Realm,closedlost,2023-07-31,14398247074,default
+,None,2023-07-31,Dynamic Disks,closedlost,2023-07-31,14398367388,default
+,,2023-07-31,Personal Care Brand,closedlost,2023-07-31,14398367576,default
+,None,2023-07-31,Clean Origin,closedlost,2023-10-21,14398368160,default
+,None,2023-07-31,FKA Brands,closedlost,2023-07-31,14398368695,default
+,None,2023-07-31,Shy Food Company,closedlost,2023-07-31,14398445717,default
+,None,2023-07-31,Panini America,closedlost,2023-07-31,14398445955,default
+,None,2023-07-31,Ree Dees Cookie Dough,closedlost,2023-07-31,14398446145,default
+,None,2023-07-31,Spudz Fries (Ben & Jesse's),closedlost,2023-07-31,14398546186,default
+55000,None,2023-07-31,Wellcore,closedlost,2023-10-21,14398546485,default
+,None,2023-07-31,Cometeer,closedlost,2023-10-20,14398557608,default
+77500,None,2023-07-31,Jupiter,95211147,2023-10-20,14398557790,default
+,None,2023-07-31,Clevr Blends,95211147,2023-10-21,14398557974,default
+,None,2023-07-31,EW Grobbel,95211147,2023-07-31,14398626063,default
+,None,2023-07-31,Vivazen,95211147,2023-10-21,14398626192,default
+,None,2023-07-31,VAE Labs,95211147,2023-07-31,14398626363,default
+,None,2023-07-31,Progo Foods,95211147,2023-07-31,14398667297,default
+,None,2023-07-31,Angel Planet Foods,95211147,2023-07-31,14398698626,default
+,None,2023-07-31,OnCore Golf,95211147,2023-07-31,14398698753,default
+162000,2023-09-07,2023-07-31,VitaHustle,closedwon,2023-09-08,14407531648,default
+115000,2023-07-31,2023-07-31,Plenty,appointmentscheduled,2024-06-01,14408312761,default
+96400,2023-09-11,2023-07-31,Suja,closedwon,2023-11-03,14408868789,default
+,None,2023-07-31,Operation Good Boy,95211147,2023-07-31,14409907466,default
+,None,2023-07-31,Three Ships,95211147,2023-07-31,14409908354,default
+,None,2023-07-31,Premium Tequila,qualifiedtobuy,2024-01-29,14409908639,default
+,None,2023-07-31,Buffy,95211147,2023-07-31,14409909833,default
+,None,2023-07-31,Nice Recovery,closedlost,2023-07-31,14409909915,default
+84500,2023-10-23,2023-07-31,Plantstrong,closedlost,2024-04-03,14409910434,default
+129000,2023-09-13,2023-08-01,Truff,closedwon,2023-10-20,14409910812,default
+120500,2023-08-25,2023-08-01,Loco Coffee,95180904,2024-01-25,14409910898,default
+,2023-08-24,2023-07-31,Fit Vine Project #2,qualifiedtobuy,2024-01-28,14411831047,default
+194000,None,2023-07-31,Yolélé,closedlost,2023-07-31,14412128104,default
+,None,2023-07-31,Finaflex,closedlost,2023-07-31,14412129814,default
+,2023-08-24,2023-07-31,Udis / Glutino,95180904,2024-01-25,14412129865,default
+,2023-11-29,2023-08-01,FlavCity,closedlost,2023-11-29,14412130154,default
+,None,2023-08-01,New To World Beverage Creation,closedlost,2023-08-01,14412130379,default
+,2023-08-25,2023-08-01,JoyMode,95180904,2024-01-26,14412130458,default
+,None,2023-08-01,Brueklen 77,closedlost,2023-08-01,14412131597,default
+83500,2023-09-13,2023-08-01,Canarchy,closedlost,2023-10-20,14412131850,default
+147000,None,2023-08-01,Pizza Cupcake,closedwon,2024-02-13,14412131913,default
+,None,2023-08-01,Soupergirl,95211147,2023-10-21,14412132126,default
+35000,None,2023-08-01,Good Pop - Extension,closedlost,2023-10-21,14412132159,default
+,None,2023-08-01,HyVida,closedlost,2023-10-21,14412132213,default
+,2023-08-17,2023-08-01,Herb and Lous,qualifiedtobuy,2024-01-30,14412132922,default
+175000,None,2023-08-01,TJ - UFC Fighter,closedwon,2023-08-01,14412133128,default
+,2023-08-25,2023-08-01,Nestle - Project Miles,95180904,2024-01-28,14412133233,default
+,2023-09-07,2023-08-01,Blueprint,95211147,2023-09-07,14412133551,default
+165000,2023-09-13,2023-08-01,Alouette,closedlost,2023-09-13,14412133767,default
+,2023-08-25,2023-08-01,Spudsy,95180904,2024-01-27,14412267340,default
+45000,None,2023-08-01,Mars - JOMO,closedwon,2023-08-01,14412267531,default
+,None,2023-08-01,Unreal,closedlost,2023-08-01,14412267581,default
+77000,None,2023-08-01,Dan O's,closedwon,2024-03-11,14412268180,default
+5000,None,2023-08-01,GLL Business Cards + PPT,closedwon,2023-08-01,14412268639,default
+57000,2023-09-26,2023-08-01,Gotham Goods,95211147,2023-10-20,14412269069,default
+,None,2023-08-01,Jake Paul - Men's Care,closedlost,2023-08-01,14412269139,default
+,None,2023-08-01,Truffleist,95211147,2023-11-14,14412269339,default
+,None,2023-08-01,Sun Tropics,closedlost,2023-08-01,14412269387,default
+40000,None,2023-08-01,Magic Mind,closedwon,2024-01-18,14412269493,default
+,None,2023-08-01,Glowcode,closedlost,2023-08-01,14412269653,default
+,2023-10-24,2023-08-01,Mohomed,95211147,2023-10-24,14412269731,default
+135000,2023-08-07,2023-08-01,Molly Suds,closedlost,2023-10-20,14412269827,default
+162000,2023-09-05,2023-08-01,VitaHustle,closedwon,2023-10-20,14412269904,default
+,None,2023-08-01,RTD Wine,closedlost,2023-08-01,14412269942,default
+17500,2023-08-07,2023-08-01,Dose - Rename,closedwon,2023-08-07,14412270132,default
+73456,2023-11-29,2023-08-01,Baldor - Urban Roots RFP,closedwon,2023-11-29,14412270511,default
+,2023-09-07,2023-08-01,Crealife,95211147,2023-09-07,14412270629,default
+,2023-08-25,2023-08-01,Licorra Chituan,95180904,2024-01-24,14412270658,default
+,2023-08-25,2023-08-01,Nestle - Grab n' Go,95180904,2024-01-24,14413924536,default
+199000,2023-08-25,2023-08-01,General Mills - Tamora New Proj,decisionmakerboughtin,2024-01-28,14413924649,default
+97000,2023-08-24,2023-08-01,Baldor Overall RFP,closedlost,2023-08-24,14413924734,default
+120400,2023-10-10,2023-08-01,Zhazsa,closedlost,2023-10-10,14413924950,default
+390000,2023-09-08,2023-08-01,Athletic Greens,closedlost,2023-09-08,14421184631,default
+,2023-10-23,2023-08-01,General Mills,closedlost,2023-10-23,14421237635,default
+43600,2023-09-07,2023-08-01,Laoban Dumplings,closedlost,2023-09-07,14421631774,default
+94500,2023-08-10,2023-08-09,Suja,closedwon,2023-09-27,14545801103,default
+,2023-08-31,2023-08-10,Golden Tiger,95180904,2024-01-30,14556793486,default
+,2023-08-31,2023-08-21,New To World Cannabis,appointmentscheduled,2024-06-05,14759964448,default
+157000,2024-01-08,2023-08-23,ShanYi,95211147,2024-03-20,14795089016,default
+219500,2023-10-03,2023-09-08,Suja - Full Project,closedwon,2023-10-03,15071155487,default
+244500,2024-02-20,2023-09-13,C3,closedlost,2024-05-01,15138662234,default
+,2023-09-26,2023-09-14,Northwest Frozen,95211147,2023-09-26,15157567096,default
+73500,2023-10-03,2023-09-17,Calbee - My Pote,closedwon,2023-11-03,15207294072,default
+23000,2023-10-03,2023-09-18,Open Farm - Dental,closedlost,2023-10-03,15224676175,default
+150664,2023-09-30,2023-09-26,Root Foods,95180904,2024-05-28,15328789413,default
+,2023-09-30,2023-09-28,US Capital Investment,appointmentscheduled,2024-03-06,15359823890,default
+,2023-09-30,2023-09-28,Suja Brand World,appointmentscheduled,2024-02-27,15359824007,default
+,2023-10-25,2023-09-28,Thrive Water,closedlost,2023-10-25,15362420521,default
+,2023-11-17,2023-10-04,Momeez Choice,closedlost,2023-11-17,15444297858,default
+122000,2023-10-31,2023-10-04,Persephone,decisionmakerboughtin,2024-05-29,15444426125,default
+,2023-10-10,2023-10-04,Peake Performance,95211147,2023-10-10,15444426260,default
+60000,2023-10-31,2023-10-11,Augustus Jackson,95180904,2024-02-22,15560440605,default
+71024,2023-11-17,2023-10-12,Momeez,closedlost,2023-11-17,15586480411,default
+110772,2023-11-01,2023-10-16,Acme Valley,closedwon,2023-11-01,15655019363,default
+,2023-10-31,2023-10-24,Pop Smith,95180904,2024-03-28,15771856648,default
+93000,2023-10-27,2023-10-24,Brent Rivera - Chip Brand,closedwon,2023-10-27,15772761463,default
+49250,2023-10-27,2023-10-27,KeVita,closedwon,2023-10-27,15811551585,default
+148372,2024-01-04,2023-10-30,Ash-A,closedlost,2024-01-04,15846469037,default
+178346,2023-12-21,2023-10-30,Yee-Haw,closedlost,2024-01-17,15846469136,default
+78000,2024-01-11,2023-11-01,Two-A-Days,95211147,2024-01-11,15877380693,default
+179373,2023-11-30,2023-11-01,Safety Shot,95180904,2024-03-22,15884061049,default
+63691,2023-11-27,2023-11-07,Thomas Downing,closedlost,2023-11-27,15956269680,default
+53597,2023-11-30,2023-11-07,Recognition Brands,95180904,2024-03-30,15956269717,default
+,2024-01-04,2023-11-07,Swanson Health,95211147,2024-01-04,15959718547,default
+160650,2024-01-22,2023-11-16,Lyte Mixers,closedlost,2024-01-22,16086168101,default
+191494,2024-02-07,2023-11-28,Mini Melts,closedlost,2024-05-03,16273159276,default
+,2023-12-05,2023-11-29,Sports Drink Knockoffs,95211147,2023-12-05,16289287229,default
+67000,2023-12-21,2023-12-11,Calbee - New Project,closedwon,2023-12-21,16453138806,default
+121380,2024-01-02,2023-12-11,Ryse Fuel,closedwon,2024-01-02,16453139784,default
+,2024-01-03,2023-12-11,Mush,95211147,2024-01-03,16453139854,default
+91560,2024-01-03,2023-12-14,Miracle Wellness,closedwon,2024-01-03,16508521740,default
+,2023-12-20,2023-12-18,Dymatize,95211147,2023-12-20,16575426629,default
+,2024-02-20,2023-12-21,Dr. Amy Meyers,95211147,2024-05-03,16626812774,default
+62080,2024-01-05,2023-12-21,Gigantic,closedlost,2024-01-17,16626812970,default
+,2024-01-03,2023-12-21,Anina,95211147,2024-01-03,16627330186,default
+124754,2024-01-22,2024-01-03,Vetnique,closedlost,2024-01-22,16792941848,default
+63070,2024-01-24,2024-01-03,Built,closedwon,2024-01-24,16793012509,default
+,2024-01-17,2024-01-03,Hero Bread,95211147,2024-01-17,16793110354,default
+146580,2024-01-31,2024-01-09,Olive Oil NewCo,decisionmakerboughtin,2024-06-01,16865780552,default
+137990,2024-02-26,2024-01-09,Ottogi,closedlost,2024-05-02,16866053554,default
+181410,2024-03-08,2024-01-11,G-Fuel,closedwon,2024-04-30,16895157584,default
+136010,2024-02-16,2024-01-22,Honee Beverage,closedlost,2024-05-01,17101359170,default
+,2024-01-31,2024-01-22,Harvest Right,95180904,2024-05-25,17101524265,default
+,2024-03-08,2024-01-22,Olyra,95211147,2024-05-03,17101524281,default
+,2024-01-31,2024-01-30,Pet Honesty,appointmentscheduled,2024-05-24,17248195974,default
+10000,2024-03-21,2024-01-31,GLL Email Template,closedlost,2024-04-30,17258486195,default
+190540,2024-03-26,2024-01-31,Blox,closedlost,2024-05-03,17270503492,default
+183610,2024-02-28,2024-01-31,Country Archer,closedlost,2024-05-01,17270749223,default
+5800,2024-02-08,2024-02-07,SnackFutures Landing Page,closedlost,2024-05-13,17415302072,default
+13200,2024-02-23,2024-02-10,Milton's Mock up file creation,closedwon,2024-05-03,17453182475,default
+9363,2024-02-12,2024-02-12,Dan-O's Research Immersion + Rebrief,closedwon,2024-03-11,17487094185,default
+,2024-03-27,2024-02-13,Nemo,95211147,2024-05-02,17502542215,default
+6060,2024-02-20,2024-02-15,Califia Creamer Bug Production,closedwon,2024-04-30,17550367905,default
+46953,2024-05-07,2024-02-15,Matador Brand World & Ongoing Stewardship,closedlost,2024-05-07,17550514032,default
+198135,2024-02-15,2024-02-15,Mind Pop,closedwon,2024-02-15,17555511895,default
+,2024-02-29,2024-02-16,Half Days,95180904,2024-05-09,17580582146,default
+9758,2024-02-29,2024-02-20,Milton's Copywriting,closedwon,2024-04-30,17635140172,default
+8000,2024-05-07,2024-02-20,BUILT - Portfolio Naming,closedlost,2024-05-07,17635712179,default
+2800,2024-02-21,2024-02-21,Milton's Typography,closedwon,2024-02-21,17655852344,default
+6000,2024-02-22,2024-02-21,Milton's Extra Renders,decisionmakerboughtin,2024-05-18,17656086276,default
+2600,2024-02-21,2024-02-21,Hot Pockets Crust Optimizaation,closedwon,2024-05-10,17656091039,default
+25729,2024-02-28,2024-02-22,Anarchi / Yellow Teeth Suck,decisionmakerboughtin,2024-04-11,17678832997,default
+134610,2024-04-11,2024-02-23,New Recovery Device,closedwon,2024-04-11,17680507054,default
+10184,2024-03-07,2024-02-23,Dan-O's Innovation Mockups,closedwon,2024-05-04,17691798692,default
+30428,2024-03-07,2024-02-23,Dan-O's Reconcepting,closedwon,2024-05-03,17691881539,default
+,2024-02-29,2024-02-26,Danone,appointmentscheduled,2024-05-03,17731197742,default
+,2024-02-29,2024-02-26,Caldera Skin,appointmentscheduled,2024-05-04,17731746865,default
+23500,2024-03-01,2024-02-27,Built - Brand Strategy Evolution,closedwon,2024-05-02,17754070117,default
+142870,2024-02-29,2024-02-28,Root Nine,appointmentscheduled,2024-05-23,17775867501,default
+,2024-02-28,2024-02-28,Kvaroy Arctic,closedlost,2024-02-28,17776041865,default
+,2024-02-29,2024-02-28,Danone,appointmentscheduled,2024-05-10,17776119427,default
+,2024-04-15,2024-02-28,Hissho Sushi,closedlost,2024-04-15,17776609030,default
+159980,2024-05-23,2024-02-28,Diamond Salt,closedwon,2024-05-23,17776749853,default
+,2024-03-12,2024-02-28,Ryze Superfoods,95211147,2024-05-01,17777452370,default
+,2024-02-29,2024-02-28,AC BBQ,95180904,2024-05-31,17778677174,default
+35020,2024-04-05,2024-03-07,First Born,closedlost,2024-04-05,17906366352,default
+,2024-03-31,2024-03-18,Diamond Salt,appointmentscheduled,2024-06-06,18096531771,default
+94590,2024-04-08,2024-03-18,Rustic Bakery,closedlost,2024-04-08,18096531798,default
+,2024-05-17,2024-03-18,Tomorrow Farms - Cookies,closedlost,2024-05-17,18096531818,default
+,2024-04-23,2024-03-18,New To World Cookie Co,closedlost,2024-04-23,18096531849,default
+,2024-03-31,2024-03-18,Wild Planet,appointmentscheduled,2024-06-05,18096533668,default
+650,2024-03-21,2024-03-18,SnackFutures Additional Webpage,closedwon,2024-05-13,18098621039,default
+,2024-03-31,2024-03-19,Caldera Labs,95180904,2024-05-19,18110399866,default
+30715,2024-03-19,2024-03-19,Acme Valley Scope Addendum,closedwon,2024-03-19,18111106988,default
+19214,2024-03-20,2024-03-19,Milton's Pizza Round 5E,closedwon,2024-05-03,18111249500,default
+1200,2024-03-19,2024-03-19,White Castle Halloween,closedwon,2024-03-19,18113471929,default
+1683.6,2024-03-19,2024-02-23,White Castle Movie,closedwon,2024-04-25,18113472603,default
+,2024-03-27,2024-03-20,Lemon Perfect Phase 1.5,95211147,2024-05-04,18131179098,default
+222550,2024-04-22,2024-03-26,Genexa,closedwon,2024-04-22,18240870212,default
+,2024-03-31,2024-03-26,New To World Thai Brand,appointmentscheduled,2024-05-17,18246236995,default
+,2024-03-31,2024-03-26,Hody Strategy Opp,appointmentscheduled,2024-05-17,18246557242,default
+293649,2024-05-21,2024-03-27,Egg Life,closedwon,2024-05-21,18264124686,default
+,2024-05-21,2024-03-27,Himplant,95180904,2024-06-06,18264124707,default
+,2024-03-27,2024-03-27,Human Sync,95211147,2024-03-27,18264869929,default
+70243,2024-03-31,2024-03-27,Blue Dog Bakery,95180904,2024-06-06,18264870071,default
+141230,2024-03-31,2024-03-27,Get Maine Lobster,decisionmakerboughtin,2024-06-04,18264870207,default
+79456,2024-04-05,2024-03-27,KHC Oscar Mayer,closedlost,2024-04-05,18264929188,default
+156849,2024-05-16,2024-03-27,Creator Candy Brand,closedwon,2024-05-16,18265053193,default
+140815,2024-04-03,2024-03-27,Nestlé Dunks,closedwon,2024-04-03,18270065508,default
+17000,2024-04-10,2024-03-29,Milton's Detroit Style Pizza,closedwon,2024-04-24,18312850341,default
+,2024-04-30,2024-04-02,Oscar Mayer Smokehouse,appointmentscheduled,2024-05-25,18381895340,default
+,2024-04-30,2024-04-02,Sunsetter Smokes,95180904,2024-06-05,18382598468,default
+,2024-04-30,2024-04-02,If/Then - Women,95180904,2024-05-31,18383759640,default
+,2024-05-14,2024-04-02,Sukhadia Sweets,closedlost,2024-05-14,18383955320,default
+,2024-04-09,2024-04-02,Chifles Shipper + Pitch Deck,decisionmakerboughtin,2024-05-28,18385478301,default
+20125,2024-04-03,2024-04-03,My Pote Photography,closedwon,2024-04-03,18410564882,default
+6000,2024-04-03,2024-04-03,My Pote - BOP Romance Copy,closedwon,2024-04-03,18410564984,default
+20000,2024-04-04,2024-04-04,BelliWelli Beauty Bionic,closedwon,2024-04-04,18430639699,default
+7000,2024-04-04,2024-04-04,BelliWelli - Shipper,closedwon,2024-04-04,18434963296,default
+4600,2024-04-09,2024-04-09,Fit Vine - Aluminum Update,closedwon,2024-04-09,18531203141,default
+177970,2024-05-29,2024-04-15,West Paw,closedlost,2024-05-29,18659069726,default
+326170,2024-04-30,2024-04-16,Wild Planet,decisionmakerboughtin,2024-05-30,18677947771,default
+,2024-04-18,2024-04-16,Floyd Mayweather - Pitch,95211147,2024-04-18,18683879168,default
+69828,2024-05-29,2024-04-18,SmartyPants Scope Addendums (Marketing Materials + Innovation Items),closedwon,2024-05-29,18740744319,default
+,2024-04-30,2024-04-22,Aryuvedic Brand,95180904,2024-06-06,18825582616,default
+7200,2024-05-07,2024-04-26,My Pote - Naming 2.0,closedwon,2024-05-16,18924653649,default
+29500,2024-05-24,2024-04-29,Deep | Dumplings Innovation,closedwon,2024-05-24,18978662739,default
+,2024-04-30,2024-04-29,Evolved,appointmentscheduled,2024-06-07,18980246703,default
+37500,2024-05-07,2024-05-01,BUILT |  Photo Realistic Renders,closedwon,2024-05-07,19024822192,default
+4000,2024-05-24,2024-05-07,BUILT | Additional Scope,closedwon,2024-05-24,19190488948,default
+77000,2024-05-15,2024-05-08,Nestlé Packables,closedlost,2024-06-05,19221339171,default
+167710,2024-05-29,2024-05-08,Project Daddy,closedwon,2024-06-06,19221392217,default
+15000,2024-06-03,2024-05-09,Built | Additional Scope June,decisionmakerboughtin,2024-05-31,19249458449,default
+130932,2024-05-23,2024-05-09,Gruns,closedwon,2024-06-06,19250477395,default
+37728,2024-05-10,2024-05-10,De Soi,closedlost,2024-06-06,19274806062,default
+1200,2024-05-13,2024-05-13,Chifles SKU Extension,closedwon,2024-05-13,19326991198,default
+275470,2024-06-03,2024-05-14,Green Dot,closedlost,2024-06-03,19359692415,default
+25000,2024-05-24,2024-05-14,Perfect Bar - Paid Pitch,closedwon,2024-06-06,19359692712,default
+145000,2024-05-31,2024-05-21,Del Monte - Fruit Infusions,decisionmakerboughtin,2024-06-07,19513166218,default
+,2024-05-31,2024-05-21,Telestrations,decisionmakerboughtin,2024-06-03,19516280692,default
+78505,2024-05-31,2024-05-22,Del Monte - Refrigerated Bars,decisionmakerboughtin,2024-06-07,19542536003,default
+2000,2024-05-29,2024-05-29,Chifles SKU Extension Mech,closedwon,2024-05-29,19702592873,default
+,2024-05-31,2024-05-29,Suja Slice,appointmentscheduled,2024-05-29,19710124699,default
+200000,2024-06-07,2024-05-29,Project Rocky | Frozen Thai,appointmentscheduled,2024-05-29,19710529158,default
+,2024-06-30,2024-06-06,Jacks Link's - Pet,appointmentscheduled,2024-06-06,19907617057,default
+,2024-06-30,2024-06-06,Myodetox,appointmentscheduled,2024-06-06,19907617156,default
+,2024-06-30,2024-06-06,Mikuna,appointmentscheduled,2024-06-06,19907619966,default
+,2024-06-30,2024-06-06,SPKD IV,appointmentscheduled,2024-06-06,19907798402,default
