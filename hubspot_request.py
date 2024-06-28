@@ -84,7 +84,7 @@ def transform_closed_deals(df):
 # initial_url = 'https://api.hubapi.com/crm/v3/objects/deals'
 # df = fetch_and_process_data(initial_url)
 
-df = pd.read_csv('dataframe.csv')
+df = pd.read_csv('deals.csv')
 closed_deals = transform_closed_deals(df)
 
 print(closed_deals.head())
