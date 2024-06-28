@@ -1,0 +1,81 @@
+Section,Account,Amount
+,11000 Checking - Wells Fargo 5754,164399.34
+,11200 Savings - Wells Fargo 2315,27087.25
+,11400 Bill.com Money Out Clearing,0.00
+,11500 Bill.com Money In Clearing,0.00
+Bank Accounts,Total Bank Accounts,191486.59
+,12100 Accounts Receivable,490463.55
+Accounts Receivable,Total Accounts Receivable,490463.55
+,13000 Client Reimbursable,3552.68
+,13300 Interest Receivable,0.00
+,13400 Prepaid Expenses,75940.04
+,13500 Accrued Revenue,0.00
+,Uncategorized Asset,0.00
+,Undeposited Funds,0.00
+Other Current Assets,Total Other Current Assets,79492.72
+Current Assets,Total Current Assets,761442.86
+,14150 Computers - Acc Depreciation,-23440.45
+14100 Computer Equipment,Total 14100 Computer Equipment,9333.23
+,14250 Furniture & Equip - Acc Depreciation,-50167.36
+14200 Furniture & Equip,Total 14200 Furniture & Equip,103456.84
+,14350 Leasehold - Acc Depreciation,0.00
+14300 Leasehold Improvements,Total 14300 Leasehold Improvements,0.00
+,14450 Car-Acc Depreaciation,-42579.60
+14400 Car,Total 14400 Car,79076.65
+Fixed Assets,Total Fixed Assets,191866.72
+,15150 Equity - Alpine Start Foods,0.00
+,15200 Equity - Bear Squeeze,0.00
+,15250 Equity - Vive Organic,0.00
+,15300 N/R - Beyond / AKUA,0.00
+,15350 Note Receivable - Ripe Ventures,0.00
+,15375 N/R - Embeba,3891.00
+,15400 N/R - Peak Yogurt,0.00
+,15450 N/R - Blake Mitchell,60000.00
+,15500 Intent Brands (Conv Note),70689.74
+,15550 The Plant Program,25000.00
+,16050 Amort - Goodwill,-123480.50
+16000 Goodwill,Total 16000 Goodwill,74972.99
+,16150 Amort - Covenant,0.00
+16100 Covenant not to compete,Total 16100 Covenant not to compete,0.00
+,16250 Loan Fees - Amortization,0.00
+16200 Loan fees (org costs),Total 16200 Loan fees (org costs),0.00
+,18000 Security Deposits,1500.00
+Other Assets,Total Other Assets,236053.73
+ASSETS,Total ASSETS,1189363.31
+,20000 Accounts Payable,155356.03
+Accounts Payable,Total Accounts Payable,155356.03
+,21100 CC - American Express (1001/3014),74633.54
+,21200 CC - Chase INK (5182),41595.56
+Credit Cards,Total Credit Cards,116229.10
+,20400 Deferred Revenue,764746.01
+,20500 Accrued Expenses,216086.85
+,20600 Employee Reimbursement Payable,0.00
+,20700 Subtenant Prepaid Rent,0.00
+,22100 401K Liability,10130.08
+22000 Payroll Liabilities,Total 22000 Payroll Liabilities,10130.08
+,22200 Other Liability,-569.24
+,23000 Distributions payable - Fred Hart,0.00
+,23500 Short Term Loan Payable,183428.00
+Other Current Liabilities,Total Other Current Liabilities,1173821.70
+Current Liabilities,Total Current Liabilities,1445406.83
+,24000 LOC - 34,0.00
+,24500 LOC/ Loan - 59,0.00
+,25000 Wells Fargo (SBA Loan) - 18,15479.54
+,25500 Accrued Interest N/P Wells Fargo,0.00
+,26500 Accrued Interest N/P Whizard Strategy,0.00
+26000 N/P - Whizard,Total 26000 N/P - Whizard,0.00
+,27000 PPP - Flatirons,0.00
+,27500 EIDL Loan,543191.96
+,27700 Auto Loan,80807.06
+,28000 Subtenant Deposit,0.00
+Long-Term Liabilities,Total Long-Term Liabilities,639478.56
+Liabilities,Total Liabilities,2084885.39
+,30000 Common Stock,170554.80
+,31000 Add'l Paid in Capital,11680.00
+,35000 Distributions  - Blake,-16055.25
+,36000 Distributions - Fred,-185000.00
+,39000 Retained Earnings,-172460.23
+,Opening Balance Equity,0.00
+,Net Income,-704241.40
+Equity,Total Equity,-895522.08
+LIABILITIES AND EQUITY,Total LIABILITIES AND EQUITY,1189363.31
