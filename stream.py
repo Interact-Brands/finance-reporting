@@ -525,11 +525,6 @@ if selected == "Profit and Loss":
     st.metric(label="Net Operating Income", value=f"${net_operating_income:,.2f}")
     st.metric(label="Net Income", value=f"${net_income:,.2f}")
 
-if selected == "Contacts":
-    st.subheader(f"**You Have selected {selected}**")
-    contacts = pd.read_csv('contacts.csv')
-    st.write(contacts)
-
 if selected == "RocketMoney":
     rm = pd.read_csv('rocketmoney.csv')
     df = rm.copy()
@@ -685,6 +680,220 @@ if selected == "Cash Flow":
 
     
 if selected == "Companies":
-    st.subheader(f"**You Have selected {selected}**")
-    contacts = pd.read_csv('companies.csv')
-    st.write(contacts)
+    # st.subheader(f"**You Have selected {selected}**")
+    # contacts = pd.read_csv('companies.csv')
+    # st.write(contacts)
+
+    import streamlit as st
+    from millify import millify
+
+    # Sample data
+    total_sales = 12345678.90
+    total_profit = 2345678.90
+    total_orders = 45678
+    sales_per_change = "10%"
+    profit_per_change = "15%"
+    order_count_per_change = "20%"
+
+    # Additional details
+    account_receivable_details = """
+    **Account Receivable:**
+    - 100K - current
+    - 75K - 30 days overdue
+    - 15K - 60 days overdue
+    - 10K - 90 days overdue
+    """
+    account_payable_details = """
+    **Account Payable:**
+    - Payroll: some number
+    - Bill.com: some number
+    - Expensify: some number
+    """
+    pending_deals_details = """
+    **Pending Deals:**
+    - Some number - proposals
+    - Some number - inbound
+    """
+    rocketmoney_details = """
+    **RocketMoney:**
+    - Some number
+    """
+
+    # CSS for card-like border
+    card_css = """
+    <style>
+    .card {
+        padding: 15px;
+        margin: 10px;
+        border-radius: 5px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        background-color: white;
+    }
+    </style>
+    """
+
+    # Inject CSS
+    st.markdown(card_css, unsafe_allow_html=True)
+
+    # Layout with cards
+    col1, col2 = st.columns(2)
+
+    with col1:
+        st.markdown('<div class="card">', unsafe_allow_html=True)
+        st.metric(label="Sales", value="$" + millify(total_sales, precision=2), delta=sales_per_change)
+        st.write(account_receivable_details)
+        st.markdown('</div>', unsafe_allow_html=True)
+
+    with col2:
+        st.markdown('<div class="card">', unsafe_allow_html=True)
+        st.metric(label="Profit", value="$" + millify(total_profit, precision=2), delta=profit_per_change)
+        st.write(account_payable_details)
+        st.markdown('</div>', unsafe_allow_html=True)
+
+    col3, col4 = st.columns(2)
+
+    with col3:
+        st.markdown('<div class="card">', unsafe_allow_html=True)
+        st.metric(label="Orders", value=total_orders, delta=order_count_per_change)
+        st.write(pending_deals_details)
+        st.markdown('</div>', unsafe_allow_html=True)
+
+    with col4:
+        st.markdown('<div class="card">', unsafe_allow_html=True)
+        st.metric(label="RocketMoney", value="N/A", delta="N/A")
+        st.write(rocketmoney_details)
+        st.markdown('</div>', unsafe_allow_html=True)
+
+
+if selected == "Contacts":
+    import streamlit as st
+    import streamlit as st
+
+    # Define CSS styles once for all cards
+    st.markdown(
+        """
+        <style>
+        .card {
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 2px 2px 5px #ddd;
+            max-height: 400px;
+            overflow-y: auto;
+            text-align: center; /* Center align all text within the card */
+
+        }
+        .title {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+        .item {
+            margin-bottom: 5px;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    # Define data for each card
+    card_data = [
+        {
+            "title": "Account Receivable",
+            "items": {"Invoice 1": "1500", "Invoice 2": "850", "Invoice 3": "2200"},
+        },
+        {
+            "title": "Account Payable",
+            "items": {"Bill 1": "550", "Bill 2": "1200", "Bill 3": "380"},
+        },
+        {
+            "title": "Pending Deals",
+            "items": {
+                "Deal A": "Potential Value: $10,000",
+                "Deal B": "Potential Value: $5,500",
+                "Deal C": "Potential Value: $18,250",
+            },
+        },
+        {
+            "title": "RocketMoney",
+            "items": {
+                "Savings Goal": "$500/month",
+                "Subscriptions": "Netflix, Spotify, Gym",
+                "Spending Categories": "Food, Rent, Entertainment",
+            },
+        },
+    ]
+
+        
+    # Create two rows of columns
+    col1, col2 = st.columns(2)
+    col3, col4 = st.columns(2)
+
+        # --- Card Rendering Functions ---
+    with col1:
+            # # Card 1 content (using the card_data[1])
+            # card_content = f"""
+            # <div class="card">
+            #     <h2 class="title">{card_data[0]['title']}</h2>
+                
+            #     {"100"}
+
+            #     {"100"}
+            # </div>
+            # """
+            # st.markdown(card_content, unsafe_allow_html=True)
+        st.markdown(
+                """
+                <div class="card">
+                    <h2 class="title">Account Receivable</h2>
+                    <h3 class="title">100,000</h3>
+                    <p class="item">Current: 1500</p>
+                    <p class="item">30 Days Overdue: 850</p>
+                    <p class="item">60 Days Overdue: 2200</p>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
+
+    with col2:
+        # Card 2 content (using the card_data[1])
+        st.markdown(
+                """
+                <div class="card">
+                    <h2 class="title">Account Payable</h2>
+                    <h3 class="title">100,000</h3>
+                    <p class="item">Payroll: 1500</p>
+                    <p class="item">Bill.com: 850</p>
+                    <p class="item">Expensify: 2200</p>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
+
+    with col3:
+        st.markdown(
+                """
+                <div class="card">
+                    <h2 class="title">Pending Deals</h2>
+                    <h3 class="title">100,000</h3>
+                    <p class="item">Proposals/Negotiation: 1500</p>
+                    <p class="item">Inbound/Discovery Call: 850</p>
+                    <p class="item">Invoice 3: 2200</p>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
+
+    with col4:
+        st.markdown(
+                """
+                <div class="card">
+                    <h2 class="title">Rocket Money</h2>
+                    <h3 class="title">100,000</h3>
+                    <p class="item">Subscriptions: 1500</p>
+                    <p class="item">Spending Categories: 850</p>
+                    <p class="item">Invoice 3: 2200</p>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
