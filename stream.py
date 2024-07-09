@@ -21,1019 +21,1230 @@ import plotly.graph_objects as go
 color_palette = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf']
 
 from datetime import datetime, timedelta
+ 
 
-st.set_page_config(page_title='Finances',  layout='wide', page_icon=':rocket:')
+# Define a function to check login credentials
+def check_login(username, password):
+    # Define the correct credentials
+    correct_username = 'christie'
+    correct_password = 'christie@interact'
+    return username == correct_username and password == correct_password
 
-t1, t2 = st.columns((0.2,1)) 
+# Initialize session state if not already done
+if 'logged_in' not in st.session_state:
+    st.session_state.logged_in = False
 
-t1.image('images/interactbrands_logo.jpg', width = 120)
-t2.title("Finance Reports of Interact")
-
-
-initial_url = 'https://api.hubapi.com/crm/v3/objects/deals'
-# df = fetch_and_process_data(initial_url)
-
-df = pd.read_csv('deals.csv')
-
-
-closed_deals = transform_closed_deals(df)
-
-df = closed_deals
-
-with st.sidebar:
-    selected = option_menu(
-    menu_title = "Main Menu",
-    options = ["Hubspot-Deals","Quickbooks - Balance", "Profit and Loss","Balance Sheet","Cash Flow", "RocketMoney","Bill COM","Issues", "Home1", "Home2"],
-    icons = ["house","activity","activity","activity", "activity","activity", "activity","bug", "phone", "phone"],
-    menu_icon = "cast",
-    default_index = 0,
-    #orientation = "horizontal",
-)
-if selected == "Hubspot-Deals":
-    st.header('Hubspot Finances')
-    # Create a row layout
-    c1, c2= st.columns(2)
-    c3 = st.empty()  # Create an empty container
-    c4 = st.empty()
-    c5, c6= st.columns(2)
-
-    with st.container():
-        c1.write("Total deals closed in the last 30 days")
-        c2.write("Closed Won deals Per Month")
-
-    with st.container():
-        c5.write("c5")
-        c6.write("c6")
-
-    with c1:
-        today = datetime.now()
-        last_month_start = today - timedelta(days=30)
-
-        # Filter the DataFrame
-        # Explicitly convert 'closedate' to datetime format
-        df_last_month = df[df['closedate'] >= last_month_start]  # Direct comparison should now work
-
-                # Calculate the sum of the 'amount' column
-        total_amount_last_month = df_last_month['amount'].sum()
-
-        # Create the Plotly figure with the dynamic value
-        fig = go.Figure()
-        delta_value = 10000  # Example: set the delta value to $10,000
-
-        indicator_trace = go.Indicator(
-        mode="number+delta",
-        value=total_amount_last_month,
-        number={'prefix': "$"},
-        delta={'position': "top", 'reference': delta_value},  # Use a meaningful reference value
-        domain={'x': [0, 1], 'y': [0, 1]}
-        )
-        fig.add_trace(indicator_trace)
-
-        fig.update_layout(
-        # paper_bgcolor="rgba(0,0,0,0)",
-        plot_bgcolor="rgba(0,0,0,0)",
-        font_color=color_palette[0],
-        title_font_color=color_palette[0],
-        xaxis_showgrid=True,
-        yaxis_showgrid=True,
-        xaxis_gridwidth=1,
-        yaxis_gridwidth=1,
-        xaxis_zeroline=False,
-        yaxis_zeroline=False
-        )
-        st.plotly_chart(fig)  # Use st.plotly_chart() to display the figure   
-
-    with c2:
-        # Filter closed won deals
-        df_closed_deals = df[df['dealstage'] == 'closedwon']
-        df_closed_deals['closedate'] = pd.to_datetime(df_closed_deals['closedate'])
-
-        # Extract year and month from 'closedate' and convert to string
-        df_closed_deals['year_month'] = df_closed_deals['closedate'].dt.to_period('M').apply(lambda x: x.strftime('%Y-%m'))
-
-        deals_per_month = df_closed_deals.groupby('year_month').size().reset_index(name='count')
-
-        # Create a gradient color scale for the line
-        n_points = len(deals_per_month)
-        colors = [f'rgba(0, 0, 255, {i / n_points})' for i in range(1, n_points + 1)]
-
-        # Create the line chart with gradient color
-        fig = go.Figure(data=[
-        go.Scatter(
-                x=deals_per_month['year_month'],
-                y=deals_per_month['count'],
-                mode='lines+markers',
-                line=dict(color='rgba(0, 0, 255, 1)'),
-                marker=dict(
-                color=colors,
-                size=8,
-                line=dict(width=1, color='DarkSlateGrey')
-                )
-        )
-        ])
-
-        # Customize the chart
-        fig.update_layout(
-        title='Closed Won Deals Per Month',
-        xaxis_title='Month',
-        yaxis_title='Number of Closed Deals',
-        legend=dict(
-                yanchor="top", y=0.95, xanchor="right", x=0.01,
-                bordercolor="#444", borderwidth=1,
-                bgcolor="white", font=dict(size=12)
-        ),
-        autosize=False,
-        width=800,
-        height=450,
-        margin=dict(l=50, r=50, b=50, t=50, pad=4),
-        paper_bgcolor="black",
-        plot_bgcolor="black",
-        font=dict(color="white")
-        )
-
-        # Display the chart in Streamlit
-        st.plotly_chart(fig)
-
-
-    with c3:
-        # Assuming 'df' is your DataFrame
-        relevant_stages_df = df[['closedate', 'dealstage']].dropna(subset=['dealstage']).replace({'dealstage': {'': None}}).dropna(subset=['dealstage'])
-        relevant_stages_df['dealstage'] = relevant_stages_df['dealstage'].map({'qualifiedtobuy': 'Qualified to Buy', 'closedlost': 'Lost', 'closedwon': 'Won', 'decisionmakerboughtin': 'Decisionmaker Bought in', 'appointmentscheduled': 'Appointment'}).fillna('')
-
-        relevant_stages_df['closedate'] = pd.to_datetime(relevant_stages_df['closedate'])
-        relevant_stages_df['year_month'] = relevant_stages_df['closedate'].dt.to_period('M').apply(lambda x: x.strftime('%Y-%m'))
-
-        deals_per_month_by_stage = relevant_stages_df.groupby(['year_month', 'dealstage']).size().reset_index(name='count')
-
-
-        pivot_table = deals_per_month_by_stage.pivot(index='year_month', columns='dealstage', values='count').fillna(0)
-
-        # Streamlit app to display the line chart
-        st.title('Deals Per Month by Deal Stage')
-        fig = px.line(pivot_table.reset_index(), x='year_month', y=pivot_table.columns,
-                labels={'count': 'Number of Deals'},
-                title='Deals Per Month by Deal Stage')
-        fig.update_xaxes(title_text='Month')
-        fig.update_yaxes(title_text='Number of Deals')
-
-        st.plotly_chart(fig)
-        
-
-    with c4:
-        df_closed_deals['closedate'] = pd.to_datetime(df_closed_deals['closedate'])
-
-        # Extract year and month from 'closedate' and convert to string
-        df_closed_deals['year_month'] = df_closed_deals['closedate'].dt.to_period('M').astype(str)
-        monthly_deal_amounts = df_closed_deals.groupby('year_month')['amount'].sum().reset_index()
-
-        # Prepare data for linear regression
-        monthly_deal_amounts['date_num'] = pd.to_datetime(monthly_deal_amounts['year_month']).map(pd.Timestamp.toordinal)
-        X = monthly_deal_amounts[['date_num']]
-        y = monthly_deal_amounts['amount']
-
-        # Train the linear regression model
-        model = LinearRegression()
-        model.fit(X, y)
-
-        # Create future months
-        last_date = pd.to_datetime(monthly_deal_amounts['year_month'].iloc[-1])
-        future_months = pd.date_range(start=last_date + pd.DateOffset(months=1), periods=6, freq='M')
-        future_months_str = future_months.to_period('M').astype(str)
-        future_dates_num = future_months.map(pd.Timestamp.toordinal).values.reshape(-1, 1)
-
-        # Predict future values using the trained model
-        future_amounts = model.predict(future_dates_num)
-
-        # Manually construct the data for future months
-        future_data = {
-        'year_month': future_months_str,
-        'amount': future_amounts
-        }
-
-        # Convert to DataFrame for easier manipulation
-        future_df = pd.DataFrame(future_data)
-
-        # Combine the past and future data
-        all_data = pd.concat([monthly_deal_amounts[['year_month', 'amount']], future_df], ignore_index=True)
-
-        # Create color scale
-        colors = px.colors.sequential.Blues_r
-
-        # Generate gradient color values
-        n_colors = len(all_data)
-        gradient_colors = [colors[int(i * (len(colors) - 1) / (n_colors - 1))] for i in range(n_colors)]
-
-        # Create the base bar chart with gradient color scheme
-        fig = go.Figure(data=[
-        go.Bar(
-                x=all_data['year_month'],
-                y=all_data['amount'],
-                marker=dict(color=gradient_colors),
-        )
-        ])
-
-        # Customize the chart
-        fig.update_layout(
-        title='Closed Won Deals Amounts Per Month with Trendline and Extended Forecast',
-        xaxis_title='Month',
-        yaxis_title='Amount',
-        legend=dict(
-                yanchor="top", y=0.95, xanchor="right", x=0.01,
-                bordercolor="#444", borderwidth=1,
-                bgcolor="white", font=dict(size=12)
-        ),
-        autosize=False,
-        width=800,
-        height=450,
-        margin=dict(l=50, r=50, b=50, t=50, pad=4),
-        paper_bgcolor="black",
-        plot_bgcolor="black",
-        font=dict(color="white"),
-        bargap=0.15,  # gap between bars of adjacent bars
-        bargroupgap=0.1  # gap between bars of the same group
-        )
-
-        # Add the trendline and forecast to the figure
-        fig.add_trace(go.Scatter(
-        x=all_data['year_month'], y=all_data['amount'], 
-        mode='lines', name='Trendline & Forecast', line=dict(color='gray', dash='dashdot')
-        ))
-
-        # Display the chart in Streamlit
-        st.plotly_chart(fig)
-  
-    with c5:
-        
-                # Assuming df is your DataFrame with 'closedate' and 'dealstage' columns
-        today = datetime.now()
-        last_month_start = today - timedelta(days=30)
-
-        # Filter the DataFrame for the last month
-        df_last_month = df[df['closedate'] >= last_month_start]
-
-        # Calculate the count of deals for each deal stage
-        dealstage_counts = df_last_month['dealstage'].value_counts()
-
-        # Calculate the total number of deals
-        total_deals = dealstage_counts.sum()
-
-        # Calculate the percentage of deals for each deal stage
-        dealstage_percentages = (dealstage_counts / total_deals) * 100
-
-        # Create a DataFrame for the pie chart
-        pie_data = pd.DataFrame({
-        'Deal Stage': dealstage_percentages.index,
-        'Percentage': dealstage_percentages.values.round(2),
-        'Count': dealstage_counts.values
-        })
-
-        # Plot the pie chart
-        fig = px.pie(pie_data, values='Count', names='Deal Stage', 
-                title='Deal Stages for the Last Month',
-                hover_data=['Percentage'],
-                labels={'Deal Stage': 'Deal Stage'},
-                hole=0.5)
-
-        # Update the layout
-        fig.update_traces(textposition='inside', textinfo='percent+label')
-
-        # Display the chart
-        st.plotly_chart(fig)
-
-if selected == "Quickbooks - Balance":
-
-    # Example data manipulation
-    df = pd.DataFrame({
-        'Account': ['Accounts Receivable', 'Accrued Expenses'],
-        'Balance': [490463.55, -216086.85],
-    })
-
-
-    # Create the Plotly figure
-    # 
-    # 
-    import streamlit as st
-
-    # Sample data
-    accounts = [
-        {
-            'Name': 'Accounts Receivable',
-            'CurrentBalance': 490463.55,
-            'Classification': 'Asset',
-            'AccountType': 'Accounts Receivable',
-            'AcctNum': '12100',
-            'CurrencyRef': {'value': 'USD', 'name': 'United States Dollar'}
-        },
-        {
-            'Name': 'Accrued Expenses',
-            'CurrentBalance': -216086.85,
-            'Classification': 'Liability',
-            'AccountType': 'Other Current Liability',
-            'AcctNum': '20500',
-            'CurrencyRef': {'value': 'USD', 'name': 'United States Dollar'}
-        },
-        {
-            'Name': 'Accrued Interest N/P Wells Fargo',
-            'CurrentBalance': 0,
-            'Classification': 'Liability',
-            'AccountType': 'Long Term Liability',
-            'AcctNum': '25500',
-            'CurrencyRef': {'value': 'USD', 'name': 'United States Dollar'}
-        }
-    ]
-
-    # Displaying using st.metric
-    st.title('Quickbooks Financial Overview')
-    col1, col2, col3 = st.columns(3)
-    curr_balance = 490463.55
-    value_1 = f"${curr_balance:,.2f}"
-    value_2 = f"${curr_balance:,.2f}"
-    value_3 = f"${curr_balance:,.2f}"
-    col1.metric("Accounts Receivable", value_1, "Asset")
-    col1.metric("Expenses", "$462,365", "-Liability")
-    col2.metric("Accounts Payable", "$145,429.81", "-Liability")
-    col2.metric("Bill.com Out Clearing Payable", "$8331.73", "-Liability")
-    col3.metric("Profit & Loss", "-$49,857", "Asset")
-    col3.metric("Paid in Capital Surplus", "-$11,680", "Equity")
+# Display login page if not logged in
+if not st.session_state.logged_in:
+    st.set_page_config(page_title='Login', layout='centered', page_icon=':rocket:')
     
-    for account in accounts:
-        st.metric(label=account['Name'], value=f"${account['CurrentBalance']:,.2f}")
+    st.title("Login to Finance Reports")
 
-    # 
-    # 
-        # Sample data
-    bank_accounts = [
-        {'Name': 'CC - American Express (1001/3014)', 'Label': 'Credit Card', 'Amount': 74633.54},
-        {'Name': 'CC - Chase INK', 'Label': 'Credit Card', 'Amount': 41595.56},
-        {'Name': 'Checking Wells Fargo', 'Label': 'Checking', 'Amount': 162804.85},
-    ]
-
-    # Streamlit app title
-    st.title("Bank Accounts Overview")
-
-    # Function to display account info in a card-like format
-    def display_account_card(account):
-        st.markdown(
-            f"""
-            <div style="border:1px solid #ccc; padding: 10px; border-radius: 5px; margin-bottom: 10px;">
-                <h3 style="color: #fff;">{account['Name']}</h3>
-                <p style="margin: 5px 0;"><strong>Label:</strong> {account['Label']}</p>
-                <p style="margin: 5px 0;"><strong>Current Amount:</strong> ${account['Amount']:,.2f}</p>
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
-
-    # Display each account in a card
-    for account in bank_accounts:
-        display_account_card(account)
-    # Using custom HTML/CSS for more control
-    st.subheader('Detailed Financial Information')
-
-    for account in accounts:
-        st.write(f"""
-        <div style="color: white; background: linear-gradient(135deg, #1e1e2e, #3a3a4a); padding: 10px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); margin-bottom: 10px;">
-            <h4 style="color: #42caff; font-family: 'Arial', sans-serif;">{account['Name']}</h4>
-            <p><strong>Account Type:</strong> {account['AccountType']}</p>
-            <p><strong>Current Balance:</strong> <span style="color: #42caff;">${account['CurrentBalance']:,.2f}</span></p>
-            <p><strong>Classification:</strong> {account['Classification']}</p>
-            <p><strong>Account Number:</strong> {account['AcctNum']}</p>
-        </div>
-        """, unsafe_allow_html=True)
-
-    # Using custom HTML/CSS for more control and futuristic styling
-    st.subheader('Custom Styled Financial Information')
-    html_content = """
-    <style>
-        .financial-info {
-            font-family: 'Arial', sans-serif;
-            margin: 10px 0;
-            padding: 20px;
-            border: 1px solid #444;
-            border-radius: 10px;
-            background: linear-gradient(135deg, #1e1e2e, #3a3a4a);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            color: white;
-        }
-        .financial-info h4 {
-            margin: 0 0 10px 0;
-            font-size: 1.5em;
-            color: #42caff;
-        }
-        .financial-info p {
-            margin: 5px 0;
-            color: #ddd;
-        }
-        .financial-info p span {
-            color: #42caff;
-        }
-    </style>
-    """
-
-    st.markdown(html_content, unsafe_allow_html=True)
-
-    for account in accounts:
-        st.markdown(f"""
-        <div class="financial-info">
-            <h4>{account['Name']}</h4>
-            <p><strong>Account Type:</strong> {account['AccountType']}</p>
-            <p><strong>Current Balance:</strong> <span>${account['CurrentBalance']:,.2f}</span></p>
-            <p><strong>Classification:</strong> {account['Classification']}</p>
-            <p><strong>Account Number:</strong> {account['AcctNum']}</p>
-        </div>
-        """, unsafe_allow_html=True)
-
+    with st.form("login_form"):
+        username = st.text_input("Username")
+        password = st.text_input("Password", type="password")
+        submit_button = st.form_submit_button(label="Login")
     
-
-if selected == "Profit and Loss":
-    
-
-    # Load the data
-    df = pd.read_csv('profit_and_loss_report.csv')
-
-    # Ensure no NaN values in Category column
-    df['Category'].fillna('', inplace=True)
-
-    # Data Preparation
-    income_data = df[df['Category'] == 'Income']
-    cogs_data = df[df['Category'] == 'Cost of Goods Sold']
-    expenses_data = df[df['Category'] == 'Expenses']
-    other_income_expenses_data = df[df['Category'] == 'Other Income/Expenses']
-
-    # Calculate totals
-    total_income = df[df['Category'] == 'Income']['Amount'].sum()
-    total_cogs = df[df['Category'] == 'Cost of Goods Sold']['Amount'].sum()
-    total_expenses = df[df['Category'] == 'Expenses']['Amount'].sum()
-    total_other = df[df['Category'] == 'Other Income/Expenses']['Amount'].sum()
-
-    gross_profit = total_income - total_cogs
-    net_operating_income = gross_profit - total_expenses
-    net_income = net_operating_income + total_other
-
-    # Append totals to DataFrame
-    totals = {
-        'Category': ['Total Income', 'Total COGS', 'Gross Profit', 'Total Expenses', 'Net Operating Income', 'Total Other Income/Expenses', 'Net Income'],
-        'Subcategory': ['', '', '', '', '', '', ''],
-        'Amount': [total_income, total_cogs, gross_profit, total_expenses, net_operating_income, total_other, net_income]
-    }
-    totals_df = pd.DataFrame(totals)
-
-    # Combine DataFrames
-    final_df = pd.concat([df, totals_df], ignore_index=True)
-
-    # Streamlit App
-    st.title('Profit and Loss Report Visualization')
-
-    # Pie Chart for Income and Expenses Distribution
-    st.header('Income and Expenses Distribution')
-    distribution_data = pd.DataFrame({
-        'Category': ['Income', 'Cost of Goods Sold', 'Expenses', 'Other Income/Expenses'],
-        'Amount': [total_income, total_cogs, total_expenses, total_other]
-    })
-    fig1 = px.pie(distribution_data, values='Amount', names='Category', title='Income and Expenses Distribution')
-    st.plotly_chart(fig1)
-
-    # Bar Chart for Detailed Income and Expense Categories
-    st.header('Detailed Income and Expense Categories')
-    fig2 = go.Figure()
-    fig2.add_trace(go.Bar(x=income_data['Subcategory'], y=income_data['Amount'], name='Income'))
-    fig2.add_trace(go.Bar(x=expenses_data['Subcategory'], y=expenses_data['Amount'], name='Expenses'))
-    fig2.update_layout(barmode='group', title='Detailed Income and Expense Categories', xaxis_title='Category', yaxis_title='Amount (USD)')
-    st.plotly_chart(fig2)
-
-    # Line Chart for Monthly Income and Expenses (assuming monthly data available)
-    # Here, we assume 'Month' column exists for demonstration. Adjust accordingly if not present.
-    # st.header('Monthly Income and Expenses')
-    # monthly_data = df[df['Category'] == 'Monthly Data']  # Example placeholder
-    # fig3 = px.line(monthly_data, x='Month', y='Amount', color='Category', title='Monthly Income and Expenses')
-    # st.plotly_chart(fig3)
-
-    # Stacked Bar Chart for COGS Breakdown
-    st.header('COGS Breakdown')
-    fig4 = go.Figure()
-    for subcategory in cogs_data['Subcategory'].unique():
-        sub_data = cogs_data[cogs_data['Subcategory'] == subcategory]
-        fig4.add_trace(go.Bar(x=sub_data['Subcategory'], y=sub_data['Amount'], name=subcategory))
-    fig4.update_layout(barmode='stack', title='COGS Breakdown', xaxis_title='Subcategory', yaxis_title='Amount (USD)')
-    st.plotly_chart(fig4)
-
-    # Summary Metrics for Key Financial Indicators
-    st.header('Key Financial Indicators')
-    st.metric(label="Total Income", value=f"${total_income:,.2f}")
-    st.metric(label="Total COGS", value=f"${total_cogs:,.2f}")
-    st.metric(label="Gross Profit", value=f"${gross_profit:,.2f}")
-    st.metric(label="Total Expenses", value=f"${total_expenses:,.2f}")
-    st.metric(label="Net Operating Income", value=f"${net_operating_income:,.2f}")
-    st.metric(label="Net Income", value=f"${net_income:,.2f}")
-
-if selected == "RocketMoney":
-    rm = pd.read_csv('rocketmoney.csv')
-    df = rm.copy()
-    print(df.columns)
-    # Convert 'Date' column to datetime format
-    df['Date'] = pd.to_datetime(df['Date'], format='%m/%d/%y')
-
-    # Summarize the spending by date
-    daily_spending = df.groupby('Date')['Amount'].sum().reset_index()
-
-    # Create a bar chart using Plotly
-    fig = px.bar(daily_spending, x='Date', y='Amount', title='Daily Spendings')
-    st.plotly_chart(fig)
-    
-    # Prepare data for Prophet
-    # --- Forecasting with Prophet ---
-    daily_spending = daily_spending.rename(columns={'Date': 'ds', 'Amount': 'y'})
-
-    # Initialize and fit the Prophet model
-    model = Prophet()
-    model.fit(daily_spending)
-
-    # Create a DataFrame for future dates
-    future = model.make_future_dataframe(periods=30)  # Forecasting for 30 days into the future
-
-    # Forecast
-    forecast = model.predict(future)
-
-    # Extract forecasted values
-    forecasted_values = forecast[['ds', 'yhat']].tail(30)
-
-    # Add forecasted values to the plot as faded bars
-    forecasted_fig = go.Bar(
-        x=forecasted_values['ds'],
-        y=forecasted_values['yhat'],
-        name='Forecasted Spendings',
-        marker_color='rgba(255, 0, 0, 0.3)'
-    )
-
-    fig.add_trace(forecasted_fig)
-
-    # Display the chart in Streamlit
-    st.plotly_chart(fig)
-
-    # Summarize the spending by category
-    category_spending = df.groupby('Category')['Amount'].sum().reset_index()
-    fig = px.pie(category_spending, values='Amount', names='Category', title='Spending by Category')
-    st.plotly_chart(fig)
-
-    # high spendings
-    high_spendings = df.nlargest(15, 'Amount')
-    fig = px.bar(high_spendings, x='Description', y='Amount', title='Top 10 High Spendings Transactions')
-    st.plotly_chart(fig)
-
-    # category spending
-    category_time_spending = df.groupby(['Date', 'Category'])['Amount'].sum().unstack().fillna(0)
-    fig = px.area(category_time_spending, x=category_time_spending.index, y=category_time_spending.columns, title='Category-wise Spendings Over Time')
-    st.plotly_chart(fig)
-
-    categories = df['Category'].unique()
-    account_types = df['Account Type'].unique()
-
-    # Convert 'Date' column to datetime format
-    df['Date'] = pd.to_datetime(df['Date'], format='%m/%d/%y')
-
-    st.title('Interact-ive Spendings Breakdown Dashboard')
-
-    # Dropdown for Category
-    categories = df['Category'].unique()
-    selected_category = st.selectbox('Select Category', categories)
-
-    # Dropdown for Account Type
-    account_types = df['Account Type'].unique()
-    selected_account_type = st.selectbox('Select Account Type', account_types)
-
-    # Date range slider
-    date_range = st.slider(
-        'Select Date Range',
-        min_value=df['Date'].min().to_pydatetime(),
-        max_value=df['Date'].max().to_pydatetime(),
-        value=(df['Date'].min().to_pydatetime(), df['Date'].max().to_pydatetime())
-    )
-
-    # Filter the DataFrame based on selections
-    filtered_df = df[
-        (df['Category'] == selected_category) & 
-        (df['Account Type'] == selected_account_type) & 
-        (df['Date'] >= date_range[0]) & 
-        (df['Date'] <= date_range[1])
-    ]
-
-    # Create a bar chart using Plotly
-    fig = px.bar(filtered_df, x='Date', y='Amount', title='Spendings Breakdown')
-
-    # Display the chart in Streamlit
-    st.plotly_chart(fig)
-
-if selected == "Balance Sheet":
-    st.subheader(f"**You Have selected {selected}**")
-    balance = pd.read_csv('balance_sheet.csv')
-    # st.write(balance)
-    df = balance.copy()
-        # Streamlit app
-    df['Section'] = df['Section'].fillna('')
-
-    st.title('Balance Sheet Dashboard')
-
-    # Total Assets, Liabilities, and Equity
-    total_assets = df[df['Account'] == 'Total ASSETS']['Amount'].values[0]
-    total_liabilities = df[df['Account'] == 'Total Liabilities']['Amount'].values[0]
-    total_equity = df[df['Account'] == 'Total Equity']['Amount'].values[0]
-
-    # Displaying the key financial indicators
-    st.header("Key Financial Indicators")
-    st.metric("Total Assets", f"${total_assets:,.2f}")
-    st.metric("Total Liabilities", f"${total_liabilities:,.2f}")
-    st.metric("Total Equity", f"${total_equity:,.2f}")
-
-
-        # Plotting Assets Breakdown
-    st.header("Assets Breakdown")
-    assets_df = df[df['Section'].str.contains("Asset")]
-    fig_assets = px.pie(assets_df, names='Account', values='Amount', title='Assets Distribution')
-    st.plotly_chart(fig_assets)
-
-    # Plotting Liabilities Breakdown
-    st.header("Liabilities Breakdown")
-    liabilities_df = df[df['Section'].str.contains("Liabilities")]
-    fig_liabilities = px.pie(liabilities_df, names='Account', values='Amount', title='Liabilities Distribution')
-    st.plotly_chart(fig_liabilities)
-
-
-
-if selected == "Cash Flow":
-    cash_flow = pd.read_csv('cashflow.csv')
-    st.write(cash_flow)
-    df = cash_flow.copy()
-
-        # Check if DataFrame is empty
-    if df.empty:
-        st.error("The DataFrame is empty. Unable to proceed with analysis.")
-    else:
-        # Proceed with data analysis
-        # Example: Display summary statistics by section
-        if 'Section' in df.columns:
-            section_totals = df.groupby('Section')['Amount'].sum().reset_index()
-            st.subheader('Summary Statistics by Section')
-            st.bar_chart(section_totals.set_index('Section'))
+    if submit_button:
+        if check_login(username, password):
+            st.session_state.logged_in = True
+            st.success("Login successful!")
+            st.experimental_rerun()
         else:
-            st.error("Column 'Section' not found in the CSV file.")
-        # Calculate and display summary statistics
-    
+            st.error("Invalid username or password. Contact admins at elvin@interactbrands.com, christie@interactbrands.com for assistance.")
 
-    
-if selected == "Home1":
-    # Sample data
-    total_sales = 12345678.90
-    total_profit = 2345678.90
-    total_orders = 45678
-    sales_per_change = "10%"
-    profit_per_change = "15%"
-    order_count_per_change = "20%"
+# Display the main page if logged in
+if st.session_state.logged_in:
+    st.set_page_config(page_title='Finances', layout='wide', page_icon=':rocket:')
 
-    # Additional details
-    account_receivable_details = """
-    **Account Receivable:**
-    - 100K - current
-    - 75K - 30 days overdue
-    - 15K - 60 days overdue
-    """
-    account_payable_details = """
-    **Account Payable:**
-    - Payroll: some number
-    - Bill.com: some number
-    - Expensify: some number
-    """
-    pending_deals_details = """
-    **Pending Deals:**
-    - Some number - Proposals/Negotiation
-    - Some number - Inbound/Discovery Call
-    """
-    rocketmoney_details = """
-    **RocketMoney:**
-    - Some number - Subscriptions
-    - Some number - Spending Categories
-    """
+# 
+# st.set_page_config(page_title='Finances',  layout='wide', page_icon=':rocket:')
 
-    # CSS for card-like border
-    card_css = """
-    <style>
-    .card {
-        padding: 15px;
-        margin: 10px;
-        border-radius: 5px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        background-color: white;
-    }
-    </style>
-    """
+    t1, t2 = st.columns((0.2,1)) 
 
-    # Inject CSS
-    st.markdown(card_css, unsafe_allow_html=True)
-
-    # Layout with cards
-    col1, col2 = st.columns(2)
-
-    with col1:
-        st.markdown('<div class="card">', unsafe_allow_html=True)
-        st.metric(label="Account Receivable", value="$" + millify(total_sales, precision=2), delta=sales_per_change)
-        st.write(account_receivable_details)
-        st.markdown('</div>', unsafe_allow_html=True)
-
-    with col2:
-        st.markdown('<div class="card">', unsafe_allow_html=True)
-        st.metric(label="Account Payable", value="$" + millify(total_profit, precision=2), delta=profit_per_change)
-        st.write(account_payable_details)
-        st.markdown('</div>', unsafe_allow_html=True)
-
-    col3, col4 = st.columns(2)
-
-    with col3:
-        st.markdown('<div class="card">', unsafe_allow_html=True)
-        st.metric(label="Pending Deals", value=total_orders, delta=order_count_per_change)
-        st.write(pending_deals_details)
-        st.markdown('</div>', unsafe_allow_html=True)
-
-    with col4:
-        st.markdown('<div class="card">', unsafe_allow_html=True)
-        st.metric(label="RocketMoney", value="N/A", delta="N/A")
-        st.write(rocketmoney_details)
-        st.markdown('</div>', unsafe_allow_html=True)
+    t1.image('images/interactbrands_logo.jpg', width = 120)
+    t2.title("Finance Reports of Interact")
 
 
-if selected == "Home2":
+    initial_url = 'https://api.hubapi.com/crm/v3/objects/deals'
+    # df = fetch_and_process_data(initial_url)
 
-    # Define CSS styles once for all cards
-    st.markdown(
-        """
-        <style>
-        .card {
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 15px;
-            box-shadow: 2px 2px 5px #ddd;
-            max-height: 400px;
-            overflow-y: auto;
-            text-align: center; /* Center align all text within the card */
+    df = pd.read_csv('deals.csv')
 
-        }
-        .title {
-            font-size: 20px;
-            margin-bottom: 10px;
-        }
-        .item {
-            margin-bottom: 5px;
-        }
-        </style>
-        """,
-        unsafe_allow_html=True,
+
+    closed_deals = transform_closed_deals(df)
+
+    df = closed_deals
+
+    with st.sidebar:
+        selected = option_menu(
+        menu_title = "Main Menu",
+        options = ["Home1", "Home2", "Hubspot-Deals","Quickbooks - Balance", "Profit and Loss","Balance Sheet","Cash Flow", "RocketMoney","Bill COM","Issues"],
+        icons = ["house","house","activity","activity", "activity","activity", "activity","bug", "phone", "phone"],
+        menu_icon = "cast",
+        default_index = 0,
+        #orientation = "horizontal",
     )
+    if selected == "Hubspot-Deals":
+        st.header('Hubspot Finances')
+        # Create a row layout
+        c1, c2= st.columns(2)
+        c3 = st.empty()  # Create an empty container
+        c4 = st.empty()
+        c5, c6= st.columns(2)
 
-    # Define data for each card
-    card_data = [
-        {
-            "title": "Account Receivable",
-            "items": {"Invoice 1": "1500", "Invoice 2": "850", "Invoice 3": "2200"},
-        },
-        {
-            "title": "Account Payable",
-            "items": {"Bill 1": "550", "Bill 2": "1200", "Bill 3": "380"},
-        },
-        {
-            "title": "Pending Deals",
-            "items": {
-                "Deal A": "Potential Value: $10,000",
-                "Deal B": "Potential Value: $5,500",
-                "Deal C": "Potential Value: $18,250",
-            },
-        },
-        {
-            "title": "RocketMoney",
-            "items": {
-                "Savings Goal": "$500/month",
-                "Subscriptions": "Netflix, Spotify, Gym",
-                "Spending Categories": "Food, Rent, Entertainment",
-            },
-        },
-    ]
+        with st.container():
+            c1.write("YTD Sales")
+            c2.write("YoY Sales")
 
-        
-    # Create two rows of columns
-    col1, col2 = st.columns(2)
-    col3, col4 = st.columns(2)
+        with st.container():
+            c5.write("c5")
+            c6.write("c6")
 
-        # --- Card Rendering Functions ---
-    with col1:
-            # # Card 1 content (using the card_data[1])
-            # card_content = f"""
-            # <div class="card">
-            #     <h2 class="title">{card_data[0]['title']}</h2>
-                
-            #     {"100"}
+        with c1:
+            today = datetime.now()
+            last_month_start = today - timedelta(days=30)
 
-            #     {"100"}
-            # </div>
-            # """
-            # st.markdown(card_content, unsafe_allow_html=True)
-        st.markdown(
-                """
-                <div class="card">
-                    <h2 class="title">Account Receivable</h2>
-                    <h3 class="title">100,000</h3>
-                    <p class="item">Current: 1500</p>
-                    <p class="item">30 Days Overdue: 850</p>
-                    <p class="item">60 Days Overdue: 2200</p>
-                </div>
-                """,
-                unsafe_allow_html=True,
+            # Filter the DataFrame
+            # Explicitly convert 'closedate' to datetime format
+            df_last_month = df[df['closedate'] >= last_month_start]  # Direct comparison should now work
+
+                    # Calculate the sum of the 'amount' column
+            total_amount_last_month = df_last_month['amount'].sum()
+
+            # Create the Plotly figure with the dynamic value
+            fig = go.Figure()
+            delta_value = 10000  # Example: set the delta value to $10,000
+
+            indicator_trace = go.Indicator(
+            mode="number+delta",
+            value=total_amount_last_month,
+            number={'prefix': "$"},
+            delta={'position': "top", 'reference': delta_value},  # Use a meaningful reference value
+            domain={'x': [0, 1], 'y': [0, 1]}
+            )
+            fig.add_trace(indicator_trace)
+
+            fig.update_layout(
+            # paper_bgcolor="rgba(0,0,0,0)",
+            plot_bgcolor="rgba(0,0,0,0)",
+            font_color=color_palette[0],
+            title_font_color=color_palette[0],
+            xaxis_showgrid=True,
+            yaxis_showgrid=True,
+            xaxis_gridwidth=1,
+            yaxis_gridwidth=1,
+            xaxis_zeroline=False,
+            yaxis_zeroline=False
+            )
+            st.plotly_chart(fig)  # Use st.plotly_chart() to display the figure   
+
+        with c2:
+            # Filter closed won deals
+            df_closed_deals = df[df['dealstage'] == 'closedwon']
+            df_closed_deals['closedate'] = pd.to_datetime(df_closed_deals['closedate'])
+
+            # Extract year and month from 'closedate' and convert to string
+            df_closed_deals['year_month'] = df_closed_deals['closedate'].dt.to_period('M').apply(lambda x: x.strftime('%Y-%m'))
+
+            deals_per_month = df_closed_deals.groupby('year_month').size().reset_index(name='count')
+
+            # Create a gradient color scale for the line
+            n_points = len(deals_per_month)
+            colors = [f'rgba(0, 0, 255, {i / n_points})' for i in range(1, n_points + 1)]
+
+            # Create the line chart with gradient color
+            fig = go.Figure(data=[
+            go.Scatter(
+                    x=deals_per_month['year_month'],
+                    y=deals_per_month['count'],
+                    mode='lines+markers',
+                    line=dict(color='rgba(0, 0, 255, 1)'),
+                    marker=dict(
+                    color=colors,
+                    size=8,
+                    line=dict(width=1, color='DarkSlateGrey')
+                    )
+            )
+            ])
+
+            # Customize the chart
+            fig.update_layout(
+            title='Closed Won Deals Per Month',
+            xaxis_title='Month',
+            yaxis_title='Number of Closed Deals',
+            legend=dict(
+                    yanchor="top", y=0.95, xanchor="right", x=0.01,
+                    bordercolor="#444", borderwidth=1,
+                    bgcolor="white", font=dict(size=12)
+            ),
+            autosize=False,
+            width=800,
+            height=450,
+            margin=dict(l=50, r=50, b=50, t=50, pad=4),
+            paper_bgcolor="black",
+            plot_bgcolor="black",
+            font=dict(color="white")
             )
 
-    with col2:
-        # Card 2 content (using the card_data[1])
-        st.markdown(
-                """
-                <div class="card">
-                    <h2 class="title">Account Payable</h2>
-                    <h3 class="title">100,000</h3>
-                    <p class="item">Payroll: 1500</p>
-                    <p class="item">Bill.com: 850</p>
-                    <p class="item">Expensify: 2200</p>
-                </div>
-                """,
-                unsafe_allow_html=True,
+            # Display the chart in Streamlit
+            st.plotly_chart(fig)
+
+
+        with c3:
+            # Assuming 'df' is your DataFrame
+            relevant_stages_df = df[['closedate', 'dealstage']].dropna(subset=['dealstage']).replace({'dealstage': {'': None}}).dropna(subset=['dealstage'])
+            relevant_stages_df['dealstage'] = relevant_stages_df['dealstage'].map({'qualifiedtobuy': 'Qualified to Buy', 'closedlost': 'Lost', 'closedwon': 'Won', 'decisionmakerboughtin': 'Decisionmaker Bought in', 'appointmentscheduled': 'Appointment'}).fillna('')
+
+            relevant_stages_df['closedate'] = pd.to_datetime(relevant_stages_df['closedate'])
+            relevant_stages_df['year_month'] = relevant_stages_df['closedate'].dt.to_period('M').apply(lambda x: x.strftime('%Y-%m'))
+
+            deals_per_month_by_stage = relevant_stages_df.groupby(['year_month', 'dealstage']).size().reset_index(name='count')
+
+
+            pivot_table = deals_per_month_by_stage.pivot(index='year_month', columns='dealstage', values='count').fillna(0)
+
+            # Streamlit app to display the line chart
+            st.title('Deals Per Month by Deal Stage')
+            fig = px.line(pivot_table.reset_index(), x='year_month', y=pivot_table.columns,
+                    labels={'count': 'Number of Deals'},
+                    title='Deals Per Month by Deal Stage')
+            fig.update_xaxes(title_text='Month')
+            fig.update_yaxes(title_text='Number of Deals')
+
+            st.plotly_chart(fig)
+            
+
+        with c4:
+            df_closed_deals['closedate'] = pd.to_datetime(df_closed_deals['closedate'])
+
+            # Extract year and month from 'closedate' and convert to string
+            df_closed_deals['year_month'] = df_closed_deals['closedate'].dt.to_period('M').astype(str)
+            monthly_deal_amounts = df_closed_deals.groupby('year_month')['amount'].sum().reset_index()
+
+            # Prepare data for linear regression
+            monthly_deal_amounts['date_num'] = pd.to_datetime(monthly_deal_amounts['year_month']).map(pd.Timestamp.toordinal)
+            X = monthly_deal_amounts[['date_num']]
+            y = monthly_deal_amounts['amount']
+
+            # Train the linear regression model
+            model = LinearRegression()
+            model.fit(X, y)
+
+            # Create future months
+            last_date = pd.to_datetime(monthly_deal_amounts['year_month'].iloc[-1])
+            future_months = pd.date_range(start=last_date + pd.DateOffset(months=1), periods=6, freq='M')
+            future_months_str = future_months.to_period('M').astype(str)
+            future_dates_num = future_months.map(pd.Timestamp.toordinal).values.reshape(-1, 1)
+
+            # Predict future values using the trained model
+            future_amounts = model.predict(future_dates_num)
+
+            # Manually construct the data for future months
+            future_data = {
+            'year_month': future_months_str,
+            'amount': future_amounts
+            }
+
+            # Convert to DataFrame for easier manipulation
+            future_df = pd.DataFrame(future_data)
+
+            # Combine the past and future data
+            all_data = pd.concat([monthly_deal_amounts[['year_month', 'amount']], future_df], ignore_index=True)
+
+            # Create color scale
+            colors = px.colors.sequential.Blues_r
+
+            # Generate gradient color values
+            n_colors = len(all_data)
+            gradient_colors = [colors[int(i * (len(colors) - 1) / (n_colors - 1))] for i in range(n_colors)]
+
+            # Create the base bar chart with gradient color scheme
+            fig = go.Figure(data=[
+            go.Bar(
+                    x=all_data['year_month'],
+                    y=all_data['amount'],
+                    marker=dict(color=gradient_colors),
             )
+            ])
 
-    with col3:
-        st.markdown(
-                """
-                <div class="card">
-                    <h2 class="title">Pending Deals</h2>
-                    <h3 class="title">100,000</h3>
-                    <p class="item">Proposals/Negotiation: 1500</p>
-                    <p class="item">Inbound/Discovery Call: 850</p>
-                    <p class="item">Invoice 3: 2200</p>
-                </div>
-                """,
-                unsafe_allow_html=True,
-            )
-
-    with col4:
-        st.markdown(
-                """
-                <div class="card">
-                    <h2 class="title">Rocket Money</h2>
-                    <h3 class="title">100,000</h3>
-                    <p class="item">Subscriptions: 1500</p>
-                    <p class="item">Spending Categories: 850</p>
-                    <p class="item">Invoice 3: 2200</p>
-                </div>
-                """,
-                unsafe_allow_html=True,
-            )
-    c1, c2= st.columns(2)
-    c3 = st.empty()  # Create an empty container
-    c4 = st.empty()
-
-    with st.container():
-        c1.write("Total deals closed in the last 30 days")
-        c2.write("Closed Won deals Per Month")
-
-    with st.container():
-        c3.write("c5")
-        c4.write("c6")
-    with c2:
-        df_closed_deals = df[df['dealstage'] == 'closedwon']
-
-        df_closed_deals['closedate'] = pd.to_datetime(df_closed_deals['closedate'])
-
-        # Extract year and month from 'closedate' and convert to string
-        df_closed_deals['year_month'] = df_closed_deals['closedate'].dt.to_period('M').astype(str)
-        monthly_deal_amounts = df_closed_deals.groupby('year_month')['amount'].sum().reset_index()
-
-                # Separate and Filter Data by Year
-        df_2023 = monthly_deal_amounts[monthly_deal_amounts['year_month'].str.startswith('2023')]
-        df_2024 = monthly_deal_amounts[monthly_deal_amounts['year_month'].str.startswith('2024')]
-
-        # Combine data while adding a "Year" column to differentiate
-        df_combined = pd.concat([
-            df_2023.assign(Year='2023'),
-            df_2024.assign(Year='2024')
-        ])
-
-        # Create Plotly figure
-        fig = go.Figure()
-
-        # Add traces for each year with distinct colors
-        fig.add_trace(go.Bar(
-            x=df_combined[df_combined['Year'] == '2023']['year_month'],
-            y=df_combined[df_combined['Year'] == '2023']['amount'],
-            name='2023',
-            marker_color='skyblue'
-        ))
-
-        fig.add_trace(go.Bar(
-            x=df_combined[df_combined['Year'] == '2024']['year_month'],
-            y=df_combined[df_combined['Year'] == '2024']['amount'],
-            name='2024',
-            marker_color='lightcoral'
-        ))
-
-        # Customize the chart layout
-        fig.update_layout(
-            title='Closed Won Deals Amounts Per Month (2023 vs. 2024)',
+            # Customize the chart
+            fig.update_layout(
+            title='Closed Won Deals Amounts Per Month with Trendline and Extended Forecast',
             xaxis_title='Month',
             yaxis_title='Amount',
-            barmode='group', # Ensure bars are grouped side-by-side
+            legend=dict(
+                    yanchor="top", y=0.95, xanchor="right", x=0.01,
+                    bordercolor="#444", borderwidth=1,
+                    bgcolor="white", font=dict(size=12)
+            ),
+            autosize=False,
+            width=800,
+            height=450,
+            margin=dict(l=50, r=50, b=50, t=50, pad=4),
             paper_bgcolor="black",
             plot_bgcolor="black",
             font=dict(color="white"),
-            legend=dict(bgcolor='rgba(0,0,0,0)')  # Make the legend background transparent to blend with the plot
-        )
+            bargap=0.15,  # gap between bars of adjacent bars
+            bargroupgap=0.1  # gap between bars of the same group
+            )
+
+            # Add the trendline and forecast to the figure
+            fig.add_trace(go.Scatter(
+            x=all_data['year_month'], y=all_data['amount'], 
+            mode='lines', name='Trendline & Forecast', line=dict(color='gray', dash='dashdot')
+            ))
+
+            # Display the chart in Streamlit
+            st.plotly_chart(fig)
+    
+        with c5:
+            
+                    # Assuming df is your DataFrame with 'closedate' and 'dealstage' columns
+            today = datetime.now()
+            last_month_start = today - timedelta(days=30)
+
+            # Filter the DataFrame for the last month
+            df_last_month = df[df['closedate'] >= last_month_start]
+
+            # Calculate the count of deals for each deal stage
+            dealstage_counts = df_last_month['dealstage'].value_counts()
+
+            # Calculate the total number of deals
+            total_deals = dealstage_counts.sum()
+
+            # Calculate the percentage of deals for each deal stage
+            dealstage_percentages = (dealstage_counts / total_deals) * 100
+
+            # Create a DataFrame for the pie chart
+            pie_data = pd.DataFrame({
+            'Deal Stage': dealstage_percentages.index,
+            'Percentage': dealstage_percentages.values.round(2),
+            'Count': dealstage_counts.values
+            })
+
+            # Plot the pie chart
+            fig = px.pie(pie_data, values='Count', names='Deal Stage', 
+                    title='Deal Stages for the Last Month',
+                    hover_data=['Percentage'],
+                    labels={'Deal Stage': 'Deal Stage'},
+                    hole=0.5)
+
+            # Update the layout
+            fig.update_traces(textposition='inside', textinfo='percent+label')
+
+            # Display the chart
+            st.plotly_chart(fig)
+
+    if selected == "Quickbooks - Balance":
+
+        # Example data manipulation
+        df = pd.DataFrame({
+            'Account': ['Accounts Receivable', 'Accrued Expenses'],
+            'Balance': [490463.55, -216086.85],
+        })
 
 
-        # Display the chart in Streamlit
-        st.plotly_chart(fig)
-    with c1:
+        # Create the Plotly figure
+        # 
+        # 
+        import streamlit as st
 
-        df_closed_deals = df[df['dealstage'] == 'closedwon']
+        # Sample data
+        accounts = [
+            {
+                'Name': 'Accounts Receivable',
+                'CurrentBalance': 490463.55,
+                'Classification': 'Asset',
+                'AccountType': 'Accounts Receivable',
+                'AcctNum': '12100',
+                'CurrencyRef': {'value': 'USD', 'name': 'United States Dollar'}
+            },
+            {
+                'Name': 'Accrued Expenses',
+                'CurrentBalance': -216086.85,
+                'Classification': 'Liability',
+                'AccountType': 'Other Current Liability',
+                'AcctNum': '20500',
+                'CurrencyRef': {'value': 'USD', 'name': 'United States Dollar'}
+            },
+            {
+                'Name': 'Accrued Interest N/P Wells Fargo',
+                'CurrentBalance': 0,
+                'Classification': 'Liability',
+                'AccountType': 'Long Term Liability',
+                'AcctNum': '25500',
+                'CurrencyRef': {'value': 'USD', 'name': 'United States Dollar'}
+            }
+        ]
 
-        df_closed_deals['closedate'] = pd.to_datetime(df_closed_deals['closedate'])
+        # Displaying using st.metric
+        st.title('Quickbooks Financial Overview')
+        col1, col2, col3 = st.columns(3)
+        curr_balance = 490463.55
+        value_1 = f"${curr_balance:,.2f}"
+        value_2 = f"${curr_balance:,.2f}"
+        value_3 = f"${curr_balance:,.2f}"
+        col1.metric("Accounts Receivable", value_1, "Asset")
+        col1.metric("Expenses", "$462,365", "-Liability")
+        col2.metric("Accounts Payable", "$145,429.81", "-Liability")
+        col2.metric("Bill.com Out Clearing Payable", "$8331.73", "-Liability")
+        col3.metric("Profit & Loss", "-$49,857", "Asset")
+        col3.metric("Paid in Capital Surplus", "-$11,680", "Equity")
+        
+        for account in accounts:
+            st.metric(label=account['Name'], value=f"${account['CurrentBalance']:,.2f}")
 
-        # Extract year and month from 'closedate' and convert to string
-        df_closed_deals['year_month'] = df_closed_deals['closedate'].dt.to_period('M').astype(str)
-        monthly_deal_amounts = df_closed_deals.groupby('year_month')['amount'].sum().reset_index()
+        # 
+        # 
+            # Sample data
+        bank_accounts = [
+            {'Name': 'CC - American Express (1001/3014)', 'Label': 'Credit Card', 'Amount': 74633.54},
+            {'Name': 'CC - Chase INK', 'Label': 'Credit Card', 'Amount': 41595.56},
+            {'Name': 'Checking Wells Fargo', 'Label': 'Checking', 'Amount': 162804.85},
+        ]
 
-        # Prepare data for linear regression
-        monthly_deal_amounts['date_num'] = pd.to_datetime(monthly_deal_amounts['year_month']).map(pd.Timestamp.toordinal)
-        X = monthly_deal_amounts[['date_num']]
-        y = monthly_deal_amounts['amount']
+        # Streamlit app title
+        st.title("Bank Accounts Overview")
 
-        # Train the linear regression model
-        model = LinearRegression()
-        model.fit(X, y)
+        # Function to display account info in a card-like format
+        def display_account_card(account):
+            st.markdown(
+                f"""
+                <div style="border:1px solid #ccc; padding: 10px; border-radius: 5px; margin-bottom: 10px;">
+                    <h3 style="color: #fff;">{account['Name']}</h3>
+                    <p style="margin: 5px 0;"><strong>Label:</strong> {account['Label']}</p>
+                    <p style="margin: 5px 0;"><strong>Current Amount:</strong> ${account['Amount']:,.2f}</p>
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
 
-        # Create future months
-        last_date = pd.to_datetime(monthly_deal_amounts['year_month'].iloc[-1])
-        future_months = pd.date_range(start=last_date + pd.DateOffset(months=1), periods=6, freq='M')
-        future_months_str = future_months.to_period('M').astype(str)
-        future_dates_num = future_months.map(pd.Timestamp.toordinal).values.reshape(-1, 1)
+        # Display each account in a card
+        for account in bank_accounts:
+            display_account_card(account)
+        # Using custom HTML/CSS for more control
+        st.subheader('Detailed Financial Information')
 
-        # Predict future values using the trained model
-        future_amounts = model.predict(future_dates_num)
+        for account in accounts:
+            st.write(f"""
+            <div style="color: white; background: linear-gradient(135deg, #1e1e2e, #3a3a4a); padding: 10px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); margin-bottom: 10px;">
+                <h4 style="color: #42caff; font-family: 'Arial', sans-serif;">{account['Name']}</h4>
+                <p><strong>Account Type:</strong> {account['AccountType']}</p>
+                <p><strong>Current Balance:</strong> <span style="color: #42caff;">${account['CurrentBalance']:,.2f}</span></p>
+                <p><strong>Classification:</strong> {account['Classification']}</p>
+                <p><strong>Account Number:</strong> {account['AcctNum']}</p>
+            </div>
+            """, unsafe_allow_html=True)
 
-        # Manually construct the data for future months
-        future_data = {
-        'year_month': future_months_str,
-        'amount': future_amounts
+        # Using custom HTML/CSS for more control and futuristic styling
+        st.subheader('Custom Styled Financial Information')
+        html_content = """
+        <style>
+            .financial-info {
+                font-family: 'Arial', sans-serif;
+                margin: 10px 0;
+                padding: 20px;
+                border: 1px solid #444;
+                border-radius: 10px;
+                background: linear-gradient(135deg, #1e1e2e, #3a3a4a);
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+                color: white;
+            }
+            .financial-info h4 {
+                margin: 0 0 10px 0;
+                font-size: 1.5em;
+                color: #42caff;
+            }
+            .financial-info p {
+                margin: 5px 0;
+                color: #ddd;
+            }
+            .financial-info p span {
+                color: #42caff;
+            }
+        </style>
+        """
+
+        st.markdown(html_content, unsafe_allow_html=True)
+
+        for account in accounts:
+            st.markdown(f"""
+            <div class="financial-info">
+                <h4>{account['Name']}</h4>
+                <p><strong>Account Type:</strong> {account['AccountType']}</p>
+                <p><strong>Current Balance:</strong> <span>${account['CurrentBalance']:,.2f}</span></p>
+                <p><strong>Classification:</strong> {account['Classification']}</p>
+                <p><strong>Account Number:</strong> {account['AcctNum']}</p>
+            </div>
+            """, unsafe_allow_html=True)
+
+        
+
+    if selected == "Profit and Loss":
+        
+
+        # Load the data
+        df = pd.read_csv('profit_and_loss_report.csv')
+
+        # Ensure no NaN values in Category column
+        df['Category'].fillna('', inplace=True)
+
+        # Data Preparation
+        income_data = df[df['Category'] == 'Income']
+        cogs_data = df[df['Category'] == 'Cost of Goods Sold']
+        expenses_data = df[df['Category'] == 'Expenses']
+        other_income_expenses_data = df[df['Category'] == 'Other Income/Expenses']
+
+        # Calculate totals
+        total_income = df[df['Category'] == 'Income']['Amount'].sum()
+        total_cogs = df[df['Category'] == 'Cost of Goods Sold']['Amount'].sum()
+        total_expenses = df[df['Category'] == 'Expenses']['Amount'].sum()
+        total_other = df[df['Category'] == 'Other Income/Expenses']['Amount'].sum()
+
+        gross_profit = total_income - total_cogs
+        net_operating_income = gross_profit - total_expenses
+        net_income = net_operating_income + total_other
+
+        # Append totals to DataFrame
+        totals = {
+            'Category': ['Total Income', 'Total COGS', 'Gross Profit', 'Total Expenses', 'Net Operating Income', 'Total Other Income/Expenses', 'Net Income'],
+            'Subcategory': ['', '', '', '', '', '', ''],
+            'Amount': [total_income, total_cogs, gross_profit, total_expenses, net_operating_income, total_other, net_income]
         }
+        totals_df = pd.DataFrame(totals)
 
-        # Convert to DataFrame for easier manipulation
-        future_df = pd.DataFrame(future_data)
+        # Combine DataFrames
+        final_df = pd.concat([df, totals_df], ignore_index=True)
 
-        # Combine the past and future data
-        all_data = pd.concat([monthly_deal_amounts[['year_month', 'amount']], future_df], ignore_index=True)
+        # Streamlit App
+        st.title('Profit and Loss Report Visualization')
 
-        # Create color scale
-        colors = px.colors.sequential.Blues_r
+        # Pie Chart for Income and Expenses Distribution
+        st.header('Income and Expenses Distribution')
+        distribution_data = pd.DataFrame({
+            'Category': ['Income', 'Cost of Goods Sold', 'Expenses', 'Other Income/Expenses'],
+            'Amount': [total_income, total_cogs, total_expenses, total_other]
+        })
+        fig1 = px.pie(distribution_data, values='Amount', names='Category', title='Income and Expenses Distribution')
+        st.plotly_chart(fig1)
 
-        # Generate gradient color values
-        n_colors = len(all_data)
-        gradient_colors = [colors[int(i * (len(colors) - 1) / (n_colors - 1))] for i in range(n_colors)]
+        # Bar Chart for Detailed Income and Expense Categories
+        st.header('Detailed Income and Expense Categories')
+        fig2 = go.Figure()
+        fig2.add_trace(go.Bar(x=income_data['Subcategory'], y=income_data['Amount'], name='Income'))
+        fig2.add_trace(go.Bar(x=expenses_data['Subcategory'], y=expenses_data['Amount'], name='Expenses'))
+        fig2.update_layout(barmode='group', title='Detailed Income and Expense Categories', xaxis_title='Category', yaxis_title='Amount (USD)')
+        st.plotly_chart(fig2)
 
-        # Create the base bar chart with gradient color scheme
-        fig = go.Figure(data=[
-        go.Bar(
-                x=all_data['year_month'],
-                y=all_data['amount'],
-                marker=dict(color=gradient_colors),
+        # Line Chart for Monthly Income and Expenses (assuming monthly data available)
+        # Here, we assume 'Month' column exists for demonstration. Adjust accordingly if not present.
+        # st.header('Monthly Income and Expenses')
+        # monthly_data = df[df['Category'] == 'Monthly Data']  # Example placeholder
+        # fig3 = px.line(monthly_data, x='Month', y='Amount', color='Category', title='Monthly Income and Expenses')
+        # st.plotly_chart(fig3)
+
+        # Stacked Bar Chart for COGS Breakdown
+        st.header('COGS Breakdown')
+        fig4 = go.Figure()
+        for subcategory in cogs_data['Subcategory'].unique():
+            sub_data = cogs_data[cogs_data['Subcategory'] == subcategory]
+            fig4.add_trace(go.Bar(x=sub_data['Subcategory'], y=sub_data['Amount'], name=subcategory))
+        fig4.update_layout(barmode='stack', title='COGS Breakdown', xaxis_title='Subcategory', yaxis_title='Amount (USD)')
+        st.plotly_chart(fig4)
+
+        # Summary Metrics for Key Financial Indicators
+        st.header('Key Financial Indicators')
+        st.metric(label="Total Income", value=f"${total_income:,.2f}")
+        st.metric(label="Total COGS", value=f"${total_cogs:,.2f}")
+        st.metric(label="Gross Profit", value=f"${gross_profit:,.2f}")
+        st.metric(label="Total Expenses", value=f"${total_expenses:,.2f}")
+        st.metric(label="Net Operating Income", value=f"${net_operating_income:,.2f}")
+        st.metric(label="Net Income", value=f"${net_income:,.2f}")
+
+    if selected == "RocketMoney":
+        rm = pd.read_csv('rocketmoney.csv')
+        df = rm.copy()
+        print(df.columns)
+        # Convert 'Date' column to datetime format
+        df['Date'] = pd.to_datetime(df['Date'], format='%m/%d/%y')
+
+        # Summarize the spending by date
+        daily_spending = df.groupby('Date')['Amount'].sum().reset_index()
+
+        # Create a bar chart using Plotly
+        fig = px.bar(daily_spending, x='Date', y='Amount', title='Daily Spendings')
+        st.plotly_chart(fig)
+        
+        # Prepare data for Prophet
+        # --- Forecasting with Prophet ---
+        daily_spending = daily_spending.rename(columns={'Date': 'ds', 'Amount': 'y'})
+
+        # Initialize and fit the Prophet model
+        model = Prophet()
+        model.fit(daily_spending)
+
+        # Create a DataFrame for future dates
+        future = model.make_future_dataframe(periods=30)  # Forecasting for 30 days into the future
+
+        # Forecast
+        forecast = model.predict(future)
+
+        # Extract forecasted values
+        forecasted_values = forecast[['ds', 'yhat']].tail(30)
+
+        # Add forecasted values to the plot as faded bars
+        forecasted_fig = go.Bar(
+            x=forecasted_values['ds'],
+            y=forecasted_values['yhat'],
+            name='Forecasted Spendings',
+            marker_color='rgba(255, 0, 0, 0.3)'
         )
-        ])
 
-        # Customize the chart
-        fig.update_layout(
-        title='Closed Won Deals Amounts Per Month with Trendline',
-        xaxis_title='Month',
-        yaxis_title='Amount',
-        legend=dict(
-                yanchor="top", y=0.95, xanchor="right", x=0.01,
-                bordercolor="#444", borderwidth=1,
-                bgcolor="white", font=dict(size=12)
-        ),
-        autosize=False,
-        width=800,
-        height=450,
-        margin=dict(l=50, r=50, b=50, t=50, pad=4),
-        paper_bgcolor="black",
-        plot_bgcolor="black",
-        font=dict(color="white"),
-        bargap=0.15,  # gap between bars of adjacent bars
-        bargroupgap=0.1  # gap between bars of the same group
-        )
-
-        # Add the trendline and forecast to the figure
-        fig.add_trace(go.Scatter(
-        x=all_data['year_month'], y=all_data['amount'], 
-        mode='lines', name='Trendline & Forecast', line=dict(color='gray', dash='dashdot')
-        ))
+        fig.add_trace(forecasted_fig)
 
         # Display the chart in Streamlit
         st.plotly_chart(fig)
+
+        # Summarize the spending by category
+        category_spending = df.groupby('Category')['Amount'].sum().reset_index()
+        fig = px.pie(category_spending, values='Amount', names='Category', title='Spending by Category')
+        st.plotly_chart(fig)
+
+        # high spendings
+        high_spendings = df.nlargest(15, 'Amount')
+        fig = px.bar(high_spendings, x='Description', y='Amount', title='Top 10 High Spendings Transactions')
+        st.plotly_chart(fig)
+
+        # category spending
+        category_time_spending = df.groupby(['Date', 'Category'])['Amount'].sum().unstack().fillna(0)
+        fig = px.area(category_time_spending, x=category_time_spending.index, y=category_time_spending.columns, title='Category-wise Spendings Over Time')
+        st.plotly_chart(fig)
+
+        categories = df['Category'].unique()
+        account_types = df['Account Type'].unique()
+
+        # Convert 'Date' column to datetime format
+        df['Date'] = pd.to_datetime(df['Date'], format='%m/%d/%y')
+
+        st.title('Interact-ive Spendings Breakdown Dashboard')
+
+        # Dropdown for Category
+        categories = df['Category'].unique()
+        selected_category = st.selectbox('Select Category', categories)
+
+        # Dropdown for Account Type
+        account_types = df['Account Type'].unique()
+        selected_account_type = st.selectbox('Select Account Type', account_types)
+
+        # Date range slider
+        date_range = st.slider(
+            'Select Date Range',
+            min_value=df['Date'].min().to_pydatetime(),
+            max_value=df['Date'].max().to_pydatetime(),
+            value=(df['Date'].min().to_pydatetime(), df['Date'].max().to_pydatetime())
+        )
+
+        # Filter the DataFrame based on selections
+        filtered_df = df[
+            (df['Category'] == selected_category) & 
+            (df['Account Type'] == selected_account_type) & 
+            (df['Date'] >= date_range[0]) & 
+            (df['Date'] <= date_range[1])
+        ]
+
+        # Create a bar chart using Plotly
+        fig = px.bar(filtered_df, x='Date', y='Amount', title='Spendings Breakdown')
+
+        # Display the chart in Streamlit
+        st.plotly_chart(fig)
+
+    if selected == "Balance Sheet":
+        st.subheader(f"**You Have selected {selected}**")
+        balance = pd.read_csv('balance_sheet.csv')
+        # st.write(balance)
+        df = balance.copy()
+            # Streamlit app
+        df['Section'] = df['Section'].fillna('')
+
+        st.title('Balance Sheet Dashboard')
+
+        # Total Assets, Liabilities, and Equity
+        total_assets = df[df['Account'] == 'Total ASSETS']['Amount'].values[0]
+        total_liabilities = df[df['Account'] == 'Total Liabilities']['Amount'].values[0]
+        total_equity = df[df['Account'] == 'Total Equity']['Amount'].values[0]
+
+        # Displaying the key financial indicators
+        st.header("Key Financial Indicators")
+        st.metric("Total Assets", f"${total_assets:,.2f}")
+        st.metric("Total Liabilities", f"${total_liabilities:,.2f}")
+        st.metric("Total Equity", f"${total_equity:,.2f}")
+
+
+            # Plotting Assets Breakdown
+        st.header("Assets Breakdown")
+        assets_df = df[df['Section'].str.contains("Asset")]
+        fig_assets = px.pie(assets_df, names='Account', values='Amount', title='Assets Distribution')
+        st.plotly_chart(fig_assets)
+
+        # Plotting Liabilities Breakdown
+        st.header("Liabilities Breakdown")
+        liabilities_df = df[df['Section'].str.contains("Liabilities")]
+        fig_liabilities = px.pie(liabilities_df, names='Account', values='Amount', title='Liabilities Distribution')
+        st.plotly_chart(fig_liabilities)
+
+
+
+    if selected == "Cash Flow":
+        cash_flow = pd.read_csv('cashflow.csv')
+        st.write(cash_flow)
+        df = cash_flow.copy()
+
+            # Check if DataFrame is empty
+        if df.empty:
+            st.error("The DataFrame is empty. Unable to proceed with analysis.")
+        else:
+            # Proceed with data analysis
+            # Example: Display summary statistics by section
+            if 'Section' in df.columns:
+                section_totals = df.groupby('Section')['Amount'].sum().reset_index()
+                st.subheader('Summary Statistics by Section')
+                st.bar_chart(section_totals.set_index('Section'))
+            else:
+                st.error("Column 'Section' not found in the CSV file.")
+            # Calculate and display summary statistics
+        
+
+        
+    if selected == "Home1":
+        # Sample data
+        total_sales = 12345678.90
+        total_profit = 2345678.90
+        total_orders = 45678
+        sales_per_change = "10%"
+        profit_per_change = "15%"
+        order_count_per_change = "20%"
+
+        # Additional details
+        account_receivable_details = """
+        **Account Receivable:**
+        - 100K - current
+        - 75K - 30 days overdue
+        - 15K - 60 days overdue
+        """
+        account_payable_details = """
+        **Account Payable:**
+        - Payroll: some number
+        - Bill.com: some number
+        - Expensify: some number
+        """
+        pending_deals_details = """
+        **Pending Deals:**
+        - Some number - Proposals/Negotiation
+        - Some number - Inbound/Discovery Call
+        """
+        rocketmoney_details = """
+        **RocketMoney:**
+        - Some number - Subscriptions
+        - Some number - Spending Categories
+        """
+
+        # CSS for card-like border
+        card_css = """
+        <style>
+        .card {
+            padding: 15px;
+            margin: 10px;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: white;
+        }
+        </style>
+        """
+
+        # Inject CSS
+        st.markdown(card_css, unsafe_allow_html=True)
+
+        # Layout with cards
+        col1, col2 = st.columns(2)
+
+        with col1:
+            st.markdown('<div class="card">', unsafe_allow_html=True)
+            st.metric(label="Account Receivable", value="$" + millify(total_sales, precision=2), delta=sales_per_change)
+            st.write(account_receivable_details)
+            st.markdown('</div>', unsafe_allow_html=True)
+
+        with col2:
+            st.markdown('<div class="card">', unsafe_allow_html=True)
+            st.metric(label="Account Payable", value="$" + millify(total_profit, precision=2), delta=profit_per_change)
+            st.write(account_payable_details)
+            st.markdown('</div>', unsafe_allow_html=True)
+
+        col3, col4 = st.columns(2)
+
+        with col3:
+            st.markdown('<div class="card">', unsafe_allow_html=True)
+            st.metric(label="Pending Deals", value=total_orders, delta=order_count_per_change)
+            st.write(pending_deals_details)
+            st.markdown('</div>', unsafe_allow_html=True)
+
+        with col4:
+            st.markdown('<div class="card">', unsafe_allow_html=True)
+            st.metric(label="RocketMoney", value="N/A", delta="N/A")
+            st.write(rocketmoney_details)
+            st.markdown('</div>', unsafe_allow_html=True)
+
+    # extras-------------------------------------------------------------------------------------------------------------------
+        c1, c2= st.columns(2)
+        c3 = st.empty()  # Create an empty container
+        c4 = st.empty()
+
+        with st.container():
+            c1.write("YTD Sales")
+            c2.write("YoY Sales")
+
+        with st.container():
+            c3.write("c5")
+            c4.write("c6")
+        with c2:
+            df_closed_deals = df[df['dealstage'] == 'closedwon']
+
+            df_closed_deals['closedate'] = pd.to_datetime(df_closed_deals['closedate'])
+
+            # Extract year and month from 'closedate' and convert to string
+            df_closed_deals['year_month'] = df_closed_deals['closedate'].dt.to_period('M').astype(str)
+            monthly_deal_amounts = df_closed_deals.groupby('year_month')['amount'].sum().reset_index()
+
+                    # Separate and Filter Data by Year
+            df_2023 = monthly_deal_amounts[monthly_deal_amounts['year_month'].str.startswith('2023')]
+            df_2024 = monthly_deal_amounts[monthly_deal_amounts['year_month'].str.startswith('2024')]
+
+            # Combine data while adding a "Year" column to differentiate
+            df_combined = pd.concat([
+                df_2023.assign(Year='2023'),
+                df_2024.assign(Year='2024')
+            ])
+
+            # Create Plotly figure
+            fig = go.Figure()
+
+            # Add traces for each year with distinct colors
+            fig.add_trace(go.Bar(
+                x=df_combined[df_combined['Year'] == '2023']['year_month'],
+                y=df_combined[df_combined['Year'] == '2023']['amount'],
+                name='2023',
+                marker_color='skyblue'
+            ))
+
+            fig.add_trace(go.Bar(
+                x=df_combined[df_combined['Year'] == '2024']['year_month'],
+                y=df_combined[df_combined['Year'] == '2024']['amount'],
+                name='2024',
+                marker_color='lightcoral'
+            ))
+
+            # Customize the chart layout
+            fig.update_layout(
+                title='Closed Won Deals Amounts Per Month (2023 vs. 2024)',
+                xaxis_title='Month',
+                yaxis_title='Amount',
+                barmode='group', # Ensure bars are grouped side-by-side
+                paper_bgcolor="black",
+                plot_bgcolor="black",
+                font=dict(color="white"),
+                legend=dict(bgcolor='rgba(0,0,0,0)')  # Make the legend background transparent to blend with the plot
+            )
+
+
+            # Display the chart in Streamlit
+            st.plotly_chart(fig)
+        with c1:
+
+            df_closed_deals = df[df['dealstage'] == 'closedwon']
+
+            df_closed_deals['closedate'] = pd.to_datetime(df_closed_deals['closedate'])
+
+            # Extract year and month from 'closedate' and convert to string
+            df_closed_deals['year_month'] = df_closed_deals['closedate'].dt.to_period('M').astype(str)
+            monthly_deal_amounts = df_closed_deals.groupby('year_month')['amount'].sum().reset_index()
+
+            # Prepare data for linear regression
+            monthly_deal_amounts['date_num'] = pd.to_datetime(monthly_deal_amounts['year_month']).map(pd.Timestamp.toordinal)
+            X = monthly_deal_amounts[['date_num']]
+            y = monthly_deal_amounts['amount']
+
+            # Train the linear regression model
+            model = LinearRegression()
+            model.fit(X, y)
+
+            # Create future months
+            last_date = pd.to_datetime(monthly_deal_amounts['year_month'].iloc[-1])
+            future_months = pd.date_range(start=last_date + pd.DateOffset(months=1), periods=6, freq='M')
+            future_months_str = future_months.to_period('M').astype(str)
+            future_dates_num = future_months.map(pd.Timestamp.toordinal).values.reshape(-1, 1)
+
+            # Predict future values using the trained model
+            future_amounts = model.predict(future_dates_num)
+
+            # Manually construct the data for future months
+            future_data = {
+            'year_month': future_months_str,
+            'amount': future_amounts
+            }
+
+            # Convert to DataFrame for easier manipulation
+            future_df = pd.DataFrame(future_data)
+
+            # Combine the past and future data
+            all_data = pd.concat([monthly_deal_amounts[['year_month', 'amount']], future_df], ignore_index=True)
+
+            # Create color scale
+            colors = px.colors.sequential.Blues_r
+
+            # Generate gradient color values
+            n_colors = len(all_data)
+            gradient_colors = [colors[int(i * (len(colors) - 1) / (n_colors - 1))] for i in range(n_colors)]
+
+            # Create the base bar chart with gradient color scheme
+            fig = go.Figure(data=[
+            go.Bar(
+                    x=all_data['year_month'],
+                    y=all_data['amount'],
+                    marker=dict(color=gradient_colors),
+            )
+            ])
+
+            # Customize the chart
+            fig.update_layout(
+            title='Closed Won Deals Amounts Per Month with Trendline',
+            xaxis_title='Month',
+            yaxis_title='Amount',
+            legend=dict(
+                    yanchor="top", y=0.95, xanchor="right", x=0.01,
+                    bordercolor="#444", borderwidth=1,
+                    bgcolor="white", font=dict(size=12)
+            ),
+            autosize=False,
+            width=800,
+            height=450,
+            margin=dict(l=50, r=50, b=50, t=50, pad=4),
+            paper_bgcolor="black",
+            plot_bgcolor="black",
+            font=dict(color="white"),
+            bargap=0.15,  # gap between bars of adjacent bars
+            bargroupgap=0.1  # gap between bars of the same group
+            )
+
+            # Add the trendline and forecast to the figure
+            fig.add_trace(go.Scatter(
+            x=all_data['year_month'], y=all_data['amount'], 
+            mode='lines', name='Trendline & Forecast', line=dict(color='gray', dash='dashdot')
+            ))
+
+            # Display the chart in Streamlit
+            st.plotly_chart(fig)
+        with c3:
+            rm = pd.read_csv('rocketmoney.csv')
+            df = rm.copy()
+            print(df.columns)
+            # Convert 'Date' column to datetime format
+            df['Date'] = pd.to_datetime(df['Date'], format='%m/%d/%y')
+
+            # Summarize the spending by date
+            daily_spending = df.groupby('Date')['Amount'].sum().reset_index()
+
+            # Create a bar chart using Plotly
+            fig = px.bar(daily_spending, x='Date', y='Amount', title='YTD Rockey Money')
+            st.plotly_chart(fig)
+    # ---------------------------------------------------------------------------------------------------------------------------
+    if selected == "Home2":
+
+        # Define CSS styles once for all cards
+        st.markdown(
+            """
+            <style>
+            .card {
+                border: 1px solid #e0e0e0;
+                border-radius: 8px;
+                padding: 20px;
+                margin-bottom: 15px;
+                box-shadow: 2px 2px 5px #ddd;
+                max-height: 400px;
+                overflow-y: auto;
+                text-align: center; /* Center align all text within the card */
+
+            }
+            .title {
+                font-size: 20px;
+                margin-bottom: 10px;
+            }
+            .item {
+                margin-bottom: 5px;
+            }
+            </style>
+            """,
+            unsafe_allow_html=True,
+        )
+
+        # Define data for each card
+        card_data = [
+            {
+                "title": "Account Receivable",
+                "items": {"Invoice 1": "1500", "Invoice 2": "850", "Invoice 3": "2200"},
+            },
+            {
+                "title": "Account Payable",
+                "items": {"Bill 1": "550", "Bill 2": "1200", "Bill 3": "380"},
+            },
+            {
+                "title": "Pending Deals",
+                "items": {
+                    "Deal A": "Potential Value: $10,000",
+                    "Deal B": "Potential Value: $5,500",
+                    "Deal C": "Potential Value: $18,250",
+                },
+            },
+            {
+                "title": "RocketMoney",
+                "items": {
+                    "Savings Goal": "$500/month",
+                    "Subscriptions": "Netflix, Spotify, Gym",
+                    "Spending Categories": "Food, Rent, Entertainment",
+                },
+            },
+        ]
+
+            
+        # Create two rows of columns
+        col1, col2 = st.columns(2)
+        col3, col4 = st.columns(2)
+
+            # --- Card Rendering Functions ---
+        with col1:
+                # # Card 1 content (using the card_data[1])
+                # card_content = f"""
+                # <div class="card">
+                #     <h2 class="title">{card_data[0]['title']}</h2>
+                    
+                #     {"100"}
+
+                #     {"100"}
+                # </div>
+                # """
+                # st.markdown(card_content, unsafe_allow_html=True)
+            st.markdown(
+                    """
+                    <div class="card">
+                        <h2 class="title">Account Receivable</h2>
+                        <h3 class="title">100,000</h3>
+                        <p class="item">Current: 1500</p>
+                        <p class="item">30 Days Overdue: 850</p>
+                        <p class="item">60 Days Overdue: 2200</p>
+                    </div>
+                    """,
+                    unsafe_allow_html=True,
+                )
+
+        with col2:
+            # Card 2 content (using the card_data[1])
+            st.markdown(
+                    """
+                    <div class="card">
+                        <h2 class="title">Account Payable</h2>
+                        <h3 class="title">100,000</h3>
+                        <p class="item">Payroll: 1500</p>
+                        <p class="item">Bill.com: 850</p>
+                        <p class="item">Expensify: 2200</p>
+                    </div>
+                    """,
+                    unsafe_allow_html=True,
+                )
+
+        with col3:
+            st.markdown(
+                    """
+                    <div class="card">
+                        <h2 class="title">Pending Deals</h2>
+                        <h3 class="title">100,000</h3>
+                        <p class="item">Proposals/Negotiation: 1500</p>
+                        <p class="item">Inbound/Discovery Call: 850</p>
+                        <p class="item">Invoice 3: 2200</p>
+                    </div>
+                    """,
+                    unsafe_allow_html=True,
+                )
+
+        with col4:
+            st.markdown(
+                    """
+                    <div class="card">
+                        <h2 class="title">Rocket Money</h2>
+                        <h3 class="title">100,000</h3>
+                        <p class="item">Subscriptions: 1500</p>
+                        <p class="item">Spending Categories: 850</p>
+                        <p class="item">Invoice 3: 2200</p>
+                    </div>
+                    """,
+                    unsafe_allow_html=True,
+                )
+        c1, c2= st.columns(2)
+        c3 = st.empty()  # Create an empty container
+        c4 = st.empty()
+
+        with st.container():
+            c1.write("YTD Sales")
+            c2.write("YoY Sales")
+
+        with st.container():
+            c3.write("c5")
+            c4.write("c6")
+        with c2:
+            df_closed_deals = df[df['dealstage'] == 'closedwon']
+
+            df_closed_deals['closedate'] = pd.to_datetime(df_closed_deals['closedate'])
+
+            # Extract year and month from 'closedate' and convert to string
+            df_closed_deals['year_month'] = df_closed_deals['closedate'].dt.to_period('M').astype(str)
+            monthly_deal_amounts = df_closed_deals.groupby('year_month')['amount'].sum().reset_index()
+
+                    # Separate and Filter Data by Year
+            df_2023 = monthly_deal_amounts[monthly_deal_amounts['year_month'].str.startswith('2023')]
+            df_2024 = monthly_deal_amounts[monthly_deal_amounts['year_month'].str.startswith('2024')]
+
+            # Combine data while adding a "Year" column to differentiate
+            df_combined = pd.concat([
+                df_2023.assign(Year='2023'),
+                df_2024.assign(Year='2024')
+            ])
+
+            # Create Plotly figure
+            fig = go.Figure()
+
+            # Add traces for each year with distinct colors
+            fig.add_trace(go.Bar(
+                x=df_combined[df_combined['Year'] == '2023']['year_month'],
+                y=df_combined[df_combined['Year'] == '2023']['amount'],
+                name='2023',
+                marker_color='skyblue'
+            ))
+
+            fig.add_trace(go.Bar(
+                x=df_combined[df_combined['Year'] == '2024']['year_month'],
+                y=df_combined[df_combined['Year'] == '2024']['amount'],
+                name='2024',
+                marker_color='lightcoral'
+            ))
+
+            # Customize the chart layout
+            fig.update_layout(
+                title='Closed Won Deals Amounts Per Month (2023 vs. 2024)',
+                xaxis_title='Month',
+                yaxis_title='Amount',
+                barmode='group', # Ensure bars are grouped side-by-side
+                paper_bgcolor="black",
+                plot_bgcolor="black",
+                font=dict(color="white"),
+                legend=dict(bgcolor='rgba(0,0,0,0)')  # Make the legend background transparent to blend with the plot
+            )
+
+
+            # Display the chart in Streamlit
+            st.plotly_chart(fig)
+        with c1:
+
+            df_closed_deals = df[df['dealstage'] == 'closedwon']
+
+            df_closed_deals['closedate'] = pd.to_datetime(df_closed_deals['closedate'])
+
+            # Extract year and month from 'closedate' and convert to string
+            df_closed_deals['year_month'] = df_closed_deals['closedate'].dt.to_period('M').astype(str)
+            monthly_deal_amounts = df_closed_deals.groupby('year_month')['amount'].sum().reset_index()
+
+            # Prepare data for linear regression
+            monthly_deal_amounts['date_num'] = pd.to_datetime(monthly_deal_amounts['year_month']).map(pd.Timestamp.toordinal)
+            X = monthly_deal_amounts[['date_num']]
+            y = monthly_deal_amounts['amount']
+
+            # Train the linear regression model
+            model = LinearRegression()
+            model.fit(X, y)
+
+            # Create future months
+            last_date = pd.to_datetime(monthly_deal_amounts['year_month'].iloc[-1])
+            future_months = pd.date_range(start=last_date + pd.DateOffset(months=1), periods=6, freq='M')
+            future_months_str = future_months.to_period('M').astype(str)
+            future_dates_num = future_months.map(pd.Timestamp.toordinal).values.reshape(-1, 1)
+
+            # Predict future values using the trained model
+            future_amounts = model.predict(future_dates_num)
+
+            # Manually construct the data for future months
+            future_data = {
+            'year_month': future_months_str,
+            'amount': future_amounts
+            }
+
+            # Convert to DataFrame for easier manipulation
+            future_df = pd.DataFrame(future_data)
+
+            # Combine the past and future data
+            all_data = pd.concat([monthly_deal_amounts[['year_month', 'amount']], future_df], ignore_index=True)
+
+            # Create color scale
+            colors = px.colors.sequential.Blues_r
+
+            # Generate gradient color values
+            n_colors = len(all_data)
+            gradient_colors = [colors[int(i * (len(colors) - 1) / (n_colors - 1))] for i in range(n_colors)]
+
+            # Create the base bar chart with gradient color scheme
+            fig = go.Figure(data=[
+            go.Bar(
+                    x=all_data['year_month'],
+                    y=all_data['amount'],
+                    marker=dict(color=gradient_colors),
+            )
+            ])
+
+            # Customize the chart
+            fig.update_layout(
+            title='Closed Won Deals Amounts Per Month with Trendline',
+            xaxis_title='Month',
+            yaxis_title='Amount',
+            legend=dict(
+                    yanchor="top", y=0.95, xanchor="right", x=0.01,
+                    bordercolor="#444", borderwidth=1,
+                    bgcolor="white", font=dict(size=12)
+            ),
+            autosize=False,
+            width=800,
+            height=450,
+            margin=dict(l=50, r=50, b=50, t=50, pad=4),
+            paper_bgcolor="black",
+            plot_bgcolor="black",
+            font=dict(color="white"),
+            bargap=0.15,  # gap between bars of adjacent bars
+            bargroupgap=0.1  # gap between bars of the same group
+            )
+
+            # Add the trendline and forecast to the figure
+            fig.add_trace(go.Scatter(
+            x=all_data['year_month'], y=all_data['amount'], 
+            mode='lines', name='Trendline & Forecast', line=dict(color='gray', dash='dashdot')
+            ))
+
+            # Display the chart in Streamlit
+            st.plotly_chart(fig)
+        with c3:
+            rm = pd.read_csv('rocketmoney.csv')
+            df = rm.copy()
+            print(df.columns)
+            # Convert 'Date' column to datetime format
+            df['Date'] = pd.to_datetime(df['Date'], format='%m/%d/%y')
+
+            # Summarize the spending by date
+            daily_spending = df.groupby('Date')['Amount'].sum().reset_index()
+
+            # Create a bar chart using Plotly
+            fig = px.bar(daily_spending, x='Date', y='Amount', title='YTD Rockey Money')
+            st.plotly_chart(fig)
