@@ -16,7 +16,7 @@ from sklearn.linear_model import LinearRegression
 
 import plotly.graph_objects as go
 
-
+import config
 # Define a custom color palette
 color_palette = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf']
 
@@ -26,8 +26,8 @@ from datetime import datetime, timedelta
 # Define a function to check login credentials
 def check_login(username, password):
     # Define the correct credentials
-    correct_username = 'christie'
-    correct_password = 'christie@interact'
+    correct_username = config.USERNAME
+    correct_password = config.PASSWORD
     return username == correct_username and password == correct_password
 
 # Initialize session state if not already done
