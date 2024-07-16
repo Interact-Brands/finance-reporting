@@ -3,7 +3,7 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 from millify import millify
-
+import datetime
 import numpy as np
 import streamlit_option_menu
 from streamlit_option_menu import option_menu
@@ -16,12 +16,16 @@ from sklearn.linear_model import LinearRegression
 
 import plotly.graph_objects as go
 
+from rocketmoney import rockeymoney_total_current_month_amount, rocket_money_percentage_change
+from account_payable import ap_payroll_sum, ap_expensify_sum, ap_billcom_sum
+
 import config
 # Define a custom color palette
 color_palette = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf']
 
 from datetime import datetime, timedelta
  
+# Login ------------------------------------------------------------------------------------------------------------------------------ 
 
 # Define a function to check login credentials
 def check_login(username, password):
@@ -57,8 +61,7 @@ if not st.session_state.logged_in:
 if st.session_state.logged_in:
     st.set_page_config(page_title='Finances', layout='wide', page_icon=':rocket:')
 
-# 
-# st.set_page_config(page_title='Finances',  layout='wide', page_icon=':rocket:')
+# Login ------------------------------------------------------------------------------------------------------------------------------ 
 
     t1, t2 = st.columns((0.2,1)) 
 
@@ -70,11 +73,107 @@ if st.session_state.logged_in:
     # df = fetch_and_process_data(initial_url)
 
     df = pd.read_csv('deals.csv')
-
-
     closed_deals = transform_closed_deals(df)
 
     df = closed_deals
+# Calculation of dashboard numbers-----------------------------------------------------------------------------------------------
+    ###### Hubspot Deals
+    deal_stage_mapping = {
+        'Proposals/Negotiation': ['decisionmakerboughtin', 'qualifiedtobuy'],
+        'Inbound/Discovery Call': ['appointmentscheduled'],
+        'Closed Lost': ['closedlost']
+    }
+
+    # Initialize sums for each category
+    proposals_negotiation_sum = 0
+    inbound_discovery_call_sum = 0
+    closed_lost_sum = 0
+
+    # Calculate the sums for each category
+    proposals_negotiation_sum = closed_deals[closed_deals['dealstage'].isin(deal_stage_mapping['Proposals/Negotiation'])]['amount'].sum()
+    inbound_discovery_call_sum = closed_deals[closed_deals['dealstage'].isin(deal_stage_mapping['Inbound/Discovery Call'])]['amount'].sum()
+    closed_lost_sum = closed_deals[closed_deals['dealstage'].isin(deal_stage_mapping['Closed Lost'])]['amount'].sum()
+
+    # Calculate the number of deals for each stage
+    proposals_negotiation_count = closed_deals[closed_deals['dealstage'].isin(deal_stage_mapping['Proposals/Negotiation'])].shape[0]
+    inbound_discovery_call_count = closed_deals[closed_deals['dealstage'].isin(deal_stage_mapping['Inbound/Discovery Call'])].shape[0]
+
+    # Total number of pending deals
+    total_pending_deals_count = proposals_negotiation_count + inbound_discovery_call_count
+
+    # Get the current month and the previous month
+    current_month = closed_deals['hs_lastmodifieddate'].dt.to_period('M').max()
+    previous_month = current_month - 1
+
+    # Filter deals by current month and previous month
+    current_month_deals = closed_deals[(closed_deals['hs_lastmodifieddate'].dt.to_period('M') == current_month) &
+                                    (closed_deals['dealstage'].isin(deal_stage_mapping['Proposals/Negotiation'] + deal_stage_mapping['Inbound/Discovery Call']))]
+    previous_month_deals = closed_deals[(closed_deals['hs_lastmodifieddate'].dt.to_period('M') == previous_month) &
+                                        (closed_deals['dealstage'].isin(deal_stage_mapping['Proposals/Negotiation'] + deal_stage_mapping['Inbound/Discovery Call']))]
+
+    # Count the number of pending deals for each month
+    current_month_pending_deal_count = current_month_deals['hs_object_id'].count()
+    previous_month_pending_deal_count = previous_month_deals['hs_object_id'].count()
+
+    # Calculate the percentage change in pending deal count
+    if previous_month_pending_deal_count != 0:
+        percentage_change = ((current_month_pending_deal_count - previous_month_pending_deal_count) / previous_month_pending_deal_count) * 100
+    else:
+        percentage_change = float('inf')  # Handle division by zero case
+    ###### Hubspot Deals
+
+    ###### RocketMoney
+    # Read the CSV data into a DataFrame
+    data = pd.read_csv('rocketmoney.csv')
+
+    # Group by 'Institution Name' and 'Amount' and count the number of transactions per group
+    grouped = data.groupby(['Name', 'Amount']).size().reset_index(name='counts')
+
+    # # Filter for groups with more than one transaction (potential subscriptions)
+    subscriptions = grouped[grouped['counts'] > 2]
+
+    # Calculate the total amount of these subscriptions
+    total_subscription_amount = subscriptions['Amount'].sum()
+
+    # Most Spending Category
+        # Convert 'Date' column to datetime
+    data['Date'] = pd.to_datetime(data['Date'], format='%m/%d/%y')
+
+    # Get the last month
+    current_date = datetime.now()
+    if current_date.month == 1:
+        last_month = 12
+        last_year = current_date.year - 1
+    else:
+        last_month = current_date.month - 1
+        last_year = current_date.year
+
+    # Filter transactions to only include those from the last month
+    last_month_data = data[
+        (data['Date'].dt.month == last_month) & 
+        (data['Date'].dt.year == last_year)
+    ]
+
+    # Group by 'Category' and sum the 'Amount' for the last month
+    category_spending_last_month = last_month_data.groupby('Category')['Amount'].sum().reset_index()
+
+    # Identify the category with the highest total spending for the last month
+    if not category_spending_last_month.empty:
+        most_spent_category_last_month = category_spending_last_month.loc[category_spending_last_month['Amount'].idxmax()]
+
+
+        # Print the most spent category and its summed amount for the last month
+        most_spent_category_name_last_month = most_spent_category_last_month['Category']
+        most_spent_category_amount_last_month = most_spent_category_last_month['Amount']
+        print(f"Most Spent Category Last Month: {most_spent_category_name_last_month}")
+        print(f"Total Amount Spent Last Month: ${most_spent_category_amount_last_month:.2f}")
+    else:
+        print("No transactions found for the last month.")
+
+    ###### RocketMoney
+
+
+# Calculation of dashboard numbers-----------------------------------------------------------------------------------------------
 
     with st.sidebar:
         selected = option_menu(
@@ -478,9 +577,7 @@ if st.session_state.logged_in:
                 <p><strong>Account Number:</strong> {account['AcctNum']}</p>
             </div>
             """, unsafe_allow_html=True)
-
-        
-
+       
     if selected == "Profit and Loss":
         
 
@@ -693,8 +790,6 @@ if st.session_state.logged_in:
         fig_liabilities = px.pie(liabilities_df, names='Account', values='Amount', title='Liabilities Distribution')
         st.plotly_chart(fig_liabilities)
 
-
-
     if selected == "Cash Flow":
         cash_flow = pd.read_csv('cashflow.csv')
         st.write(cash_flow)
@@ -713,42 +808,42 @@ if st.session_state.logged_in:
             else:
                 st.error("Column 'Section' not found in the CSV file.")
             # Calculate and display summary statistics
-        
-
-        
+                
     if selected == "Home1":
         # Sample data
-        total_sales = 12345678.90
-        total_profit = 2345678.90
-        total_orders = 45678
+        account_receivable = 919014.55
+        account_payable = -218267.82
         sales_per_change = "10%"
         profit_per_change = "15%"
-        order_count_per_change = "20%"
+        
+        bill_com_money_out_clearing = -6917.41
 
+        deal_percentage_change = f"""{percentage_change}%"""
         # Additional details
         account_receivable_details = """
         **Account Receivable:**
-        - 100K - current
-        - 75K - 30 days overdue
-        - 15K - 60 days overdue
+        - $271,918.80 - current
+        - $482,073.25 - 30 days overdue
+        - $27,693.00 - 60 days overdue
         """
-        account_payable_details = """
+        account_payable_details = f"""
         **Account Payable:**
-        - Payroll: some number
-        - Bill.com: some number
-        - Expensify: some number
+        - Payroll: ${ap_payroll_sum:,.2f}
+        - Bill.com: ${ap_billcom_sum:,.2f}
+        - Expensify: ${ap_expensify_sum:,.2f}
         """
-        pending_deals_details = """
+                # Using formatted string literals to include commas
+        pending_deals_details = f"""
         **Pending Deals:**
-        - Some number - Proposals/Negotiation
-        - Some number - Inbound/Discovery Call
-        """
-        rocketmoney_details = """
-        **RocketMoney:**
-        - Some number - Subscriptions
-        - Some number - Spending Categories
+        - $ {proposals_negotiation_sum:,} - Proposals/Negotiation
+        - $ {inbound_discovery_call_sum:,} - Inbound/Discovery Call
         """
 
+        rocketmoney_details = f"""
+        **RocketMoney:**
+        - $ {total_subscription_amount:,} - Subscriptions
+        - $ {most_spent_category_amount_last_month:,} - Most Spent Category: {most_spent_category_name_last_month}
+        """
         # CSS for card-like border
         card_css = """
         <style>
@@ -770,13 +865,15 @@ if st.session_state.logged_in:
 
         with col1:
             st.markdown('<div class="card">', unsafe_allow_html=True)
-            st.metric(label="Account Receivable", value="$" + millify(total_sales, precision=2), delta=sales_per_change)
+            delta_value = "↑"
+            st.metric(label="Account Receivable", value="$" + millify(account_receivable, precision=2), delta=delta_value)
             st.write(account_receivable_details)
             st.markdown('</div>', unsafe_allow_html=True)
 
         with col2:
             st.markdown('<div class="card">', unsafe_allow_html=True)
-            st.metric(label="Account Payable", value="$" + millify(total_profit, precision=2), delta=profit_per_change)
+            delta_value = "-↓"
+            st.metric(label="Account Payable", value="$" + millify(account_payable, precision=2), delta=delta_value)
             st.write(account_payable_details)
             st.markdown('</div>', unsafe_allow_html=True)
 
@@ -784,17 +881,17 @@ if st.session_state.logged_in:
 
         with col3:
             st.markdown('<div class="card">', unsafe_allow_html=True)
-            st.metric(label="Pending Deals", value=total_orders, delta=order_count_per_change)
+            st.metric(label="Pending Deals", value=total_pending_deals_count, delta=deal_percentage_change)
             st.write(pending_deals_details)
             st.markdown('</div>', unsafe_allow_html=True)
 
         with col4:
             st.markdown('<div class="card">', unsafe_allow_html=True)
-            st.metric(label="RocketMoney", value="N/A", delta="N/A")
+            st.metric(label="RocketMoney", value=rockeymoney_total_current_month_amount, delta=f"""{rocket_money_percentage_change}%""")
             st.write(rocketmoney_details)
             st.markdown('</div>', unsafe_allow_html=True)
 
-    # extras-------------------------------------------------------------------------------------------------------------------
+    # extra charts below-------------------------------------------------------------------------------------------------------------------
         c1, c2= st.columns(2)
         c3 = st.empty()  # Create an empty container
         c4 = st.empty()

@@ -11,7 +11,7 @@ def fetch_and_process_data(url):
     Returns:
     - pd.DataFrame: A DataFrame containing the fetched and processed data.
     """
-    access_token = 'pat-na1-61ac8528-b943-4cb7-a342-8690440d683c'
+    access_token = "KEY"
     headers = {
         'Authorization': f'Bearer {access_token}',
         'Content-Type': 'application/json',
@@ -63,6 +63,9 @@ def transform_closed_deals(df):
     # Apply the transformation to extract the date part
     closed_deals['closedate'] = closed_deals['closedate'].dt.date
 
+# Convert closedate to datetime, coercing errors to NaT
+    # Apply the transformation to extract the date part
+    closed_deals['hs_lastmodifieddate'] = pd.to_datetime(closed_deals['hs_lastmodifieddate'])
 
     # Calculate the time difference in days
     closed_deals['time_difference'] = (pd.to_datetime(closed_deals['closedate']) - 
@@ -73,22 +76,64 @@ def transform_closed_deals(df):
     # Return a subset of the DataFrame containing only the createdate, closedate, and time_difference columns
     return closed_deals
 
-# Assuming df is the DataFrame returned by the fetch_and_process_data function
-# transformed_df = transform_closed_deals(df)
-
-# To display the transformed DataFrame
-# print(transformed_df)
-
-
 # Example usage
-# initial_url = 'https://api.hubapi.com/crm/v3/objects/deals'
-# df = fetch_and_process_data(initial_url)
+initial_url = 'https://api.hubapi.com/crm/v3/objects/deals'
+df = fetch_and_process_data(initial_url)
 
-# df = pd.read_csv('deals.csv')
-# closed_deals = transform_closed_deals(df)
+closed_deals = transform_closed_deals(df)
 
-# print(closed_deals.head())
-# Display the DataFrame
-# print(closed_deals.head())
+# Save the combined dataframe back to the CSV file
+closed_deals.to_csv('deals.csv', index=False)
 
 
+print("Data has been updated successfully.")
+print(closed_deals.tail())
+
+# Ensure 'amount' column is numeric, convert non-numeric values to NaN
+closed_deals['amount'] = pd.to_numeric(closed_deals['amount'], errors='coerce')
+# Define the mapping for deal stages to categories
+deal_stage_mapping = {
+    'Proposals/Negotiation': ['decisionmakerboughtin', 'qualifiedtobuy'],
+    'Inbound/Discovery Call': ['appointmentscheduled'],
+    'Closed Lost': ['closedlost']
+}
+
+# Initialize sums for each category
+proposals_negotiation_sum = 0
+inbound_discovery_call_sum = 0
+closed_lost_sum = 0
+
+# Calculate the sums for each category
+proposals_negotiation_sum = closed_deals[closed_deals['dealstage'].isin(deal_stage_mapping['Proposals/Negotiation'])]['amount'].sum()
+inbound_discovery_call_sum = closed_deals[closed_deals['dealstage'].isin(deal_stage_mapping['Inbound/Discovery Call'])]['amount'].sum()
+closed_lost_sum = closed_deals[closed_deals['dealstage'].isin(deal_stage_mapping['Closed Lost'])]['amount'].sum()
+
+# Print the results
+print(f"Proposals/Negotiation Deals Amount Sum: {proposals_negotiation_sum}")
+print(f"Inbound/Discovery Call Deals Amount Sum: {inbound_discovery_call_sum}")
+print(f"Closed Lost Deals Amount Sum: {closed_lost_sum}")
+
+# Get the current month and the previous month
+current_month = closed_deals['hs_lastmodifieddate'].dt.to_period('M').max()
+previous_month = current_month - 1
+
+# Filter deals by current month and previous month
+current_month_deals = closed_deals[(closed_deals['hs_lastmodifieddate'].dt.to_period('M') == current_month) &
+                                   (closed_deals['dealstage'].isin(deal_stage_mapping['Proposals/Negotiation'] + deal_stage_mapping['Inbound/Discovery Call']))]
+previous_month_deals = closed_deals[(closed_deals['hs_lastmodifieddate'].dt.to_period('M') == previous_month) &
+                                    (closed_deals['dealstage'].isin(deal_stage_mapping['Proposals/Negotiation'] + deal_stage_mapping['Inbound/Discovery Call']))]
+
+# Count the number of pending deals for each month
+current_month_pending_deal_count = current_month_deals['hs_object_id'].count()
+previous_month_pending_deal_count = previous_month_deals['hs_object_id'].count()
+
+# Calculate the percentage change in pending deal count
+if previous_month_pending_deal_count != 0:
+    percentage_change = ((current_month_pending_deal_count - previous_month_pending_deal_count) / previous_month_pending_deal_count) * 100
+else:
+    percentage_change = float('inf')  # Handle division by zero case
+
+# Display the results
+print(f"Current Month Pending Deal Count: {current_month_pending_deal_count}")
+print(f"Previous Month Pending Deal Count: {previous_month_pending_deal_count}")
+print(f"Percentage Change in Pending Deals: {percentage_change:.2f}%")
