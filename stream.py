@@ -9,8 +9,6 @@ import streamlit_option_menu
 from streamlit_option_menu import option_menu
 from hubspot_request import fetch_and_process_data, transform_closed_deals
 
-from prophet import Prophet 
-from prophet.plot import plot_plotly, plot_components_plotly
 
 from sklearn.linear_model import LinearRegression
 
@@ -673,36 +671,6 @@ if st.session_state.logged_in:
         fig = px.bar(daily_spending, x='Date', y='Amount', title='Daily Spendings')
         st.plotly_chart(fig)
         
-        # Prepare data for Prophet
-        # --- Forecasting with Prophet ---
-        daily_spending = daily_spending.rename(columns={'Date': 'ds', 'Amount': 'y'})
-
-        # Initialize and fit the Prophet model
-        model = Prophet()
-        model.fit(daily_spending)
-
-        # Create a DataFrame for future dates
-        future = model.make_future_dataframe(periods=30)  # Forecasting for 30 days into the future
-
-        # Forecast
-        forecast = model.predict(future)
-
-        # Extract forecasted values
-        forecasted_values = forecast[['ds', 'yhat']].tail(30)
-
-        # Add forecasted values to the plot as faded bars
-        forecasted_fig = go.Bar(
-            x=forecasted_values['ds'],
-            y=forecasted_values['yhat'],
-            name='Forecasted Spendings',
-            marker_color='rgba(255, 0, 0, 0.3)'
-        )
-
-        fig.add_trace(forecasted_fig)
-
-        # Display the chart in Streamlit
-        st.plotly_chart(fig)
-
         # Summarize the spending by category
         category_spending = df.groupby('Category')['Amount'].sum().reset_index()
         fig = px.pie(category_spending, values='Amount', names='Category', title='Spending by Category')
