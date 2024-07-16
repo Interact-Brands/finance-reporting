@@ -77,63 +77,63 @@ def transform_closed_deals(df):
     return closed_deals
 
 # Example usage
-initial_url = 'https://api.hubapi.com/crm/v3/objects/deals'
-df = fetch_and_process_data(initial_url)
+# initial_url = 'https://api.hubapi.com/crm/v3/objects/deals'
+# df = fetch_and_process_data(initial_url)
 
-closed_deals = transform_closed_deals(df)
+# closed_deals = transform_closed_deals(df)
 
-# Save the combined dataframe back to the CSV file
-closed_deals.to_csv('deals.csv', index=False)
+# # Save the combined dataframe back to the CSV file
+# closed_deals.to_csv('deals.csv', index=False)
 
 
-print("Data has been updated successfully.")
-print(closed_deals.tail())
+# print("Data has been updated successfully.")
+# print(closed_deals.tail())
 
-# Ensure 'amount' column is numeric, convert non-numeric values to NaN
-closed_deals['amount'] = pd.to_numeric(closed_deals['amount'], errors='coerce')
-# Define the mapping for deal stages to categories
-deal_stage_mapping = {
-    'Proposals/Negotiation': ['decisionmakerboughtin', 'qualifiedtobuy'],
-    'Inbound/Discovery Call': ['appointmentscheduled'],
-    'Closed Lost': ['closedlost']
-}
+# # Ensure 'amount' column is numeric, convert non-numeric values to NaN
+# closed_deals['amount'] = pd.to_numeric(closed_deals['amount'], errors='coerce')
+# # Define the mapping for deal stages to categories
+# deal_stage_mapping = {
+#     'Proposals/Negotiation': ['decisionmakerboughtin', 'qualifiedtobuy'],
+#     'Inbound/Discovery Call': ['appointmentscheduled'],
+#     'Closed Lost': ['closedlost']
+# }
 
-# Initialize sums for each category
-proposals_negotiation_sum = 0
-inbound_discovery_call_sum = 0
-closed_lost_sum = 0
+# # Initialize sums for each category
+# proposals_negotiation_sum = 0
+# inbound_discovery_call_sum = 0
+# closed_lost_sum = 0
 
-# Calculate the sums for each category
-proposals_negotiation_sum = closed_deals[closed_deals['dealstage'].isin(deal_stage_mapping['Proposals/Negotiation'])]['amount'].sum()
-inbound_discovery_call_sum = closed_deals[closed_deals['dealstage'].isin(deal_stage_mapping['Inbound/Discovery Call'])]['amount'].sum()
-closed_lost_sum = closed_deals[closed_deals['dealstage'].isin(deal_stage_mapping['Closed Lost'])]['amount'].sum()
+# # Calculate the sums for each category
+# proposals_negotiation_sum = closed_deals[closed_deals['dealstage'].isin(deal_stage_mapping['Proposals/Negotiation'])]['amount'].sum()
+# inbound_discovery_call_sum = closed_deals[closed_deals['dealstage'].isin(deal_stage_mapping['Inbound/Discovery Call'])]['amount'].sum()
+# closed_lost_sum = closed_deals[closed_deals['dealstage'].isin(deal_stage_mapping['Closed Lost'])]['amount'].sum()
 
-# Print the results
-print(f"Proposals/Negotiation Deals Amount Sum: {proposals_negotiation_sum}")
-print(f"Inbound/Discovery Call Deals Amount Sum: {inbound_discovery_call_sum}")
-print(f"Closed Lost Deals Amount Sum: {closed_lost_sum}")
+# # Print the results
+# print(f"Proposals/Negotiation Deals Amount Sum: {proposals_negotiation_sum}")
+# print(f"Inbound/Discovery Call Deals Amount Sum: {inbound_discovery_call_sum}")
+# print(f"Closed Lost Deals Amount Sum: {closed_lost_sum}")
 
-# Get the current month and the previous month
-current_month = closed_deals['hs_lastmodifieddate'].dt.to_period('M').max()
-previous_month = current_month - 1
+# # Get the current month and the previous month
+# current_month = closed_deals['hs_lastmodifieddate'].dt.to_period('M').max()
+# previous_month = current_month - 1
 
-# Filter deals by current month and previous month
-current_month_deals = closed_deals[(closed_deals['hs_lastmodifieddate'].dt.to_period('M') == current_month) &
-                                   (closed_deals['dealstage'].isin(deal_stage_mapping['Proposals/Negotiation'] + deal_stage_mapping['Inbound/Discovery Call']))]
-previous_month_deals = closed_deals[(closed_deals['hs_lastmodifieddate'].dt.to_period('M') == previous_month) &
-                                    (closed_deals['dealstage'].isin(deal_stage_mapping['Proposals/Negotiation'] + deal_stage_mapping['Inbound/Discovery Call']))]
+# # Filter deals by current month and previous month
+# current_month_deals = closed_deals[(closed_deals['hs_lastmodifieddate'].dt.to_period('M') == current_month) &
+#                                    (closed_deals['dealstage'].isin(deal_stage_mapping['Proposals/Negotiation'] + deal_stage_mapping['Inbound/Discovery Call']))]
+# previous_month_deals = closed_deals[(closed_deals['hs_lastmodifieddate'].dt.to_period('M') == previous_month) &
+#                                     (closed_deals['dealstage'].isin(deal_stage_mapping['Proposals/Negotiation'] + deal_stage_mapping['Inbound/Discovery Call']))]
 
-# Count the number of pending deals for each month
-current_month_pending_deal_count = current_month_deals['hs_object_id'].count()
-previous_month_pending_deal_count = previous_month_deals['hs_object_id'].count()
+# # Count the number of pending deals for each month
+# current_month_pending_deal_count = current_month_deals['hs_object_id'].count()
+# previous_month_pending_deal_count = previous_month_deals['hs_object_id'].count()
 
-# Calculate the percentage change in pending deal count
-if previous_month_pending_deal_count != 0:
-    percentage_change = ((current_month_pending_deal_count - previous_month_pending_deal_count) / previous_month_pending_deal_count) * 100
-else:
-    percentage_change = float('inf')  # Handle division by zero case
+# # Calculate the percentage change in pending deal count
+# if previous_month_pending_deal_count != 0:
+#     percentage_change = ((current_month_pending_deal_count - previous_month_pending_deal_count) / previous_month_pending_deal_count) * 100
+# else:
+#     percentage_change = float('inf')  # Handle division by zero case
 
-# Display the results
-print(f"Current Month Pending Deal Count: {current_month_pending_deal_count}")
-print(f"Previous Month Pending Deal Count: {previous_month_pending_deal_count}")
-print(f"Percentage Change in Pending Deals: {percentage_change:.2f}%")
+# # Display the results
+# print(f"Current Month Pending Deal Count: {current_month_pending_deal_count}")
+# print(f"Previous Month Pending Deal Count: {previous_month_pending_deal_count}")
+# print(f"Percentage Change in Pending Deals: {percentage_change:.2f}%")
