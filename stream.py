@@ -17,20 +17,25 @@ import plotly.graph_objects as go
 from rocketmoney import rockeymoney_total_current_month_amount, rocket_money_percentage_change
 from account_payable import ap_payroll_sum, ap_expensify_sum, ap_billcom_sum
 
-import config
+from dotenv import load_dotenv
 # Define a custom color palette
 color_palette = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf']
 
 from datetime import datetime, timedelta
- 
+
+# Load environment variables from .env file
+load_dotenv()
+
+# Fetch username and password from environment variables
+USERNAME = os.getenv("STREAMLIT_USERNAME")
+PASSWORD = os.getenv("STREAMLIT_PASSWORD")
+
 # Login ------------------------------------------------------------------------------------------------------------------------------ 
 
 # Define a function to check login credentials
 def check_login(username, password):
-    # Define the correct credentials
-    correct_username = config.USERNAME
-    correct_password = config.PASSWORD
-    return username == correct_username and password == correct_password
+    # Compare with environment variables
+    return username == USERNAME and password == PASSWORD
 
 # Initialize session state if not already done
 if 'logged_in' not in st.session_state:
