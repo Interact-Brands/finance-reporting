@@ -1,65 +1,66 @@
 Category,Subcategory,Amount
-Income,41100 Existing Clients,898104.02
-Income,41200 New Clients,1155429.33
-Cost of Goods Sold,51000 COGS - Labor,231278.61
-Cost of Goods Sold,52000 COGS - Non-Labor,3116.39
+Income,41100 Existing Clients,1025403.32
+Income,41200 New Clients,1395521.31
+Cost of Goods Sold,51000 COGS - Labor,268592.63
+Cost of Goods Sold,52000 COGS - Non-Labor,3223.61
 Cost of Goods Sold,53000 COGS - Research (Products),1691.85
-Cost of Goods Sold,54000 COGS - Shipping,1464.5
-Cost of Goods Sold,56000 Reimbursed Expenses,248031.25
-Expenses,62100 Client Development,15735.41
-Expenses,62150 Meals - Client/Vendor,3835.68
-Expenses,62250 Market Research,2383.46
-Expenses,62300 Trade Shows/ Conferences,409.1
-Expenses,63100 Advertising/Promotional,12918.12
-Expenses,63200 Networking Events,12838.0
-Expenses,63400 Web Development,2252.17
-Expenses,63500 Client Gifts,860.55
+Cost of Goods Sold,54000 COGS - Shipping,1871.0
+Cost of Goods Sold,56000 Reimbursed Expenses,296631.25
+Expenses,62100 Client Development,17151.51
+Expenses,62150 Meals - Client/Vendor,4274.34
+Expenses,62250 Market Research,2503.31
+Expenses,62300 Trade Shows/ Conferences,1383.1
+Expenses,63100 Advertising/Promotional,13452.1
+Expenses,63200 Networking Events,13133.3
+Expenses,63400 Web Development,6086.59
+Expenses,63500 Client Gifts,967.72
 Expenses,63700 Marketing Consultant,800.0
-Expenses,70110 Employee Wages,1280885.35
-Expenses,70120 Bonuses,226835.0
-Expenses,70131 Health Insurance,61711.16
+Expenses,70800 Bad Debts Expense,3891.0
+Expenses,70110 Employee Wages,1391520.79
+Expenses,70120 Bonuses,257032.0
+Expenses,70131 Health Insurance,76968.92
 Expenses,70132 Shareholder Life Insurance,2720.46
-Expenses,70133 401(k) Match,49630.42
-Expenses,70140 Payroll Taxes,128514.58
-Expenses,70150 Payroll / 401K Fees,5121.55
-Expenses,70160 Workman's Comp insurance,1789.79
-Expenses,70121 Air travel,27328.24
-Expenses,70122 Lodging,45182.58
-Expenses,70123 Ground Transportation,20197.9
-Expenses,70220 Meals - employee travel,7372.05
+Expenses,70133 401(k) Match,53130.28
+Expenses,70140 Payroll Taxes,139587.0
+Expenses,70150 Payroll / 401K Fees,5474.35
+Expenses,70160 Workman's Comp insurance,2067.72
+Expenses,70121 Air travel,28381.01
+Expenses,70122 Lodging,50232.28
+Expenses,70123 Ground Transportation,25569.36
+Expenses,70220 Meals - employee travel,10636.09
 Expenses,70230 Entertainment (non-food),272.24
-Expenses,70310 Accounting/Tax,44602.49
-Expenses,70320 Legal Fees,28091.61
-Expenses,70340 IT support,9814.6
-Expenses,70350 General Consultant,36276.99
-Expenses,70410 Office Rent,24176.38
-Expenses,70420 Utilities/Trash services,8820.84
-Expenses,70430 Office Cleaning / Repairs,5569.53
-Expenses,70440 Telephone / Internet,811.3
-Expenses,70450 Office Supplies/Equipment,11689.84
-Expenses,70500 Online Software & Subscriptions,66559.46
-Expenses,70525 Office Events,1626.21
-Expenses,70530 Office Meals/ Snacks,17733.11
-Expenses,70535 Recruiting/ HR,4854.29
-Expenses,70540 Memberships/Dues,5477.35
-Expenses,70545 Employee Retention,6298.34
+Expenses,70310 Accounting/Tax,51733.72
+Expenses,70320 Legal Fees,28101.61
+Expenses,70340 IT support,11431.6
+Expenses,70350 General Consultant,37152.77
+Expenses,70410 Office Rent,24466.18
+Expenses,70420 Utilities/Trash services,9334.83
+Expenses,70430 Office Cleaning / Repairs,5369.53
+Expenses,70440 Telephone / Internet,1134.52
+Expenses,70450 Office Supplies/Equipment,15307.0
+Expenses,70500 Online Software & Subscriptions,81859.0
+Expenses,70525 Office Events,1696.27
+Expenses,70530 Office Meals/ Snacks,19876.58
+Expenses,70535 Recruiting/ HR,11509.71
+Expenses,70540 Memberships/Dues,6208.52
+Expenses,70545 Employee Retention,7814.92
 Expenses,70550 Professional Development,522.2
-Expenses,70600 Bank & Merchant Fees,6273.76
+Expenses,70600 Bank & Merchant Fees,6305.98
 Expenses,70650 Local taxes /Registrations,289.0
-Expenses,70675 Auto expense,2900.06
-Expenses,70700 Business Insurance,627.1
-Expenses,70999 Uncategorized Expense,-56.03
-,81200 Interest Income,1366.61
-,85100 Depreciation & Amortization,27159.53
-,85210 Interest - credit card,7849.14
+Expenses,70675 Auto expense,3197.37
+Expenses,70700 Business Insurance,1295.5
+Expenses,70999 Uncategorized Expense,332.98
+,81200 Interest Income,1633.95
+,85100 Depreciation & Amortization,32530.26
+,85210 Interest - credit card,10824.92
 ,85220 Interest - LOC - 34,1487.5
-,85230 Interest - WF SBA loan - 18,540.23
-,85260 EIDL Interest,7812.5
-,85270 Interest-Auto Loan,2148.09
-Total Income,,2053533.35
-Total COGS,,485582.6
-Gross Profit,,1567950.75
-Total Expenses,,2192552.24
-Net Operating Income,,-624601.4900000002
+,85230 Interest - WF SBA loan - 18,623.36
+,85260 EIDL Interest,9375.0
+,85270 Interest-Auto Loan,2557.26
+Total Income,,2420924.63
+Total COGS,,572010.34
+Gross Profit,,1848914.29
+Total Expenses,,2432175.2600000002
+Net Operating Income,,-583260.9700000002
 Total Other Income/Expenses,,0.0
-Net Income,,-624601.4900000002
+Net Income,,-583260.9700000002

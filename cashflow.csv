@@ -1,38 +1,38 @@
 Section,Account,Amount
-,Net Income,-704241.40
-,12100 Accounts Receivable,160147.09
+,Net Income,-639025.32
+,12100 Accounts Receivable,-268403.91
 ,13000 Client Reimbursable,-3552.68
-,13400 Prepaid Expenses,-13906.04
-,14150 Computer Equipment:Computers - Acc Depreciation,2229.28
-,14250 Furniture & Equip:Furniture & Equip - Acc Depreciation,9279.75
-,14450 Car:Car-Acc Depreaciation,10138.00
-,16050 Goodwill:Amort - Goodwill,5512.50
+,13400 Prepaid Expenses,-14392.81
+,14150 Computer Equipment:Computers - Acc Depreciation,2613.96
+,14250 Furniture & Equip:Furniture & Equip - Acc Depreciation,11135.70
+,14450 Car:Car-Acc Depreaciation,12165.60
+,16050 Goodwill:Amort - Goodwill,6615.00
 ,16150 Covenant not to compete:Amort - Covenant,-10000.00
 ,16250 Loan fees (org costs):Loan Fees - Amortization,-5441.01
-,20000 Accounts Payable,-73877.98
-,21100 CC - American Express (1001/3014),40216.81
-,21200 CC - Chase INK (5182),31734.79
-,20400 Deferred Revenue,296879.42
-,20500 Accrued Expenses,53402.64
+,20000 Accounts Payable,-3638.79
+,21100 CC - American Express (1001/3014),61397.55
+,21200 CC - Chase INK (5182),40362.75
+,20400 Deferred Revenue,450176.14
+,20500 Accrued Expenses,85695.39
 ,22000 Payroll Liabilities,0.00
-,22100 Payroll Liabilities:401K Liability,-15983.46
-,22200 Other Liability,-711.14
+,22100 Payroll Liabilities:401K Liability,-26301.12
+,22200 Other Liability,-1536.80
 ,23000 Distributions payable - Fred Hart,-21281.01
 ,23500 Short Term Loan Payable,183428.00
-Adjustments to reconcile Net Income to Net Cash provided by operations:,Total Adjustments to reconcile Net Income to Net Cash provided by operations:,648214.96
-OPERATING ACTIVITIES,Total OPERATING ACTIVITIES,-56026.44
-,15375 N/R - Embeba,553.00
-,15500 Intent Brands (Conv Note),-1353.43
+Adjustments to reconcile Net Income to Net Cash provided by operations:,Total Adjustments to reconcile Net Income to Net Cash provided by operations:,499041.96
+OPERATING ACTIVITIES,Total OPERATING ACTIVITIES,-139983.36
+,15375 N/R - Embeba,4444.00
+,15500 Intent Brands (Conv Note),-1620.55
 ,16100 Covenant not to compete,10000.00
 ,16200 Loan fees (org costs),5441.01
 ,18000 Security Deposits,6000.00
-INVESTING ACTIVITIES,Total INVESTING ACTIVITIES,20640.58
+INVESTING ACTIVITIES,Total INVESTING ACTIVITIES,24264.46
 ,24000 LOC - 34,-150000.00
 ,25000 Wells Fargo (SBA Loan) - 18,-11225.32
-,27500 EIDL Loan,7812.50
-,27700 Auto Loan,-6709.11
-,35000 Distributions  - Blake,30822.56
-,36000 Distributions - Fred,-161468.99
+,27500 EIDL Loan,9375.00
+,27700 Auto Loan,-8071.38
+,35000 Distributions  - Blake,28772.56
+,36000 Distributions - Fred,-171468.99
 ,39000 Retained Earnings,-70408.82
-FINANCING ACTIVITIES,Total FINANCING ACTIVITIES,-361177.18
+FINANCING ACTIVITIES,Total FINANCING ACTIVITIES,-373026.95
 ,Cash at beginning of period,588049.63
