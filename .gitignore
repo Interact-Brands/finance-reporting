@@ -2,3 +2,4 @@ myenv
 __pycache__
 .env
 hubspot_token.txt
+.streamlit/secrets.toml

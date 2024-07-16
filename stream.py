@@ -31,6 +31,9 @@ load_dotenv()
 USERNAME = os.getenv("STREAMLIT_USERNAME")
 PASSWORD = os.getenv("STREAMLIT_PASSWORD")
 
+USERNAME = st.secrets["STREAMLIT_USERNAME"]
+PASSWORD = st.secrets["STREAMLIT_PASSWORD"]
+
 # Login ------------------------------------------------------------------------------------------------------------------------------ 
 
 # Define a function to check login credentials
