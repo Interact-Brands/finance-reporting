@@ -5,6 +5,7 @@ import plotly.graph_objects as go
 from millify import millify
 import datetime
 import numpy as np
+import os
 import streamlit_option_menu
 from streamlit_option_menu import option_menu
 from hubspot_request import fetch_and_process_data, transform_closed_deals
