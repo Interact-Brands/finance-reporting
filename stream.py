@@ -121,7 +121,8 @@ if st.session_state.logged_in:
     # Count the number of pending deals for each month
     current_month_pending_deal_count = current_month_deals['hs_object_id'].count()
     previous_month_pending_deal_count = previous_month_deals['hs_object_id'].count()
-
+    current_and_previous_month_pending_deal_count = current_month_pending_deal_count + previous_month_pending_deal_count
+    
     # Calculate the percentage change in pending deal count
     if previous_month_pending_deal_count != 0:
         percentage_change = ((current_month_pending_deal_count - previous_month_pending_deal_count) / previous_month_pending_deal_count) * 100
@@ -795,7 +796,7 @@ if st.session_state.logged_in:
         
         bill_com_money_out_clearing = -6917.41
 
-        deal_percentage_change = f"""{percentage_change}%"""
+        deal_percentage_change = f"""{percentage_change}% MoM"""
         # Additional details
         account_receivable_details = """
         **Account Receivable:**
@@ -864,7 +865,7 @@ if st.session_state.logged_in:
 
         with col4:
             st.markdown('<div class="card">', unsafe_allow_html=True)
-            st.metric(label="RocketMoney", value=rockeymoney_total_current_month_amount, delta=f"""{rocket_money_percentage_change}%""")
+            st.metric(label="RocketMoney", value=rockeymoney_total_current_month_amount, delta=f"""{rocket_money_percentage_change}% MoM""")
             st.write(rocketmoney_details)
             st.markdown('</div>', unsafe_allow_html=True)
 
