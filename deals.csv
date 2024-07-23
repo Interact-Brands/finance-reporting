@@ -40,17 +40,17 @@ amount,closedate,createdate,dealname,dealstage,hs_lastmodifieddate,hs_object_id,
 ,2023-08-25,2023-07-26,Innoviam,qualifiedtobuy,2024-05-16,14328402332,default,30.0
 ,2023-08-25,2023-07-26,Guidecraft,qualifiedtobuy,2024-01-29,14328402541,default,30.0
 ,2023-08-25,2023-07-26,Rivalz Snacks,qualifiedtobuy,2024-05-16,14328402983,default,30.0
-,2023-08-25,2023-07-27,Skinny Pancake,qualifiedtobuy,2024-01-27,14351461216,default,29.0
-,2023-08-25,2023-07-27,Campbells,qualifiedtobuy,2024-06-20,14351461735,default,29.0
-,2023-08-25,2023-07-27,Bardstown Bourbon,qualifiedtobuy,2024-01-27,14351483154,default,29.0
-,2023-08-25,2023-07-27,Powerplates,qualifiedtobuy,2024-05-17,14351483298,default,29.0
-,2023-08-25,2023-07-27,LovePop,qualifiedtobuy,2024-05-19,14351483407,default,29.0
-,2023-08-25,2023-07-27,Essential Candy,qualifiedtobuy,2024-01-30,14351483501,default,29.0
+,2024-07-19,2023-07-27,Skinny Pancake,closedlost,2024-07-19,14351461216,default,358.0
+,2024-07-19,2023-07-27,Campbells,closedlost,2024-07-19,14351461735,default,358.0
+,2024-07-19,2023-07-27,Bardstown Bourbon,closedlost,2024-07-19,14351483154,default,358.0
+,2024-07-19,2023-07-27,Powerplates,closedlost,2024-07-19,14351483298,default,358.0
+,2024-07-19,2023-07-27,LovePop,closedlost,2024-07-19,14351483407,default,358.0
+,2024-07-19,2023-07-27,Essential Candy,closedlost,2024-07-19,14351483501,default,358.0
 ,2023-08-25,2023-07-27,Do Anything Foods,qualifiedtobuy,2024-01-29,14351483720,default,29.0
 ,2023-08-25,2023-07-27,Filipino Restaurant,qualifiedtobuy,2024-01-25,14351483797,default,29.0
 ,2023-08-25,2023-07-27,Colgate RFP,95180904,2024-01-25,14351484049,default,29.0
-,2023-08-25,2023-07-27,District Doughtnuts,qualifiedtobuy,2024-05-18,14351612304,default,29.0
-,2023-08-25,2023-07-27,Matchaful,qualifiedtobuy,2024-01-27,14351612423,default,29.0
+,2024-07-19,2023-07-27,District Doughtnuts,closedlost,2024-07-19,14351612304,default,358.0
+,2024-07-19,2023-07-27,Matchaful,closedlost,2024-07-19,14351612423,default,358.0
 ,2023-08-25,2023-07-27,Yo Zooma,qualifiedtobuy,2024-01-30,14351612519,default,29.0
 65000,2023-08-25,2023-07-27,Luna Bay Booch,qualifiedtobuy,2024-01-29,14351612572,default,29.0
 ,2023-08-25,2023-07-27,Jot,qualifiedtobuy,2024-01-29,14351612986,default,29.0
@@ -332,12 +332,12 @@ amount,closedate,createdate,dealname,dealstage,hs_lastmodifieddate,hs_object_id,
 ,2024-04-30,2024-04-22,Aryuvedic Brand,95180904,2024-07-11,18825582616,default,8.0
 7200,2024-05-07,2024-04-26,My Pote - Naming 2.0,closedwon,2024-05-16,18924653649,default,11.0
 29500,2024-05-24,2024-04-29,Deep | Dumplings Innovation,closedwon,2024-05-24,18978662739,default,25.0
-,2024-04-30,2024-04-29,Evolved,appointmentscheduled,2024-06-21,18980246703,default,1.0
+,2024-04-30,2024-04-29,Evolved,appointmentscheduled,2024-07-19,18980246703,default,1.0
 37500,2024-05-07,2024-05-01,BUILT |  Photo Realistic Renders,closedwon,2024-05-07,19024822192,default,6.0
 4000,2024-05-24,2024-05-07,BUILT | Additional Scope,closedwon,2024-05-24,19190488948,default,17.0
 77000,2024-05-15,2024-05-08,Nestlé Packables,closedlost,2024-06-05,19221339171,default,7.0
 167710,2024-05-29,2024-05-08,Project Daddy,closedwon,2024-06-06,19221392217,default,21.0
-15000,2024-06-03,2024-05-09,Built | Additional Scope June,decisionmakerboughtin,2024-07-15,19249458449,default,25.0
+15000,2024-06-03,2024-05-09,Built | Additional Scope June,decisionmakerboughtin,2024-07-16,19249458449,default,25.0
 130932,2024-05-23,2024-05-09,Gruns,closedwon,2024-06-06,19250477395,default,14.0
 37728,2024-05-10,2024-05-10,De Soi,closedlost,2024-06-06,19274806062,default,0.0
 1200,2024-05-13,2024-05-13,Chifles SKU Extension,closedwon,2024-05-13,19326991198,default,0.0
@@ -345,22 +345,27 @@ amount,closedate,createdate,dealname,dealstage,hs_lastmodifieddate,hs_object_id,
 25000,2024-05-24,2024-05-14,Perfect Bar - Paid Pitch,closedwon,2024-07-04,19359692712,default,10.0
 144950,2024-06-11,2024-05-21,Del Monte - Fruit Infusions,closedwon,2024-06-12,19513166218,default,21.0
 ,2024-06-20,2024-05-21,Telestrations,95211147,2024-06-20,19516280692,default,30.0
-91200,2024-07-04,2024-05-22,Del Monte - Refrigerated Bars,closedwon,2024-07-15,19542536003,default,43.0
+91200,2024-07-04,2024-05-22,Del Monte - Refrigerated Bars,closedwon,2024-07-18,19542536003,default,43.0
 2000,2024-05-29,2024-05-29,Chifles SKU Extension Mech,closedwon,2024-05-29,19702592873,default,0.0
-,2024-05-31,2024-05-29,Suja Slice,appointmentscheduled,2024-07-08,19710124699,default,2.0
+,2024-05-31,2024-05-29,Suja Slice,appointmentscheduled,2024-07-19,19710124699,default,2.0
 200000,2024-07-04,2024-05-29,Project Rocky | Frozen Thai,closedlost,2024-07-04,19710529158,default,36.0
-141399,2024-06-30,2024-06-06,Jacks Link's - Pet,decisionmakerboughtin,2024-07-13,19907617057,default,24.0
-,2024-06-30,2024-06-06,Myodetox,appointmentscheduled,2024-07-09,19907617156,default,24.0
-,2024-06-30,2024-06-06,Mikuna,appointmentscheduled,2024-07-08,19907619966,default,24.0
+125220,2024-07-16,2024-06-06,Jacks Link's - Pet,closedwon,2024-07-16,19907617057,default,40.0
+,2024-06-30,2024-06-06,Myodetox,appointmentscheduled,2024-07-20,19907617156,default,24.0
+,2024-06-30,2024-06-06,Mikuna,appointmentscheduled,2024-07-19,19907619966,default,24.0
 ,2024-06-20,2024-06-06,SPKD IV,closedlost,2024-06-20,19907798402,default,14.0
 3500,2024-06-17,2024-06-17,Chifles Strips Rework Addendum,closedwon,2024-06-17,20140971881,default,0.0
-139042,2024-06-30,2024-06-20,Sesh,decisionmakerboughtin,2024-07-11,20222316835,default,10.0
-105914,2024-06-30,2024-06-20,Heyday Canning Co,decisionmakerboughtin,2024-07-13,20222412299,default,10.0
-144038,2024-06-30,2024-06-20,Simply,decisionmakerboughtin,2024-07-11,20222412931,default,10.0
-15000,2024-06-30,2024-06-21,Nestle | Project Daddy,decisionmakerboughtin,2024-07-11,20234525037,default,9.0
-117574,2024-06-30,2024-06-25,Apex Fitness,decisionmakerboughtin,2024-07-11,20328523817,default,5.0
+139042,2024-07-16,2024-06-20,Sesh,closedlost,2024-07-16,20222316835,default,26.0
+105914,2024-06-30,2024-06-20,Heyday Canning Co,decisionmakerboughtin,2024-07-20,20222412299,default,10.0
+144038,2024-06-30,2024-06-20,Simply,decisionmakerboughtin,2024-07-19,20222412931,default,10.0
+15000,2024-06-30,2024-06-21,Nestle | Project Daddy,decisionmakerboughtin,2024-07-19,20234525037,default,9.0
+117574,2024-06-30,2024-06-25,Apex Fitness,decisionmakerboughtin,2024-07-18,20328523817,default,5.0
 3670,2024-07-03,2024-07-03,Chifles Variety Snack Pack,closedwon,2024-07-03,20516313499,default,0.0
 2000,2024-07-03,2024-07-03,Mind Pop Scope Addendum,closedwon,2024-07-03,20518951747,default,0.0
-,2024-07-31,2024-07-08,Sauz,appointmentscheduled,2024-07-08,20611665830,default,23.0
-,2024-07-31,2024-07-08,Tru Earth,appointmentscheduled,2024-07-08,20614217657,default,23.0
+,2024-07-31,2024-07-08,Sauz,appointmentscheduled,2024-07-19,20611665830,default,23.0
+,2024-07-31,2024-07-08,Tru Earth,appointmentscheduled,2024-07-19,20614217657,default,23.0
 72405,2024-07-10,2024-07-10,MyMochi,closedwon,2024-07-10,20659382274,default,0.0
+,2024-07-31,2024-07-16,Rip Van RFP,appointmentscheduled,2024-07-16,20799086891,default,15.0
+3150,2024-07-18,2024-07-16,Milton's Cracker Photoshoot Attendance,closedwon,2024-07-16,20802206760,default,2.0
+8267,2024-08-23,2024-07-16,Milton's Pizza Bite Photoshoot Attendance,decisionmakerboughtin,2024-07-16,20802207110,default,38.0
+95000,2024-07-19,2024-07-17,Calbee Shrimp Chips,decisionmakerboughtin,2024-07-22,20822496176,default,2.0
+3200,2024-07-19,2024-07-19,egglife Incremental Designalytics Concept Test,closedwon,2024-07-19,20864992176,default,0.0

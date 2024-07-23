@@ -73,7 +73,7 @@ if st.session_state.logged_in:
     t1, t2 = st.columns((0.2,1)) 
 
     t1.image('images/interactbrands_logo.jpg', width = 120)
-    t2.title("Finance Reports of Interact")
+    t2.title("Finance Reports")
 
 
     initial_url = 'https://api.hubapi.com/crm/v3/objects/deals'
@@ -788,8 +788,8 @@ if st.session_state.logged_in:
                 
     if selected == "Home1":
         # Sample data
-        account_receivable = 919014.55
-        account_payable = -218267.82
+        account_receivable = 952900.55
+        account_payable = -187050.152
         sales_per_change = "10%"
         profit_per_change = "15%"
         
@@ -799,9 +799,9 @@ if st.session_state.logged_in:
         # Additional details
         account_receivable_details = """
         **Account Receivable:**
-        - $271,918.80 - current
-        - $482,073.25 - 30 days overdue
-        - $27,693.00 - 60 days overdue
+        - $360,770.80 - current 
+        - $374,423.50 - 30 days overdue
+        - $77,226.75 - 60 days overdue
         """
         account_payable_details = f"""
         **Account Payable:**
@@ -842,14 +842,14 @@ if st.session_state.logged_in:
 
         with col1:
             st.markdown('<div class="card">', unsafe_allow_html=True)
-            delta_value = "↑"
+            delta_value = "Asset"
             st.metric(label="Account Receivable", value="$" + millify(account_receivable, precision=2), delta=delta_value)
             st.write(account_receivable_details)
             st.markdown('</div>', unsafe_allow_html=True)
 
         with col2:
             st.markdown('<div class="card">', unsafe_allow_html=True)
-            delta_value = "-↓"
+            delta_value = "-Liability"
             st.metric(label="Account Payable", value="$" + millify(account_payable, precision=2), delta=delta_value)
             st.write(account_payable_details)
             st.markdown('</div>', unsafe_allow_html=True)
@@ -858,7 +858,7 @@ if st.session_state.logged_in:
 
         with col3:
             st.markdown('<div class="card">', unsafe_allow_html=True)
-            st.metric(label="Pending Deals", value=total_pending_deals_count, delta=deal_percentage_change)
+            st.metric(label="Pending Deals", value=current_month_pending_deal_count, delta=deal_percentage_change)
             st.write(pending_deals_details)
             st.markdown('</div>', unsafe_allow_html=True)
 
@@ -878,8 +878,11 @@ if st.session_state.logged_in:
             c2.write("YoY Sales")
 
         with st.container():
-            c3.write("c5")
-            c4.write("c6")
+            c3.write("YTD RocketMoney")
+
+        with st.container():
+            c4.write("c4")
+            
         with c2:
             df_closed_deals = df[df['dealstage'] == 'closedwon']
 
@@ -1028,8 +1031,10 @@ if st.session_state.logged_in:
             daily_spending = df.groupby('Date')['Amount'].sum().reset_index()
 
             # Create a bar chart using Plotly
-            fig = px.bar(daily_spending, x='Date', y='Amount', title='YTD Rockey Money')
+            fig = px.bar(daily_spending, x='Date', y='Amount', title='<a href="https://interact-finance.streamlit.app/" target="_blank">YTD Rocket Money</a>')
             st.plotly_chart(fig)
+
+
     # ---------------------------------------------------------------------------------------------------------------------------
     if selected == "Home2":
 
