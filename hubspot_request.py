@@ -137,3 +137,6 @@ def transform_closed_deals(df):
 # print(f"Current Month Pending Deal Count: {current_month_pending_deal_count}")
 # print(f"Previous Month Pending Deal Count: {previous_month_pending_deal_count}")
 # print(f"Percentage Change in Pending Deals: {percentage_change:.2f}%")
+
+df = pd.read_csv('deals.csv')
+print(df.head())
