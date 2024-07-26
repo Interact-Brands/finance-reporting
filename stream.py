@@ -451,12 +451,6 @@ if st.session_state.logged_in:
             'Balance': [490463.55, -216086.85],
         })
 
-
-        # Create the Plotly figure
-        # 
-        # 
-        import streamlit as st
-
         # Sample data
         accounts = [
             {
@@ -501,9 +495,6 @@ if st.session_state.logged_in:
         
         for account in accounts:
             st.metric(label=account['Name'], value=f"${account['CurrentBalance']:,.2f}")
-
-        # 
-        # 
             # Sample data
         bank_accounts = [
             {'Name': 'CC - American Express (1001/3014)', 'Label': 'Credit Card', 'Amount': 74633.54},
@@ -789,28 +780,56 @@ if st.session_state.logged_in:
                 
     if selected == "Home1":
         # Sample data
-        account_receivable = 952900.55
-        account_payable = -187050.152
+        account_receivable = 785650.80
+        account_payable = -215035.72
         sales_per_change = "10%"
         profit_per_change = "15%"
         
         bill_com_money_out_clearing = -6917.41
 
         deal_percentage_change = f"""{percentage_change}% MoM"""
-        # Additional details
+        
+        # Get the current month
+        current_month = datetime.now().month
+
+        # Calculate the scaling factor based on the current month
+        scaling_factor = 12 / current_month
+
+        other_expenses_sum = ap_payroll_sum + ap_expensify_sum
+        # Calculate forecasted EOY values
+        forecasted_payroll_eoy = ap_payroll_sum * scaling_factor
+        forecasted_expensify_eoy = ap_expensify_sum * scaling_factor
+        forecasted_other_expenses_sum = forecasted_payroll_eoy + forecasted_expensify_eoy
+
+        #  Additional details
         account_receivable_details = """
         **Account Receivable:**
-        - $360,770.80 - current 
-        - $374,423.50 - 30 days overdue
+        - $397,845.80 - current 
+        - $170,098.75 - 30 days overdue
         - $77,226.75 - 60 days overdue
+        - $0.0 - 90 days overdue
         """
         account_payable_details = f"""
         **Account Payable:**
+        - ${ap_billcom_sum:,.2f} - Bill.com current
+        - ${ap_expensify_sum:,.2f} - 30 days overdue
+        - ${ap_payroll_sum:,.2f} - 60 days overdue 
+        - ${ap_payroll_sum:,.2f} - 90 days overdue 
+
+        """
+
+        other_expenses_details = f"""
+        **Other Expenses:**
         - Payroll: ${ap_payroll_sum:,.2f}
-        - Bill.com: ${ap_billcom_sum:,.2f}
         - Expensify: ${ap_expensify_sum:,.2f}
         """
-                # Using formatted string literals to include commas
+        
+        forecasted_expenses_details = f"""
+        **Forecasted EOY Values:**
+        - Payroll: ${forecasted_payroll_eoy:,.2f}
+        - Expensify: ${forecasted_expensify_eoy:,.2f}
+        """
+
         pending_deals_details = f"""
         **Pending Deals:**
         - $ {proposals_negotiation_sum:,} - Proposals/Negotiation
@@ -844,31 +863,62 @@ if st.session_state.logged_in:
         with col1:
             st.markdown('<div class="card">', unsafe_allow_html=True)
             delta_value = "Asset"
-            st.metric(label="Account Receivable", value="$" + millify(account_receivable, precision=2), delta=delta_value)
+            st.metric(label="Account Receivable", value="$" + f"{account_receivable:,.2f}", delta=delta_value)
             st.write(account_receivable_details)
             st.markdown('</div>', unsafe_allow_html=True)
 
         with col2:
             st.markdown('<div class="card">', unsafe_allow_html=True)
             delta_value = "-Liability"
-            st.metric(label="Account Payable", value="$" + millify(account_payable, precision=2), delta=delta_value)
+            st.metric(label="Account Payable", value="$" + f"{account_payable:,.2f}", delta=delta_value)
             st.write(account_payable_details)
             st.markdown('</div>', unsafe_allow_html=True)
-
         col3, col4 = st.columns(2)
 
         with col3:
+                    st.markdown('<div class="card">', unsafe_allow_html=True)
+                    delta_value = "-Liability"
+                    st.metric(label="Other Expenses", value="$" + f"{other_expenses_sum:,.2f}", delta=delta_value)
+                    st.write(other_expenses_details)
+                    st.markdown('</div>', unsafe_allow_html=True)
+        with col4:
+                    st.markdown('<div class="card">', unsafe_allow_html=True)
+                    delta_value = "-Liability"
+                    st.metric(label="Forecasted Other Expenses", value="$" + f"{forecasted_other_expenses_sum:,.2f}", delta=delta_value)
+                    st.write(forecasted_expenses_details)
+                    st.markdown('</div>', unsafe_allow_html=True)
+        col5, col6 = st.columns(2)
+
+        with col5:
             st.markdown('<div class="card">', unsafe_allow_html=True)
             st.metric(label="Pending Deals", value=current_month_pending_deal_count, delta=deal_percentage_change)
             st.write(pending_deals_details)
             st.markdown('</div>', unsafe_allow_html=True)
 
-        with col4:
+        with col6:
             st.markdown('<div class="card">', unsafe_allow_html=True)
             st.metric(label="RocketMoney", value=rockeymoney_total_current_month_amount, delta=f"""{rocket_money_percentage_change}% MoM""")
             st.write(rocketmoney_details)
             st.markdown('</div>', unsafe_allow_html=True)
 
+        # Create columns
+        col7, _ = st.columns([200, 1])  # Adjust column widths as needed
+
+        # Populate col6
+        with col7:
+            st.markdown('<div class="card">', unsafe_allow_html=True)
+            st.metric(label="Project Profitability", value="25%", delta="Overall Change")
+            projects = [
+                    {"name": "Del Monte", "profitability": "25%"},
+                    {"name": "Rally", "profitability": "15%"},
+                    {"name": "Gruns", "profitability": "30%"},
+                    {"name": "Nestle", "profitability": "20%"}
+                ]
+            with st.expander("Project Details"):
+                for project in projects:
+                    st.write(f"**{project['name']}**: {project['profitability']}")
+            
+            st.markdown('</div>', unsafe_allow_html=True)
     # extra charts below-------------------------------------------------------------------------------------------------------------------
         c1, c2= st.columns(2)
         c3 = st.empty()  # Create an empty container
