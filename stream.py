@@ -781,10 +781,43 @@ if st.session_state.logged_in:
             # Calculate and display summary statistics
                 
     if selected == "Home1":
-        # Sample data
+        # All Account Receivable
         account_receivable = 704790.50
-        account_payable = -167673.45
 
+        ar_current = 242664.80
+        ar_30_days_overdue_sum = 328175.45
+        ar_60_days_overdue_sum = 77226.75
+        ar_90_days_overdue_sum = 0.0
+        overall_overdue = ar_30_days_overdue_sum + ar_60_days_overdue_sum + ar_90_days_overdue_sum
+        
+        # Account Receivable Details
+        account_receivable_details = f"""
+        Overall Overdue: ${overall_overdue:,.2f} 
+        - ${ar_current:,.2f} - current 
+        - ${ar_30_days_overdue_sum:,.2f} - 30 days overdue
+        - ${ar_60_days_overdue_sum:,.2f} - 60 days overdue
+        - ${ar_90_days_overdue_sum:,.2f} - 90 days overdue
+        """
+
+        # All Account Payable
+        account_payable = -167673.45
+        
+        ap_current = 213515.24
+        ap_30_days_overdue_sum = 170098.75
+        ap_60_days_overdue_sum = 77226.75
+        ap_90_days_overdue_sum = 0.0
+        overall_overdue = ap_30_days_overdue_sum + ap_60_days_overdue_sum + ap_90_days_overdue_sum - 29482 #fixme
+        
+        # Account Payable Details
+        account_payable_details = f"""
+        Overall Overdue: ${overall_overdue:,.2f} 
+        - ${ap_current:,.2f} - current
+        - ${ap_30_days_overdue_sum:,.2f} - 30 days overdue
+        - ${ap_60_days_overdue_sum:,.2f} - 60 days overdue 
+        - ${ap_90_days_overdue_sum:,.2f} - 90 days overdue 
+        """
+
+        # All Other Expenses and Forecast
         # Get the current month
         current_month = datetime.now().month
 
@@ -808,28 +841,37 @@ if st.session_state.logged_in:
         # Calculate forecasted Rest of the Year values
         forecasted_rocketmoney_roy = forecasted_rocketmoney_eoy - total_rm_ytd
 
-        # Define variables for AR values
-        ar_current = 242664.80
-        ar_30_days_overdue_sum = 328175.45
-        ar_60_days_overdue_sum = 77226.75
-        ar_90_days_overdue_sum = 0.0
-        overall_overdue = ar_30_days_overdue_sum + ar_60_days_overdue_sum + ar_90_days_overdue_sum
-        # Account Receivable Details
-        account_receivable_details = f"""
-        Overall Overdue: ${overall_overdue:,.2f} 
-        - ${ar_current:,.2f} - current 
-        - ${ar_30_days_overdue_sum:,.2f} - 30 days overdue
-        - ${ar_60_days_overdue_sum:,.2f} - 60 days overdue
-        - ${ar_90_days_overdue_sum:,.2f} - 90 days overdue
+        other_expenses_details = f"""
+        - Payroll: ${ap_payroll_sum:,.2f}
+        - Expensify: ${ap_expensify_sum:,.2f}
         """
-        ap_current = 397845.80
-        ap_30_days_overdue_sum = 170098.75
-        ap_60_days_overdue_sum = 77226.75
-        ap_90_days_overdue_sum = 0.0
-        overall_overdue = ap_30_days_overdue_sum + ap_60_days_overdue_sum + ap_90_days_overdue_sum - 29482 #fixme
+        
+        forecasted_expenses_details = f"""
+        - Payroll: ${forecasted_payroll_roy:,.2f}
+        - Expensify: ${forecasted_expensify_roy:,.2f}
+        """
 
+        # All Cash in/out the Door
         cash_in_the_door = account_receivable + proposals_negotiation_sum
         cash_out_the_door = account_payable + other_expenses_sum + forecasted_other_expenses_sum_roy
+
+        pending_deals_details = f"""
+        - $ {proposals_negotiation_sum:,} - Proposals/Negotiation
+        - $ {inbound_discovery_call_sum:,} - Inbound/Discovery Call
+        """
+        
+        promising_deals_details = f"""
+                - {"50%":} - Account Close Ratio
+                - {"45%":} - New Business Close Ratio
+                """
+        rocketmoney_details = f"""
+        - $ {total_subscription_amount:,} - Subscriptions
+        - $ {most_spent_category_amount_last_month:,} - Most Spent Category: {most_spent_category_name_last_month}
+        """
+
+        rocketmoney_forecast_details = f"""
+        - $ {total_rm_ytd:,.2f} - YTD Total
+        """
 
         sales_per_change = "10%"
         profit_per_change = "15%"
@@ -856,41 +898,6 @@ if st.session_state.logged_in:
 
         deal_percentage_change = f"""{percentage_change}% MoM"""
 
-        account_payable_details = f"""
-        Overall Overdue: ${overall_overdue:,.2f} 
-        - ${ap_billcom_sum:,.2f} - current
-        - ${ap_expensify_sum:,.2f} - 30 days overdue
-        - ${ap_payroll_sum:,.2f} - 60 days overdue 
-        - ${ap_payroll_sum:,.2f} - 90 days overdue 
-
-        """
-
-        other_expenses_details = f"""
-        - Payroll: ${ap_payroll_sum:,.2f}
-        - Expensify: ${ap_expensify_sum:,.2f}
-        """
-        
-        forecasted_expenses_details = f"""
-        - Payroll: ${forecasted_payroll_roy:,.2f}
-        - Expensify: ${forecasted_expensify_roy:,.2f}
-        """
-
-        pending_deals_details = f"""
-        - $ {proposals_negotiation_sum:,} - Proposals/Negotiation
-        - $ {inbound_discovery_call_sum:,} - Inbound/Discovery Call
-        """
-        promising_deals_details = f"""
-                - {"50%":} - Account Close Ratio
-                - {"45%":} - New Business Close Ratio
-                """
-        rocketmoney_details = f"""
-        - $ {total_subscription_amount:,} - Subscriptions
-        - $ {most_spent_category_amount_last_month:,} - Most Spent Category: {most_spent_category_name_last_month}
-        """
-
-        rocketmoney_forecast_details = f"""
-        - $ {total_rm_ytd:,.2f} - YTD Total
-        """
         # CSS for card-like border
         card_css = """
         <style>
@@ -986,7 +993,6 @@ if st.session_state.logged_in:
 
         with col5:
             st.markdown('<div class="card">', unsafe_allow_html=True)
-            # st.metric(label="Pending Deals", value=current_month_pending_deal_count, delta=deal_percentage_change)
             delta_value = deal_percentage_change
             metric_html = f"""
             <div style="color: green;">
@@ -1002,8 +1008,6 @@ if st.session_state.logged_in:
 
         with col6:
             st.markdown('<div class="card">', unsafe_allow_html=True)
-            # st.metric(label="Promising Deals", value=current_month_pending_deal_count, delta=deal_percentage_change)
-
             delta_value = deal_percentage_change
             metric_html = f"""
             <div style="color: green;">
