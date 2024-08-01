@@ -802,10 +802,10 @@ if st.session_state.logged_in:
         # All Account Payable
         account_payable = -167673.45
         
-        ap_current = 213515.24
-        ap_30_days_overdue_sum = 170098.75
-        ap_60_days_overdue_sum = 77226.75
-        ap_90_days_overdue_sum = 0.0
+        ap_current = 142541.99
+        ap_30_days_overdue_sum = 64551.69
+        ap_60_days_overdue_sum = 19170.00
+        ap_90_days_overdue_sum = 9580.0
         overall_overdue = ap_30_days_overdue_sum + ap_60_days_overdue_sum + ap_90_days_overdue_sum - 29482 #fixme
         
         # Account Payable Details
@@ -858,19 +858,26 @@ if st.session_state.logged_in:
         pending_deals_details = f"""
         - $ {proposals_negotiation_sum:,} - Proposals/Negotiation
         - $ {inbound_discovery_call_sum:,} - Inbound/Discovery Call
+        - {"50%":} - Account Close Ratio
+        - {"45%":} - New Business Close Ratio
         """
-        
+
         promising_deals_details = f"""
-                - {"50%":} - Account Close Ratio
-                - {"45%":} - New Business Close Ratio
+                - $ {proposals_negotiation_sum:,} - Promising Proposals
+                - $ {inbound_discovery_call_sum:,} - Promosing Inbound
+                - {"50%":} - Promising Account Close Ratio
+                - {"45%":} - Promising New Business Close Ratio
                 """
         rocketmoney_details = f"""
+        - $ {total_rm_ytd:,.2f} - YTD Total
         - $ {total_subscription_amount:,} - Subscriptions
         - $ {most_spent_category_amount_last_month:,} - Most Spent Category: {most_spent_category_name_last_month}
         """
 
         rocketmoney_forecast_details = f"""
-        - $ {total_rm_ytd:,.2f} - YTD Total
+        - $ {total_rm_ytd:,.2f} - Forecast of RoY
+        - $ {total_subscription_amount:,.2f} - Forecast of Subscriptions
+        - $ {most_spent_category_amount_last_month:,.2f} - Forecast of Most Spent
         """
 
         sales_per_change = "10%"
@@ -962,7 +969,7 @@ if st.session_state.logged_in:
                     # st.metric(label="Other Expenses", value="$" + f"{other_expenses_sum:,.2f}", delta=delta_value)
                     metric_html = f"""
                     <div style="color: red;">
-                        <span style="font-size: 20px; font-weight: bold;">Other Expenses</span>
+                        <span style="font-size: 20px; font-weight: bold;">YTD Expenses</span>
                         <h2 style="font-size: 24px; font-weight: bold; color:red">${other_expenses_sum:,.2f}</h2>
                     </div>
                     """
@@ -977,9 +984,9 @@ if st.session_state.logged_in:
                     delta_value = "-"
                     # st.metric(label="Forecasted Rest of the Year Expenses", value="$" + f"{forecasted_other_expenses_sum_roy:,.2f}", delta=delta_value)
                     metric_html = f"""
-                    <div style="color: orange;">
-                        <span style="font-size: 20px; font-weight: bold;">Forecasted Other Expenses</span>
-                        <h2 style="font-size: 24px; font-weight: bold; color:orange">${forecasted_other_expenses_sum_roy:,.2f}</h2>
+                    <div style="color: red;">
+                        <span style="font-size: 20px; font-weight: bold;">Forecasted Expenses</span>
+                        <h2 style="font-size: 24px; font-weight: bold; color:red">${forecasted_other_expenses_sum_roy:,.2f}</h2>
                     </div>
                     """
                     st.markdown(metric_html, unsafe_allow_html=True)
@@ -1059,6 +1066,46 @@ if st.session_state.logged_in:
             st.markdown('<div class="card">', unsafe_allow_html=True)
             st.metric(label="Freelance Forecast", value="25%", delta="Overall Change")
             
+            # Placeholder data for freelance forecast
+            eoy_forecast = {
+                "Total Revenue": "$90,000",
+                "Total Projects": 36,
+                "Average Revenue per Project": "$2,500",
+                "Expected New Clients": 15,
+                "Hours Worked": 1800
+            }
+            
+            roy_forecast = {
+                "Total Revenue": "$30,000",
+                "Total Projects": 12,
+                "Average Revenue per Project": "$2,500",
+                "Expected New Clients": 5,
+                "Hours Worked": 600
+            }
+            
+            monthly_forecast = {
+                "Total Revenue": "$7,500",
+                "Total Projects": 3,
+                "Average Revenue per Project": "$2,500",
+                "Expected New Clients": 1-2,
+                "Hours Worked": 150
+            }
+            
+            with st.expander("Freelance Forecast Details"):
+                st.write("### End of Year (EOY) Forecast")
+                for key, value in eoy_forecast.items():
+                    st.write(f"**{key}:** {value}")
+                
+                st.write("### Rest of Year (ROY) Forecast")
+                for key, value in roy_forecast.items():
+                    st.write(f"**{key}:** {value}")
+                
+                st.write("### Monthly Forecast")
+                for key, value in monthly_forecast.items():
+                    st.write(f"**{key}:** {value}")
+            
+            st.markdown('</div>', unsafe_allow_html=True)
+
             # Placeholder data for freelance projects
             projects = [
                 {"name": "Del Monte", "hours_worked": 120, "rate": "$50/hr", "total_earnings": "$6000"},
