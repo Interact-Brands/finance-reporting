@@ -784,20 +784,7 @@ if st.session_state.logged_in:
         # Sample data
         account_receivable = 704790.50
         account_payable = -167673.45
-        sales_per_change = "10%"
-        profit_per_change = "15%"
-        col_home_left, col_home_right = st.columns(2)
 
-        with col_home_left:
-            st.metric(label="Cash in the Door", value="$" + f"{account_receivable:,.2f}")
-
-        with col_home_right:
-            st.metric(label="Cash out the Door", value="$" + f"{account_receivable:,.2f}")
-
-        bill_com_money_out_clearing = -6917.41
-
-        deal_percentage_change = f"""{percentage_change}% MoM"""
-        
         # Get the current month
         current_month = datetime.now().month
 
@@ -840,6 +827,34 @@ if st.session_state.logged_in:
         ap_60_days_overdue_sum = 77226.75
         ap_90_days_overdue_sum = 0.0
         overall_overdue = ap_30_days_overdue_sum + ap_60_days_overdue_sum + ap_90_days_overdue_sum - 29482 #fixme
+
+        cash_in_the_door = account_receivable + proposals_negotiation_sum
+        cash_out_the_door = account_payable + other_expenses_sum + forecasted_other_expenses_sum_roy
+
+        sales_per_change = "10%"
+        profit_per_change = "15%"
+        col_home_left, col_home_right = st.columns(2)
+
+        with col_home_left:
+            metric_html = f"""
+            <div style="color: green;">
+                <span style="font-size: 20px; font-weight: bold;">Cash in the Door</span>
+                <h2 style="font-size: 24px; font-weight: bold; color:green">${cash_in_the_door:,.2f}</h2>
+            </div>
+            """
+            st.markdown(metric_html, unsafe_allow_html=True)
+
+        with col_home_right:
+            # Define the style for the metric
+            metric_html = f"""
+            <div style="color: red;">
+                <span style="font-size: 20px; font-weight: bold;">Cash out the Door</span>
+                <h2 style="font-size: 24px; font-weight: bold; color:red">${cash_out_the_door:,.2f}</h2>
+            </div>
+            """
+            st.markdown(metric_html, unsafe_allow_html=True)
+
+        deal_percentage_change = f"""{percentage_change}% MoM"""
 
         account_payable_details = f"""
         Overall Overdue: ${overall_overdue:,.2f} 
@@ -899,17 +914,13 @@ if st.session_state.logged_in:
             st.markdown('<div class="card">', unsafe_allow_html=True)
             delta_value = "Asset"
             # st.metric(label="Account Receivable", value="$" + f"{account_receivable:,.2f}", delta=delta_value)
-
-                        # HTML and CSS to style the label and value
-            html_content = f"""
-            <div style="color: blue;">
-                <p>Account Receivable</p>
-                <h3>${account_receivable:,.2f}</h3>
+            metric_html = f"""
+            <div style="color: green;">
+                <span style="font-size: 20px; font-weight: bold;">Account Receivable</span>
+                <h2 style="font-size: 24px; font-weight: bold; color:green">${account_receivable:,.2f}</h2>
             </div>
             """
-
-            # Display the styled content
-            st.markdown(html_content, unsafe_allow_html=True)
+            st.markdown(metric_html, unsafe_allow_html=True)
 
             # Optionally, you can still use st.metric for delta display
             st.metric(label="", value="", delta=delta_value)
@@ -922,37 +933,33 @@ if st.session_state.logged_in:
             delta_value = "-Liability"
             # st.metric(label="Account Payable", value="$" + f"{:,.2f}", delta=delta_value)
 
-            html_content = f"""
-            <div style="color: orange;">
-                <p>Account Payable</p>
-                <h3>${account_payable:,.2f}</h3>
+            metric_html = f"""
+            <div style="color: red;">
+                <span style="font-size: 20px; font-weight: bold;">Account Payable</span>
+                <h2 style="font-size: 24px; font-weight: bold; color:red">${account_payable:,.2f}</h2>
             </div>
             """
-
-            # Display the styled content
-            st.markdown(html_content, unsafe_allow_html=True)
+            st.markdown(metric_html, unsafe_allow_html=True)
 
             # Optionally, you can still use st.metric for delta display
             st.metric(label="", value="", delta=delta_value)
 
             st.write(account_payable_details)
             st.markdown('</div>', unsafe_allow_html=True)
+        
         col3, col4 = st.columns(2)
 
         with col3:
                     st.markdown('<div class="card">', unsafe_allow_html=True)
                     delta_value = "-Liability"
                     # st.metric(label="Other Expenses", value="$" + f"{other_expenses_sum:,.2f}", delta=delta_value)
-                    html_content = f"""
-                    <div style="color: orange;">
-                        <p>Other Expenses</p>
-                        <h3>${other_expenses_sum:,.2f}</h3>
+                    metric_html = f"""
+                    <div style="color: red;">
+                        <span style="font-size: 20px; font-weight: bold;">Other Expenses</span>
+                        <h2 style="font-size: 24px; font-weight: bold; color:red">${other_expenses_sum:,.2f}</h2>
                     </div>
                     """
-
-                    # Display the styled content
-                    st.markdown(html_content, unsafe_allow_html=True)
-
+                    st.markdown(metric_html, unsafe_allow_html=True)
                     # Optionally, you can still use st.metric for delta display
                     st.metric(label="", value="", delta=delta_value)
 
@@ -960,47 +967,52 @@ if st.session_state.logged_in:
                     st.markdown('</div>', unsafe_allow_html=True)
         with col4:
                     st.markdown('<div class="card">', unsafe_allow_html=True)
-                    delta_value = "-Liability"
+                    delta_value = "-"
                     # st.metric(label="Forecasted Rest of the Year Expenses", value="$" + f"{forecasted_other_expenses_sum_roy:,.2f}", delta=delta_value)
-                    html_content = f"""
+                    metric_html = f"""
                     <div style="color: orange;">
-                        <p>Forecasted Rest of the Year Expenses</p>
-                        <h3>${forecasted_other_expenses_sum_roy:,.2f}</h3>
+                        <span style="font-size: 20px; font-weight: bold;">Forecasted Other Expenses</span>
+                        <h2 style="font-size: 24px; font-weight: bold; color:orange">${forecasted_other_expenses_sum_roy:,.2f}</h2>
                     </div>
                     """
-
-                    # Display the styled content
-                    st.markdown(html_content, unsafe_allow_html=True)
-
+                    st.markdown(metric_html, unsafe_allow_html=True)
                     # Optionally, you can still use st.metric for delta display
-                    st.metric(label="", value="", delta=delta_value)
+                    st.metric(label="", value="", delta=delta_value, delta_color="off")
 
                     st.write(forecasted_expenses_details)
                     st.markdown('</div>', unsafe_allow_html=True)
+        
         col5, col6 = st.columns(2)
 
         with col5:
             st.markdown('<div class="card">', unsafe_allow_html=True)
             # st.metric(label="Pending Deals", value=current_month_pending_deal_count, delta=deal_percentage_change)
-            html_content = f"""
-            <div style="color: blue;">
-                <p>Pending Deals</p>
-                <h3>{current_month_pending_deal_count:,}</h3>
+            delta_value = deal_percentage_change
+            metric_html = f"""
+            <div style="color: green;">
+                <span style="font-size: 20px; font-weight: bold;">Pending Deals</span>
+                <h2 style="font-size: 24px; font-weight: bold; color:green">{current_month_pending_deal_count}</h2>
             </div>
             """
-
-            # Display the styled content
-            st.markdown(html_content, unsafe_allow_html=True)
-
-            # Optionally, you can still use st.metric for delta display
-            st.metric(label="", value="")
+            st.markdown(metric_html, unsafe_allow_html=True)
+            st.metric(label="", value="", delta=delta_value)
 
             st.write(pending_deals_details)
             st.markdown('</div>', unsafe_allow_html=True)
 
         with col6:
             st.markdown('<div class="card">', unsafe_allow_html=True)
-            st.metric(label="Promising Deals", value=current_month_pending_deal_count, delta=deal_percentage_change)
+            # st.metric(label="Promising Deals", value=current_month_pending_deal_count, delta=deal_percentage_change)
+
+            delta_value = deal_percentage_change
+            metric_html = f"""
+            <div style="color: green;">
+                <span style="font-size: 20px; font-weight: bold;">Promising Deals</span>
+                <h2 style="font-size: 24px; font-weight: bold; color:green">{current_month_pending_deal_count}</h2>
+            </div>
+            """
+            st.markdown(metric_html, unsafe_allow_html=True)
+            st.metric(label="", value="", delta=delta_value)
             st.write(promising_deals_details)
             st.markdown('</div>', unsafe_allow_html=True)
 
