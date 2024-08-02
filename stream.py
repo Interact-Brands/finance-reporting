@@ -903,7 +903,7 @@ if st.session_state.logged_in:
             """
             st.markdown(metric_html, unsafe_allow_html=True)
 
-        deal_percentage_change = f"""{percentage_change}% MoM"""
+        deal_percentage_change = f"""{percentage_change:,.0f}% MoM"""
 
         # CSS for card-like border
         card_css = """
