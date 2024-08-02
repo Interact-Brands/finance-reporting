@@ -781,23 +781,43 @@ if st.session_state.logged_in:
             # Calculate and display summary statistics
                 
     if selected == "Home1":
-        # Sample data
-        account_receivable = 704790.50
-        account_payable = -167673.45
-        sales_per_change = "10%"
-        profit_per_change = "15%"
-        col_home_left, col_home_right = st.columns(2)
+        # All Account Receivable
+        account_receivable = 704799.50
 
-        with col_home_left:
-            st.metric(label="Cash in the Door", value="$" + f"{account_receivable:,.2f}")
-
-        with col_home_right:
-            st.metric(label="Cash out the Door", value="$" + f"{account_receivable:,.2f}")
-
-        bill_com_money_out_clearing = -6917.41
-
-        deal_percentage_change = f"""{percentage_change}% MoM"""
+        ar_current = 345306.80
+        ar_30_days_overdue_sum = 225542.45
+        ar_60_days_overdue_sum = 77226.75
+        ar_90_days_overdue_sum = 0.0
+        overall_overdue = ar_30_days_overdue_sum + ar_60_days_overdue_sum + ar_90_days_overdue_sum
         
+        # Account Receivable Details
+        account_receivable_details = f"""
+        Overall Overdue: ${overall_overdue:,.2f} 
+        - ${ar_current:,.2f} - current 
+        - ${ar_30_days_overdue_sum:,.2f} - 30 days overdue
+        - ${ar_60_days_overdue_sum:,.2f} - 60 days overdue
+        - ${ar_90_days_overdue_sum:,.2f} - 90 days overdue
+        """
+
+        # All Account Payable
+        account_payable = -156413.13
+        
+        ap_current = 142541.99
+        ap_30_days_overdue_sum = 64551.69
+        ap_60_days_overdue_sum = 19170.00
+        ap_90_days_overdue_sum = 9580.0
+        overall_overdue = ap_30_days_overdue_sum + ap_60_days_overdue_sum + ap_90_days_overdue_sum - 29482 #fixme
+        
+        # Account Payable Details
+        account_payable_details = f"""
+        Overall Overdue: ${overall_overdue:,.2f} 
+        - ${ap_current:,.2f} - current
+        - ${ap_30_days_overdue_sum:,.2f} - 30 days overdue
+        - ${ap_60_days_overdue_sum:,.2f} - 60 days overdue 
+        - ${ap_90_days_overdue_sum:,.2f} - 90 days overdue 
+        """
+
+        # All Other Expenses and Forecast
         # Get the current month
         current_month = datetime.now().month
 
@@ -821,35 +841,6 @@ if st.session_state.logged_in:
         # Calculate forecasted Rest of the Year values
         forecasted_rocketmoney_roy = forecasted_rocketmoney_eoy - total_rm_ytd
 
-        # Define variables for AR values
-        ar_current = 242664.80
-        ar_30_days_overdue_sum = 328175.45
-        ar_60_days_overdue_sum = 77226.75
-        ar_90_days_overdue_sum = 0.0
-        overall_overdue = ar_30_days_overdue_sum + ar_60_days_overdue_sum + ar_90_days_overdue_sum
-        # Account Receivable Details
-        account_receivable_details = f"""
-        Overall Overdue: ${overall_overdue:,.2f} 
-        - ${ar_current:,.2f} - current 
-        - ${ar_30_days_overdue_sum:,.2f} - 30 days overdue
-        - ${ar_60_days_overdue_sum:,.2f} - 60 days overdue
-        - ${ar_90_days_overdue_sum:,.2f} - 90 days overdue
-        """
-        ap_current = 397845.80
-        ap_30_days_overdue_sum = 170098.75
-        ap_60_days_overdue_sum = 77226.75
-        ap_90_days_overdue_sum = 0.0
-        overall_overdue = ap_30_days_overdue_sum + ap_60_days_overdue_sum + ap_90_days_overdue_sum - 29482 #fixme
-
-        account_payable_details = f"""
-        Overall Overdue: ${overall_overdue:,.2f} 
-        - ${ap_billcom_sum:,.2f} - current
-        - ${ap_expensify_sum:,.2f} - 30 days overdue
-        - ${ap_payroll_sum:,.2f} - 60 days overdue 
-        - ${ap_payroll_sum:,.2f} - 90 days overdue 
-
-        """
-
         other_expenses_details = f"""
         - Payroll: ${ap_payroll_sum:,.2f}
         - Expensify: ${ap_expensify_sum:,.2f}
@@ -860,22 +851,60 @@ if st.session_state.logged_in:
         - Expensify: ${forecasted_expensify_roy:,.2f}
         """
 
+        # All Cash in/out the Door
+        cash_in_the_door = account_receivable + proposals_negotiation_sum
+        cash_out_the_door = account_payable + other_expenses_sum + forecasted_other_expenses_sum_roy
+
         pending_deals_details = f"""
         - $ {proposals_negotiation_sum:,} - Proposals/Negotiation
         - $ {inbound_discovery_call_sum:,} - Inbound/Discovery Call
+        - {"50%":} - Account Close Ratio
+        - {"45%":} - New Business Close Ratio
         """
+
         promising_deals_details = f"""
-                - {"50%":} - Account Close Ratio
-                - {"45%":} - New Business Close Ratio
+                - $ {proposals_negotiation_sum:,} - Promising Proposals
+                - $ {inbound_discovery_call_sum:,} - Promosing Inbound
+                - {"50%":} - Promising Account Close Ratio
+                - {"45%":} - Promising New Business Close Ratio
                 """
         rocketmoney_details = f"""
+        - $ {total_rm_ytd:,.2f} - YTD Total
         - $ {total_subscription_amount:,} - Subscriptions
         - $ {most_spent_category_amount_last_month:,} - Most Spent Category: {most_spent_category_name_last_month}
         """
 
         rocketmoney_forecast_details = f"""
-        - $ {total_rm_ytd:,.2f} - YTD Total
+        - $ {total_rm_ytd:,.2f} - Forecast of RoY
+        - $ {total_subscription_amount:,.2f} - Forecast of Subscriptions
+        - $ {most_spent_category_amount_last_month:,.2f} - Forecast of Most Spent
         """
+
+        sales_per_change = "10%"
+        profit_per_change = "15%"
+        col_home_left, col_home_right = st.columns(2)
+
+        with col_home_left:
+            metric_html = f"""
+            <div style="color: green;">
+                <span style="font-size: 20px; font-weight: bold;">Cash in the Door</span>
+                <h2 style="font-size: 24px; font-weight: bold; color:green">${cash_in_the_door:,.2f}</h2>
+            </div>
+            """
+            st.markdown(metric_html, unsafe_allow_html=True)
+
+        with col_home_right:
+            # Define the style for the metric
+            metric_html = f"""
+            <div style="color: red;">
+                <span style="font-size: 20px; font-weight: bold;">Cash out the Door</span>
+                <h2 style="font-size: 24px; font-weight: bold; color:red">${cash_out_the_door:,.2f}</h2>
+            </div>
+            """
+            st.markdown(metric_html, unsafe_allow_html=True)
+
+        deal_percentage_change = f"""{percentage_change}% MoM"""
+
         # CSS for card-like border
         card_css = """
         <style>
@@ -899,17 +928,13 @@ if st.session_state.logged_in:
             st.markdown('<div class="card">', unsafe_allow_html=True)
             delta_value = "Asset"
             # st.metric(label="Account Receivable", value="$" + f"{account_receivable:,.2f}", delta=delta_value)
-
-                        # HTML and CSS to style the label and value
-            html_content = f"""
-            <div style="color: blue;">
-                <p>Account Receivable</p>
-                <h3>${account_receivable:,.2f}</h3>
+            metric_html = f"""
+            <div style="color: green;">
+                <span style="font-size: 20px; font-weight: bold;">Account Receivable</span>
+                <h2 style="font-size: 24px; font-weight: bold; color:green">${account_receivable:,.2f}</h2>
             </div>
             """
-
-            # Display the styled content
-            st.markdown(html_content, unsafe_allow_html=True)
+            st.markdown(metric_html, unsafe_allow_html=True)
 
             # Optionally, you can still use st.metric for delta display
             st.metric(label="", value="", delta=delta_value)
@@ -922,37 +947,33 @@ if st.session_state.logged_in:
             delta_value = "-Liability"
             # st.metric(label="Account Payable", value="$" + f"{:,.2f}", delta=delta_value)
 
-            html_content = f"""
-            <div style="color: orange;">
-                <p>Account Payable</p>
-                <h3>${account_payable:,.2f}</h3>
+            metric_html = f"""
+            <div style="color: red;">
+                <span style="font-size: 20px; font-weight: bold;">Account Payable</span>
+                <h2 style="font-size: 24px; font-weight: bold; color:red">${account_payable:,.2f}</h2>
             </div>
             """
-
-            # Display the styled content
-            st.markdown(html_content, unsafe_allow_html=True)
+            st.markdown(metric_html, unsafe_allow_html=True)
 
             # Optionally, you can still use st.metric for delta display
             st.metric(label="", value="", delta=delta_value)
 
             st.write(account_payable_details)
             st.markdown('</div>', unsafe_allow_html=True)
+        
         col3, col4 = st.columns(2)
 
         with col3:
                     st.markdown('<div class="card">', unsafe_allow_html=True)
                     delta_value = "-Liability"
                     # st.metric(label="Other Expenses", value="$" + f"{other_expenses_sum:,.2f}", delta=delta_value)
-                    html_content = f"""
-                    <div style="color: orange;">
-                        <p>Other Expenses</p>
-                        <h3>${other_expenses_sum:,.2f}</h3>
+                    metric_html = f"""
+                    <div style="color: red;">
+                        <span style="font-size: 20px; font-weight: bold;">YTD Expenses</span>
+                        <h2 style="font-size: 24px; font-weight: bold; color:red">${other_expenses_sum:,.2f}</h2>
                     </div>
                     """
-
-                    # Display the styled content
-                    st.markdown(html_content, unsafe_allow_html=True)
-
+                    st.markdown(metric_html, unsafe_allow_html=True)
                     # Optionally, you can still use st.metric for delta display
                     st.metric(label="", value="", delta=delta_value)
 
@@ -960,47 +981,49 @@ if st.session_state.logged_in:
                     st.markdown('</div>', unsafe_allow_html=True)
         with col4:
                     st.markdown('<div class="card">', unsafe_allow_html=True)
-                    delta_value = "-Liability"
+                    delta_value = "-"
                     # st.metric(label="Forecasted Rest of the Year Expenses", value="$" + f"{forecasted_other_expenses_sum_roy:,.2f}", delta=delta_value)
-                    html_content = f"""
-                    <div style="color: orange;">
-                        <p>Forecasted Rest of the Year Expenses</p>
-                        <h3>${forecasted_other_expenses_sum_roy:,.2f}</h3>
+                    metric_html = f"""
+                    <div style="color: red;">
+                        <span style="font-size: 20px; font-weight: bold;">Forecasted Expenses</span>
+                        <h2 style="font-size: 24px; font-weight: bold; color:red">${forecasted_other_expenses_sum_roy:,.2f}</h2>
                     </div>
                     """
-
-                    # Display the styled content
-                    st.markdown(html_content, unsafe_allow_html=True)
-
+                    st.markdown(metric_html, unsafe_allow_html=True)
                     # Optionally, you can still use st.metric for delta display
-                    st.metric(label="", value="", delta=delta_value)
+                    st.metric(label="", value="", delta=delta_value, delta_color="off")
 
                     st.write(forecasted_expenses_details)
                     st.markdown('</div>', unsafe_allow_html=True)
+        
         col5, col6 = st.columns(2)
 
         with col5:
             st.markdown('<div class="card">', unsafe_allow_html=True)
-            # st.metric(label="Pending Deals", value=current_month_pending_deal_count, delta=deal_percentage_change)
-            html_content = f"""
-            <div style="color: blue;">
-                <p>Pending Deals</p>
-                <h3>{current_month_pending_deal_count:,}</h3>
+            delta_value = deal_percentage_change
+            metric_html = f"""
+            <div style="color: green;">
+                <span style="font-size: 20px; font-weight: bold;">Pending Deals</span>
+                <h2 style="font-size: 24px; font-weight: bold; color:green">{current_month_pending_deal_count}</h2>
             </div>
             """
-
-            # Display the styled content
-            st.markdown(html_content, unsafe_allow_html=True)
-
-            # Optionally, you can still use st.metric for delta display
-            st.metric(label="", value="")
+            st.markdown(metric_html, unsafe_allow_html=True)
+            st.metric(label="", value="", delta=delta_value)
 
             st.write(pending_deals_details)
             st.markdown('</div>', unsafe_allow_html=True)
 
         with col6:
             st.markdown('<div class="card">', unsafe_allow_html=True)
-            st.metric(label="Promising Deals", value=current_month_pending_deal_count, delta=deal_percentage_change)
+            delta_value = deal_percentage_change
+            metric_html = f"""
+            <div style="color: green;">
+                <span style="font-size: 20px; font-weight: bold;">Promising Deals</span>
+                <h2 style="font-size: 24px; font-weight: bold; color:green">{current_month_pending_deal_count}</h2>
+            </div>
+            """
+            st.markdown(metric_html, unsafe_allow_html=True)
+            st.metric(label="", value="", delta=delta_value)
             st.write(promising_deals_details)
             st.markdown('</div>', unsafe_allow_html=True)
 
@@ -1043,6 +1066,46 @@ if st.session_state.logged_in:
             st.markdown('<div class="card">', unsafe_allow_html=True)
             st.metric(label="Freelance Forecast", value="25%", delta="Overall Change")
             
+            # Placeholder data for freelance forecast
+            eoy_forecast = {
+                "Total Revenue": "$90,000",
+                "Total Projects": 36,
+                "Average Revenue per Project": "$2,500",
+                "Expected New Clients": 15,
+                "Hours Worked": 1800
+            }
+            
+            roy_forecast = {
+                "Total Revenue": "$30,000",
+                "Total Projects": 12,
+                "Average Revenue per Project": "$2,500",
+                "Expected New Clients": 5,
+                "Hours Worked": 600
+            }
+            
+            monthly_forecast = {
+                "Total Revenue": "$7,500",
+                "Total Projects": 3,
+                "Average Revenue per Project": "$2,500",
+                "Expected New Clients": 1-2,
+                "Hours Worked": 150
+            }
+            
+            with st.expander("Freelance Forecast Details"):
+                st.write("### End of Year (EOY) Forecast")
+                for key, value in eoy_forecast.items():
+                    st.write(f"**{key}:** {value}")
+                
+                st.write("### Rest of Year (ROY) Forecast")
+                for key, value in roy_forecast.items():
+                    st.write(f"**{key}:** {value}")
+                
+                st.write("### Monthly Forecast")
+                for key, value in monthly_forecast.items():
+                    st.write(f"**{key}:** {value}")
+            
+            st.markdown('</div>', unsafe_allow_html=True)
+
             # Placeholder data for freelance projects
             projects = [
                 {"name": "Del Monte", "hours_worked": 120, "rate": "$50/hr", "total_earnings": "$6000"},
