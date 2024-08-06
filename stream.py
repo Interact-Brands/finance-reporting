@@ -782,10 +782,10 @@ if st.session_state.logged_in:
                 
     if selected == "Home1":
         # All Account Receivable
-        account_receivable = 704799.50
+        account_receivable = 661851.50
 
-        ar_current = 345306.80
-        ar_30_days_overdue_sum = 225542.45
+        ar_current = 334721.00
+        ar_30_days_overdue_sum = 193180.25
         ar_60_days_overdue_sum = 77226.75
         ar_90_days_overdue_sum = 0.0
         overall_overdue = ar_30_days_overdue_sum + ar_60_days_overdue_sum + ar_90_days_overdue_sum
@@ -800,13 +800,13 @@ if st.session_state.logged_in:
         """
 
         # All Account Payable
-        account_payable = -156413.13
+        account_payable = -202265.19
         
-        ap_current = 142541.99
-        ap_30_days_overdue_sum = 64551.69
-        ap_60_days_overdue_sum = 19170.00
-        ap_90_days_overdue_sum = 9580.0
-        overall_overdue = ap_30_days_overdue_sum + ap_60_days_overdue_sum + ap_90_days_overdue_sum - 29482 #fixme
+        ap_current = 76518.99
+        ap_30_days_overdue_sum = 91466.45
+        ap_60_days_overdue_sum = 16349.74
+        ap_90_days_overdue_sum = 3820.0
+        overall_overdue = ap_30_days_overdue_sum + ap_60_days_overdue_sum + ap_90_days_overdue_sum
         
         # Account Payable Details
         account_payable_details = f"""
@@ -854,6 +854,7 @@ if st.session_state.logged_in:
         # All Cash in/out the Door
         cash_in_the_door = account_receivable + proposals_negotiation_sum
         cash_out_the_door = account_payable + other_expenses_sum + forecasted_other_expenses_sum_roy
+        # cash out the door will be AP + forecasted other expenses + freelance forecast
 
         pending_deals_details = f"""
         - $ {proposals_negotiation_sum:,} - Proposals/Negotiation
@@ -1001,6 +1002,7 @@ if st.session_state.logged_in:
         with col5:
             st.markdown('<div class="card">', unsafe_allow_html=True)
             delta_value = deal_percentage_change
+
             metric_html = f"""
             <div style="color: green;">
                 <span style="font-size: 20px; font-weight: bold;">Pending Deals</span>
@@ -1008,14 +1010,17 @@ if st.session_state.logged_in:
             </div>
             """
             st.markdown(metric_html, unsafe_allow_html=True)
-            st.metric(label="", value="", delta=delta_value)
-
+            col1, col2 = st.columns([1, 1])  # Adjust the ratio as needed
+            with col1:
+                st.metric(label="", value="", delta="Asset")
+            with col2:
+                st.metric(label="", value="", delta=delta_value)
             st.write(pending_deals_details)
-            st.markdown('</div>', unsafe_allow_html=True)
 
         with col6:
             st.markdown('<div class="card">', unsafe_allow_html=True)
             delta_value = deal_percentage_change
+
             metric_html = f"""
             <div style="color: green;">
                 <span style="font-size: 20px; font-weight: bold;">Promising Deals</span>
@@ -1023,26 +1028,38 @@ if st.session_state.logged_in:
             </div>
             """
             st.markdown(metric_html, unsafe_allow_html=True)
-            st.metric(label="", value="", delta=delta_value)
+            col1, col2 = st.columns([1, 1])  # Adjust the ratio as needed
+            with col1:
+                st.metric(label="", value="", delta="Asset")
+            with col2:
+                st.metric(label="", value="", delta=delta_value)
             st.write(promising_deals_details)
-            st.markdown('</div>', unsafe_allow_html=True)
-
+            
         # Create columns
         col7, _ = st.columns([200, 1])  # Adjust column widths as needed
 
         # Populate col6
         with col7:
             st.markdown('<div class="card">', unsafe_allow_html=True)
-            st.metric(label="Project Profitability", value="25%", delta="Overall Change")
+            # Define the projects with additional fields
             projects = [
-                    {"name": "Del Monte", "profitability": "25%"},
-                    {"name": "Rally", "profitability": "15%"},
-                    {"name": "Gruns", "profitability": "30%"},
-                    {"name": "Nestle", "profitability": "20%"}
+                {"Name": "Del Monte", "Job code": "DM123", "Profitability": "25%"},
+                {"Name": "Rally", "Job code": "RA456", "Profitability": "25%"},
+                {"Name": "Gruns", "Job code": "GR789", "Profitability": "30%"},
+                {"Name": "Nestle", "Job code": "NE101", "Profitability": "20%"}
                 ]
+            total_profitability = sum(int(project["Profitability"].strip('%')) for project in projects)
+            average_profitability = total_profitability / len(projects)
+            
+            st.metric(label="Project Profitability", value=f"{average_profitability:.0f}%", delta="Overall Change")
+
+
+            # Convert the projects list to a DataFrame
+            projects_df = pd.DataFrame(projects)
+
+            # Display the project details in an expander with a table
             with st.expander("Project Details"):
-                for project in projects:
-                    st.write(f"**{project['name']}**: {project['profitability']}")
+                st.table(projects_df.set_index([pd.Index(['']*len(projects_df))]))
             
             st.markdown('</div>', unsafe_allow_html=True)
 
