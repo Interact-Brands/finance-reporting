@@ -782,11 +782,11 @@ if st.session_state.logged_in:
                 
     if selected == "Home1":
         # All Account Receivable
-        account_receivable = 661851.50
+        account_receivable = 613262.80
 
-        ar_current = 334721.00
-        ar_30_days_overdue_sum = 193180.25
-        ar_60_days_overdue_sum = 77226.75
+        ar_current = 298519.00
+        ar_30_days_overdue_sum = 132999.05
+        ar_60_days_overdue_sum = 125021.25
         ar_90_days_overdue_sum = 0.0
         overall_overdue = ar_30_days_overdue_sum + ar_60_days_overdue_sum + ar_90_days_overdue_sum
         
@@ -800,12 +800,12 @@ if st.session_state.logged_in:
         """
 
         # All Account Payable
-        account_payable = -202265.19
+        account_payable = -147373.38
         
-        ap_current = 76518.99
-        ap_30_days_overdue_sum = 91466.45
-        ap_60_days_overdue_sum = 16349.74
-        ap_90_days_overdue_sum = 3820.0
+        ap_current = 101030.69
+        ap_30_days_overdue_sum = 63584.23
+        ap_60_days_overdue_sum = 1988.69
+        ap_90_days_overdue_sum = 320.0
         overall_overdue = ap_30_days_overdue_sum + ap_60_days_overdue_sum + ap_90_days_overdue_sum
         
         # Account Payable Details
